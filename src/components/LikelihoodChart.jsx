@@ -33,8 +33,8 @@ const LikelihoodChart = ({ data }) => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28']; // Add more colors as needed
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-4">
-            <h2 className="text-lg font-semibold mb-4">Likelihood Chart</h2>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+            <h2 className="mb-4 text-lg font-semibold">Likelihood Chart</h2>
             <PieChart width={400} height={300}>
                 <Pie
                     dataKey="value"
