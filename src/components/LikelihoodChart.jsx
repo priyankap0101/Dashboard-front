@@ -1,7 +1,5 @@
-// LikelihoodChart.jsx
-
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const LikelihoodChart = ({ data }) => {
     // Function to transform data into required format for pie chart
@@ -33,25 +31,36 @@ const LikelihoodChart = ({ data }) => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28']; // Add more colors as needed
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-md">
-            <h2 className="mb-4 text-lg font-semibold">Likelihood Chart</h2>
-            <PieChart width={400} height={300}>
-                <Pie
-                    dataKey="value"
-                    data={likelihoodData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    label
-                >
-                    {likelihoodData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-            </PieChart>
+        <div className="p-6 bg-white rounded-lg shadow-md">
+<h2 className="mb-4 text-3xl font-bold text-center text-gray-800">Likelihood Distribution</h2>
+            <ResponsiveContainer width="100%" height={400}>
+                <PieChart>
+                    <Pie
+                        dataKey="value"
+                        data={likelihoodData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={120}
+                        fill="#8884d8"
+                        label
+                    >
+                        {likelihoodData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip
+                        formatter={(value) => `${value}`}
+                        labelStyle={{ color: '#333', fontWeight: 'bold' }}
+                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #ccc' }}
+                    />
+                    <Legend 
+                        layout="vertical" 
+                        align="right" 
+                        verticalAlign="middle" 
+                        wrapperStyle={{ paddingTop: '20px' }}
+                    />
+                </PieChart>
+            </ResponsiveContainer>
         </div>
     );
 };

@@ -1,24 +1,23 @@
 import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const YearlyTrendsChart = ({ data }) => {
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-center text-xl font-semibold mb-4">Yearly Trends</h3>
-            <AreaChart
-                width={400}
-                height={400}
-                data={data}
-                className="mx-auto"
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Area type="monotone" dataKey="intensity" stroke="#8884d8" fill="#8884d8" />
-            </AreaChart>
+        <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="mb-4 text-2xl font-semibold text-center text-gray-800">Yearly Trends</h3>
+            <ResponsiveContainer width="100%" height={400}>
+                <AreaChart
+                    data={data}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis />
+                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #ccc' }} />
+                    <Legend verticalAlign="top" height={36} />
+                    <Area type="monotone" dataKey="intensity" stroke="#8884d8" fill="#8884d8" />
+                </AreaChart>
+            </ResponsiveContainer>
         </div>
     );
 };

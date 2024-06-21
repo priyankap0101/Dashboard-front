@@ -1,42 +1,33 @@
-import React, { useEffect, useRef } from 'react';
-import { ForceGraph3D } from 'react-force-graph';
-
+import React from 'react';
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 
 const IntensityGraphChart = ({ data }) => {
-    const fgRef = useRef();
+  // Transform data for the chart
+  const chartData = data.map((item, index) => ({
+    name: item.topic,
+    intensity: item.intensity
+  }));
 
-    // Transform data for the graph
-    const graphData = {
-        nodes: data.map((item, index) => ({
-            id: index,
-            name: item.topic,
-            value: item.intensity
-        })),
-        links: data.map((item, index) => ({
-            source: index,
-            target: (index + 1) % data.length
-        }))
-    };
-
-    useEffect(() => {
-        // Focus on the graph once it's rendered
-        fgRef.current.zoomToFit(400);
-    }, []);
-
-    return (
-        <div className="p-6 bg-white rounded-lg shadow-md">
-            <h3 className="mb-4 text-xl font-semibold text-center">Intensity Graph</h3>
-            <ForceGraph3D
-                ref={fgRef}
-                graphData={graphData}
-                nodeAutoColorBy="value"
-                linkDirectionalParticles="value"
-                linkDirectionalParticleSpeed={d => d.value * 0.001}
-                width={400}
-                height={400}
-            />
-        </div>
-    );
+  return (
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <h3 className="mb-4 text-xl font-semibold text-center">Intensity Graph</h3>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart
+          data={chartData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="intensity" stroke="#8884d8" activeDot={{ r: 8 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
 };
 
 export default IntensityGraphChart;
