@@ -1,35 +1,59 @@
-import React from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts';
+// LikelihoodChart.jsx
 
-const LikelihoodChart = ({ data = [] }) => {
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-center text-xl font-semibold mb-4">Likelihood</h3>
-      <BarChart
-        width={400}
-        height={300}
-        data={data}
-        margin={{
-          top: 5, right: 30, left: 20, bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="topic" />
-        <YAxis dataKey="likelihood" />
-        <Tooltip formatter={(value, name) => [`${value}`, `${name.charAt(0).toUpperCase() + name.slice(1)}`]} />
-        <Legend />
-        <Bar dataKey="likelihood" fill="#8884d8" />
-      </BarChart>
-    </div>
-  );
+import React from 'react';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
+const LikelihoodChart = ({ data }) => {
+    // Function to transform data into required format for pie chart
+    const transformData = () => {
+        // Assuming 'data' contains fields like 'likelihood' with values like 'Low', 'Medium', 'High'
+        const likelihoodCounts = data.reduce((acc, curr) => {
+            const likelihood = curr.likelihood;
+            if (acc[likelihood]) {
+                acc[likelihood]++;
+            } else {
+                acc[likelihood] = 1;
+            }
+            return acc;
+        }, {});
+
+        // Transform into an array of objects with name and value properties
+        const transformedData = Object.keys(likelihoodCounts).map((likelihood) => ({
+            name: likelihood,
+            value: likelihoodCounts[likelihood],
+        }));
+
+        return transformedData;
+    };
+
+    // Get transformed data for the pie chart
+    const likelihoodData = transformData();
+
+    // Colors for the pie chart slices
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28']; // Add more colors as needed
+
+    return (
+        <div className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-lg font-semibold mb-4">Likelihood Chart</h2>
+            <PieChart width={400} height={300}>
+                <Pie
+                    dataKey="value"
+                    data={likelihoodData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                    label
+                >
+                    {likelihoodData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+            </PieChart>
+        </div>
+    );
 };
 
 export default LikelihoodChart;

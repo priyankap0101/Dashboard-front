@@ -24,8 +24,8 @@ const IntensityGraphChart = ({ data }) => {
     }, []);
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-center text-xl font-semibold mb-4">Intensity Graph</h3>
+        <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="mb-4 text-xl font-semibold text-center">Intensity Graph</h3>
             <ForceGraph3D
                 ref={fgRef}
                 graphData={graphData}
