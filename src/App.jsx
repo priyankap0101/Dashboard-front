@@ -4,9 +4,12 @@ import Dashboard from './components/Dashboard';
 
 const App = () => {
     return (
+        
+       
         <Router>
             <Routes>
                 <Route path="/" element={<Dashboard />} />
+               
             </Routes>
         </Router>
     );
