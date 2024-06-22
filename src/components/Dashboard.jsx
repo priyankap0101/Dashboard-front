@@ -6,9 +6,14 @@ import LikelihoodChart from './LikelihoodChart';
 import RelevanceChart from './RelevanceChart';
 import YearlyTrendsChart from './YearlyTrendsChart';
 import { FaSun, FaMoon } from 'react-icons/fa';
+import { BiExport } from 'react-icons/bi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'tailwindcss/tailwind.css';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
+import { exportToCSV, exportToPDF } from '../utils/exportUtils';
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
@@ -20,6 +25,7 @@ const Dashboard = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [loading, setLoading] = useState(true);
     const [activeChart, setActiveChart] = useState('intensity');
+    const [showExportMenu, setShowExportMenu] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,7 +75,36 @@ const Dashboard = () => {
     };
 
     const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
+        const newDarkMode = !darkMode;
+        setDarkMode(newDarkMode);
+        localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+    };
+
+    useEffect(() => {
+        const savedDarkMode = JSON.parse(localStorage.getItem('darkMode') || 'false');
+        setDarkMode(savedDarkMode);
+    }, []);
+
+    const handleExport = (format) => {
+        switch (format) {
+            case 'csv':
+                exportToCSV(filteredData, 'data_export.csv');
+                break;
+            case 'pdf':
+                exportToPDF(filteredData, 'data_export.pdf');
+                break;
+            case 'zip':
+                const zip = new JSZip();
+                zip.file('data_export.csv', exportToCSV(filteredData, null, true));
+                zip.file('data_export.pdf', exportToPDF(filteredData, null, true));
+                zip.generateAsync({ type: 'blob' }).then(content => {
+                    saveAs(content, 'data_export.zip');
+                });
+                break;
+            default:
+                toast.error('Invalid export format');
+        }
+        setShowExportMenu(false);
     };
 
     const renderChart = () => {
@@ -88,13 +123,49 @@ const Dashboard = () => {
     };
 
     return (
-        <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen`}>
+        <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen transition-colors duration-300`}>
             <div className="container p-6 mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <h1 className="text-3xl font-bold">Data Visualization Dashboard</h1>
-                    <button onClick={toggleDarkMode} className="text-2xl">
-                        {darkMode ? <FaSun /> : <FaMoon />}
-                    </button>
+                    <div className="flex items-center space-x-4">
+                        <button 
+                            onClick={toggleDarkMode} 
+                            className="text-2xl focus:outline-none" 
+                            aria-label="Toggle Dark Mode"
+                        >
+                            {darkMode ? <FaSun /> : <FaMoon />}
+                        </button>
+                        <div className="relative">
+                            <button 
+                                onClick={() => setShowExportMenu(!showExportMenu)} 
+                                className="text-2xl focus:outline-none" 
+                                aria-label="Export Data"
+                            >
+                                <BiExport />
+                            </button>
+                            {showExportMenu && (
+                                <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
+                                    <button onClick={() => handleExport('csv')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as CSV</button>
+                                    <button onClick={() => handleExport('pdf')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as PDF</button>
+                                    <button onClick={() => handleExport('zip')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as ZIP</button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
+                    <div className="p-4 bg-blue-100 rounded-lg shadow-md dark:bg-gray-800">
+                        <h2 className="text-xl font-semibold">Total Records</h2>
+                        <p className="mt-2 text-2xl">{filteredData.length}</p>
+                    </div>
+                    <div className="p-4 bg-green-100 rounded-lg shadow-md dark:bg-gray-800">
+                        <h2 className="text-xl font-semibold">Unique Topics</h2>
+                        <p className="mt-2 text-2xl">{topics.length}</p>
+                    </div>
+                    <div className="p-4 bg-yellow-100 rounded-lg shadow-md dark:bg-gray-800">
+                        <h2 className="text-xl font-semibold">Unique Sectors</h2>
+                        <p className="mt-2 text-2xl">{sectors.length}</p>
+                    </div>
                 </div>
                 <FilterComponent 
                     setFilters={setFilters} 
@@ -111,25 +182,25 @@ const Dashboard = () => {
                     <>
                         <div className="flex justify-center mb-4 space-x-4">
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('intensity')}
                             >
                                 Intensity
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('likelihood')}
                             >
                                 Likelihood
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('relevance')}
                             >
                                 Relevance
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('trends')}
                             >
                                 Trends
