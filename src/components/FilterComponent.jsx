@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FilterComponent = ({ setFilters, darkMode }) => {
+const FilterComponent = ({ setFilters, darkMode, topics, sectors, years }) => {
     const handleFilterChange = (e) => {
         setFilters(prevFilters => ({ ...prevFilters, [e.target.name]: e.target.value }));
     };
@@ -11,12 +11,16 @@ const FilterComponent = ({ setFilters, darkMode }) => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div className="flex flex-col">
                     <label className="mb-1 text-sm">End Year</label>
-                    <input
-                        type="text"
+                    <select
                         name="endYear"
                         className={`w-full border ${darkMode ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} rounded-md px-3 py-2`}
                         onChange={handleFilterChange}
-                    />
+                    >
+                        <option value="">Select Year</option>
+                        {years.map((year, index) => (
+                            <option key={index} value={year}>{year}</option>
+                        ))}
+                    </select>
                 </div>
                 <div className="flex flex-col">
                     <label className="mb-1 text-sm">Topics</label>
@@ -26,7 +30,9 @@ const FilterComponent = ({ setFilters, darkMode }) => {
                         onChange={handleFilterChange}
                     >
                         <option value="">Select Topic</option>
-                        {/* Populate options dynamically */}
+                        {topics.map((topic, index) => (
+                            <option key={index} value={topic}>{topic}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="flex flex-col">
@@ -37,10 +43,11 @@ const FilterComponent = ({ setFilters, darkMode }) => {
                         onChange={handleFilterChange}
                     >
                         <option value="">Select Sector</option>
-                        {/* Populate options dynamically */}
+                        {sectors.map((sector, index) => (
+                            <option key={index} value={sector}>{sector}</option>
+                        ))}
                     </select>
                 </div>
-                {/* Add more filters as needed */}
             </div>
         </div>
     );

@@ -5,18 +5,21 @@ import IntensityChart from './IntensityChart';
 import LikelihoodChart from './LikelihoodChart';
 import RelevanceChart from './RelevanceChart';
 import YearlyTrendsChart from './YearlyTrendsChart';
-import { FaHome, FaChartLine, FaCog, FaSun, FaMoon } from 'react-icons/fa';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState({});
+    const [filteredData, setFilteredData] = useState([]);
+    const [topics, setTopics] = useState([]);
+    const [sectors, setSectors] = useState([]);
+    const [years, setYears] = useState([]);
     const [darkMode, setDarkMode] = useState(false);
-    const [activeChart, setActiveChart] = useState('Intensity'); // State to track active chart
+    const [loading, setLoading] = useState(true);
+    const [activeChart, setActiveChart] = useState('intensity');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,13 +27,12 @@ const Dashboard = () => {
             try {
                 const result = await getData(filters);
                 setData(result);
-                setFilteredData(result); // Initially set filtered data same as fetched data
+                setFilteredData(result);
+                extractFilterOptions(result);
             } catch (error) {
-                console.error('Error fetching data:', error);
                 toast.error('Error fetching data');
-            } finally {
-                setLoading(false);
             }
+            setLoading(false);
         };
 
         fetchData();
@@ -40,11 +42,15 @@ const Dashboard = () => {
         const applyFilters = () => {
             let filteredResult = data;
 
-            // Apply filters based on user selections
             if (filters.endYear) {
-                filteredResult = filteredResult.filter(item => item.year === filters.endYear);
+                filteredResult = filteredResult.filter(item => item.year === parseInt(filters.endYear));
             }
-            // Add more filter conditions as needed
+            if (filters.topics) {
+                filteredResult = filteredResult.filter(item => item.topic === filters.topics);
+            }
+            if (filters.sector) {
+                filteredResult = filteredResult.filter(item => item.sector === filters.sector);
+            }
 
             setFilteredData(filteredResult);
         };
@@ -52,106 +58,90 @@ const Dashboard = () => {
         applyFilters();
     }, [data, filters]);
 
-    const handleApplyFilters = () => {
-        // Trigger data fetching and filtering based on selected filters
-        fetchData();
+    const extractFilterOptions = (data) => {
+        const uniqueTopics = [...new Set(data.map(item => item.topic))];
+        const uniqueSectors = [...new Set(data.map(item => item.sector))];
+        const uniqueYears = [...new Set(data.map(item => item.year))];
+
+        setTopics(uniqueTopics);
+        setSectors(uniqueSectors);
+        setYears(uniqueYears);
     };
 
     const toggleDarkMode = () => {
-        // Toggle dark mode
         setDarkMode(!darkMode);
     };
 
-    const handleChartClick = (chart) => {
-        setActiveChart(chart); // Set active chart based on user click
+    const renderChart = () => {
+        switch (activeChart) {
+            case 'intensity':
+                return <IntensityChart data={filteredData} />;
+            case 'likelihood':
+                return <LikelihoodChart data={filteredData} />;
+            case 'relevance':
+                return <RelevanceChart data={filteredData} />;
+            case 'trends':
+                return <YearlyTrendsChart data={filteredData} />;
+            default:
+                return <IntensityChart data={filteredData} />;
+        }
     };
 
     return (
-        <div className={`flex flex-col md:flex-row h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
-            {/* Sidebar */}
-            <aside className={`w-full md:w-64 p-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-200'} border-r border-gray-300`}>
-                <h2 className="mb-8 text-2xl font-bold">Dashboard</h2>
-                <nav>
-                    <ul>
-                        <li
-                            className={`mb-4 flex items-center cursor-pointer ${activeChart === 'Intensity' ? 'text-blue-500 font-bold' : ''}`}
-                            onClick={() => handleChartClick('Intensity')}
-                        >
-                            <FaChartLine className="mr-2" />
-                            Intensity
-                        </li>
-                        <li
-                            className={`mb-4 flex items-center cursor-pointer ${activeChart === 'Likelihood' ? 'text-blue-500 font-bold' : ''}`}
-                            onClick={() => handleChartClick('Likelihood')}
-                        >
-                            <FaChartLine className="mr-2" />
-                            Likelihood
-                        </li>
-                        <li
-                            className={`mb-4 flex items-center cursor-pointer ${activeChart === 'Relevance' ? 'text-blue-500 font-bold' : ''}`}
-                            onClick={() => handleChartClick('Relevance')}
-                        >
-                            <FaChartLine className="mr-2" />
-                            Relevance
-                        </li>
-                        <li
-                            className={`mb-4 flex items-center cursor-pointer ${activeChart === 'YearlyTrends' ? 'text-blue-500 font-bold' : ''}`}
-                            onClick={() => handleChartClick('YearlyTrends')}
-                        >
-                            <FaChartLine className="mr-2" />
-                            Yearly Trends
-                        </li>
-                    </ul>
-                </nav>
-                <button
-                    className={`mt-4 flex items-center justify-center w-full py-2 px-4 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-blue-500 hover:bg-blue-700 text-white'} font-bold`}
-                    onClick={toggleDarkMode}
-                >
-                    {darkMode ? <FaSun className="mr-2" /> : <FaMoon className="mr-2" />}
-                    {darkMode ? 'Light Mode' : 'Dark Mode'}
-                </button>
-            </aside>
-
-            {/* Main content area */}
-            <main className="flex-1 p-6 overflow-y-auto">
-                {/* Header */}
-                <header className="flex items-center justify-between mb-8">
+        <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen`}>
+            <div className="container p-6 mx-auto">
+                <div className="flex items-center justify-between mb-8">
                     <h1 className="text-3xl font-bold">Data Visualization Dashboard</h1>
-                    <button
-                        className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${darkMode ? 'text-gray-900' : 'text-white'}`}
-                        onClick={toggleDarkMode}
-                    >
+                    <button onClick={toggleDarkMode} className="text-2xl">
                         {darkMode ? <FaSun /> : <FaMoon />}
                     </button>
-                </header>
-
-                {/* Filters */}
-                <div className="mb-8">
-                    <FilterComponent setFilters={setFilters} darkMode={darkMode} />
-                    <div className="text-right">
-                        <button
-                            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${darkMode ? 'text-gray-900' : 'text-white'}`}
-                            onClick={handleApplyFilters}
-                        >
-                            Apply Filters
-                        </button>
-                    </div>
                 </div>
-
-                {/* Charts */}
+                <FilterComponent 
+                    setFilters={setFilters} 
+                    darkMode={darkMode} 
+                    topics={topics} 
+                    sectors={sectors} 
+                    years={years} 
+                />
                 {loading ? (
-                    <div className="flex items-center justify-center h-full">
-                        <ClipLoader color={darkMode ? "#FFFFFF" : "#0000FF"} loading={loading} size={150} />
+                    <div className="flex items-center justify-center h-64">
+                        <ClipLoader color={darkMode ? '#ffffff' : '#000000'} loading={loading} size={50} />
                     </div>
                 ) : (
-                    <div>
-                        {activeChart === 'Intensity' && <IntensityChart data={filteredData} />}
-                        {activeChart === 'Likelihood' && <LikelihoodChart data={filteredData} />}
-                        {activeChart === 'Relevance' && <RelevanceChart data={filteredData} />}
-                        {activeChart === 'YearlyTrends' && <YearlyTrendsChart data={filteredData} />}
-                    </div>
+                    <>
+                        <div className="flex justify-center mb-4 space-x-4">
+                            <button
+                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                onClick={() => setActiveChart('intensity')}
+                            >
+                                Intensity
+                            </button>
+                            <button
+                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                onClick={() => setActiveChart('likelihood')}
+                            >
+                                Likelihood
+                            </button>
+                            <button
+                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                onClick={() => setActiveChart('relevance')}
+                            >
+                                Relevance
+                            </button>
+                            <button
+                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                onClick={() => setActiveChart('trends')}
+                            >
+                                Trends
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-1 gap-8">
+                            {renderChart()}
+                        </div>
+                    </>
                 )}
-            </main>
+                <ToastContainer />
+            </div>
         </div>
     );
 };
