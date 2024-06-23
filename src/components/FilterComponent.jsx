@@ -1,74 +1,95 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
 
-const FilterComponent = ({ setFilters, darkMode, topics, sectors, years }) => {
-    const [selectedTopics, setSelectedTopics] = React.useState([]);
-    const [selectedSectors, setSelectedSectors] = React.useState([]);
-    const [selectedYears, setSelectedYears] = React.useState([]);
+const FilterComponent = ({ setFilters, darkMode, topics, sectors, years, defaultFilters }) => {
+    const [selectedTopics, setSelectedTopics] = useState([]);
+    const [selectedSectors, setSelectedSectors] = useState([]);
+    const [selectedYears, setSelectedYears] = useState([]);
 
-    const handleFilterChange = () => {
-        setFilters({
-            topics: selectedTopics.map(topic => topic.value),
-            sectors: selectedSectors.map(sector => sector.value),
-            endYear: selectedYears.length ? selectedYears[0].value : null,
-        });
+    useEffect(() => {
+        if (defaultFilters.topics && defaultFilters.topics.length > 0) {
+            setSelectedTopics(defaultFilters.topics.map(topic => ({ label: topic, value: topic })));
+        }
+        if (defaultFilters.sectors && defaultFilters.sectors.length > 0) {
+            setSelectedSectors(defaultFilters.sectors.map(sector => ({ label: sector, value: sector })));
+        }
+        if (defaultFilters.years && defaultFilters.years.length > 0) {
+            setSelectedYears(defaultFilters.years.map(year => ({ label: year.toString(), value: year.toString() })));
+        }
+    }, [defaultFilters]);
+
+    const handleApplyFilters = () => {
+        const filters = {
+            topics: selectedTopics.map(option => option.value),
+            sectors: selectedSectors.map(option => option.value),
+            years: selectedYears.map(option => parseInt(option.value)), // Convert back to numbers if needed
+        };
+        setFilters(filters);
     };
 
-    // Handle clearing all filters
-    const clearFilters = () => {
+    const handleClearFilters = () => {
         setSelectedTopics([]);
         setSelectedSectors([]);
         setSelectedYears([]);
         setFilters({});
     };
 
-    React.useEffect(() => {
-        handleFilterChange();
-    }, [selectedTopics, selectedSectors, selectedYears]);
+    const formatOptions = (options) => {
+        if (!options || !Array.isArray(options)) {
+            return [];
+        }
+    
+        return options.map(option => ({
+            label: option ? option.toString() : '',
+            value: option ? option.toString() : ''
+        }));
+    };
 
     return (
-        <div className={`p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
+        <div className="p-4 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <h2 className="mb-4 text-xl font-semibold">Filters</h2>
-            <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium">Topics</label>
-                <MultiSelect
-                    options={topics.map(topic => ({ label: topic, value: topic }))}
-                    value={selectedTopics}
-                    onChange={setSelectedTopics}
-                    labelledBy="Select Topics"
-                    overrideStrings={{ selectSomeItems: 'Select Topics' }} // Custom placeholder
-                />
+            <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
+                <div>
+                    <label className="block mb-2 text-sm font-medium">Topics</label>
+                    <MultiSelect
+                        options={formatOptions(topics)}
+                        value={selectedTopics}
+                        onChange={setSelectedTopics}
+                        labelledBy="Select Topics"
+                        className={darkMode ? 'dark-multi-select' : ''}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-2 text-sm font-medium">Sectors</label>
+                    <MultiSelect
+                        options={formatOptions(sectors)}
+                        value={selectedSectors}
+                        onChange={setSelectedSectors}
+                        labelledBy="Select Sectors"
+                        className={darkMode ? 'dark-multi-select' : ''}
+                    />
+                </div>
+                <div>
+                    <label className="block mb-2 text-sm font-medium">Years</label>
+                    <MultiSelect
+                        options={formatOptions(years)}
+                        value={selectedYears}
+                        onChange={setSelectedYears}
+                        labelledBy="Select Years"
+                        className={darkMode ? 'dark-multi-select' : ''}
+                    />
+                </div>
             </div>
-            <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium">Sectors</label>
-                <MultiSelect
-                    options={sectors.map(sector => ({ label: sector, value: sector }))}
-                    value={selectedSectors}
-                    onChange={setSelectedSectors}
-                    labelledBy="Select Sectors"
-                    overrideStrings={{ selectSomeItems: 'Select Sectors' }} // Custom placeholder
-                />
-            </div>
-            <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium">Years</label>
-                <MultiSelect
-                    options={years.map(year => ({ label: year, value: year }))}
-                    value={selectedYears}
-                    onChange={setSelectedYears}
-                    labelledBy="Select Years"
-                    overrideStrings={{ selectSomeItems: 'Select Years' }} // Custom placeholder
-                />
-            </div>
-            <div className="flex justify-between">
+            <div className="flex justify-end space-x-4">
                 <button
-                    className="px-4 py-2 text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
-                    onClick={clearFilters}
+                    onClick={handleClearFilters}
+                    className="px-4 py-2 font-medium text-white bg-gray-500 rounded hover:bg-gray-600"
                 >
                     Clear Filters
                 </button>
                 <button
-                    className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                    onClick={handleFilterChange}
+                    onClick={handleApplyFilters}
+                    className="px-4 py-2 font-medium text-white bg-blue-500 rounded hover:bg-blue-600"
                 >
                     Apply Filters
                 </button>

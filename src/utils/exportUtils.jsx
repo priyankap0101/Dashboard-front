@@ -1,6 +1,7 @@
 // src/utils/exportUtils.js
 import { saveAs } from 'file-saver';
-
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 export const exportToCSV = (data, filename, returnAsString = false) => {
     const csvData = data.map(row => Object.values(row).join(',')).join('\n');

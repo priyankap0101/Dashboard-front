@@ -31,10 +31,11 @@ const Dashboard = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const result = await getData(filters);
+                const result = await getData();
                 setData(result);
                 setFilteredData(result);
                 extractFilterOptions(result);
+                setDefaultFilters(result);
             } catch (error) {
                 toast.error('Error fetching data');
             }
@@ -42,20 +43,32 @@ const Dashboard = () => {
         };
 
         fetchData();
-    }, [filters]);
+    }, []);
+
+    const setDefaultFilters = (data) => {
+        const defaultTopic = [...new Set(data.map(item => item.topic))][0];
+        const defaultSector = [...new Set(data.map(item => item.sector))][0];
+        const defaultYear = [...new Set(data.map(item => item.year))][0];
+
+        setFilters({
+            topics: [defaultTopic],
+            sectors: [defaultSector],
+            endYear: [defaultYear.toString()],
+        });
+    };
 
     useEffect(() => {
         const applyFilters = () => {
             let filteredResult = data;
 
-            if (filters.endYear) {
-                filteredResult = filteredResult.filter(item => item.year === parseInt(filters.endYear));
+            if (filters.endYear && filters.endYear.length > 0) {
+                filteredResult = filteredResult.filter(item => filters.endYear.includes(item.year.toString()));
             }
-            if (filters.topics) {
-                filteredResult = filteredResult.filter(item => item.topic === filters.topics);
+            if (filters.topics && filters.topics.length > 0) {
+                filteredResult = filteredResult.filter(item => filters.topics.includes(item.topic));
             }
-            if (filters.sector) {
-                filteredResult = filteredResult.filter(item => item.sector === filters.sector);
+            if (filters.sectors && filters.sectors.length > 0) {
+                filteredResult = filteredResult.filter(item => filters.sectors.includes(item.sector));
             }
 
             setFilteredData(filteredResult);
@@ -75,15 +88,9 @@ const Dashboard = () => {
     };
 
     const toggleDarkMode = () => {
-        const newDarkMode = !darkMode;
-        setDarkMode(newDarkMode);
-        localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+        setDarkMode(!darkMode);
+        localStorage.setItem('darkMode', !darkMode);
     };
-
-    useEffect(() => {
-        const savedDarkMode = JSON.parse(localStorage.getItem('darkMode') || 'false');
-        setDarkMode(savedDarkMode);
-    }, []);
 
     const handleExport = (format) => {
         switch (format) {
@@ -106,6 +113,11 @@ const Dashboard = () => {
         }
         setShowExportMenu(false);
     };
+
+    useEffect(() => {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        setDarkMode(savedDarkMode);
+    }, []);
 
     const renderChart = () => {
         switch (activeChart) {
@@ -146,8 +158,7 @@ const Dashboard = () => {
                             {showExportMenu && (
                                 <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
                                     <button onClick={() => handleExport('csv')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as CSV</button>
-                                    <button onClick={() => handleExport('pdf')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as PDF</button>
-                                    <button onClick={() => handleExport('zip')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as ZIP</button>
+                                   
                                 </div>
                             )}
                         </div>
@@ -173,6 +184,7 @@ const Dashboard = () => {
                     topics={topics} 
                     sectors={sectors} 
                     years={years} 
+                    defaultFilters={filters}
                 />
                 {loading ? (
                     <div className="flex items-center justify-center h-64">
