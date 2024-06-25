@@ -137,9 +137,11 @@ const Dashboard = () => {
     return (
         <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen transition-colors duration-300`}>
             <div className="container p-6 mx-auto">
-                <div className="flex items-center justify-between mb-8">
-                    <h1 className="text-3xl font-bold">Data Visualization Dashboard</h1>
-                    <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-center mb-8">
+                    <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
+                        Data Visualization Dashboard
+                    </h1>
+                    <div className="absolute flex items-center space-x-4 right-6">
                         <button 
                             onClick={toggleDarkMode} 
                             className="text-2xl focus:outline-none" 
@@ -158,22 +160,23 @@ const Dashboard = () => {
                             {showExportMenu && (
                                 <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
                                     <button onClick={() => handleExport('csv')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as CSV</button>
-                                   
+                                    <button onClick={() => handleExport('pdf')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as PDF</button>
+                                    <button onClick={() => handleExport('zip')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as ZIP</button>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
-                    <div className="p-4 bg-blue-100 rounded-lg shadow-md dark:bg-gray-800">
+                    <div className="p-4 bg-blue-100 rounded-lg shadow-md dark:bg-blue-900 dark:text-white">
                         <h2 className="text-xl font-semibold">Total Records</h2>
                         <p className="mt-2 text-2xl">{filteredData.length}</p>
                     </div>
-                    <div className="p-4 bg-green-100 rounded-lg shadow-md dark:bg-gray-800">
+                    <div className="p-4 bg-green-100 rounded-lg shadow-md dark:bg-green-900 dark:text-white">
                         <h2 className="text-xl font-semibold">Unique Topics</h2>
                         <p className="mt-2 text-2xl">{topics.length}</p>
                     </div>
-                    <div className="p-4 bg-yellow-100 rounded-lg shadow-md dark:bg-gray-800">
+                    <div className="p-4 bg-yellow-100 rounded-lg shadow-md dark:bg-yellow-900 dark:text-white">
                         <h2 className="text-xl font-semibold">Unique Sectors</h2>
                         <p className="mt-2 text-2xl">{sectors.length}</p>
                     </div>
@@ -194,31 +197,31 @@ const Dashboard = () => {
                     <>
                         <div className="flex justify-center mb-4 space-x-4">
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
+                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('intensity')}
                             >
                                 Intensity
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
+                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('likelihood')}
                             >
                                 Likelihood
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
+                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('relevance')}
                             >
                                 Relevance
                             </button>
                             <button
-                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300'} transition-colors duration-300`}
+                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
                                 onClick={() => setActiveChart('trends')}
                             >
                                 Trends
                             </button>
                         </div>
-                        <div className="grid grid-cols-1 gap-8">
+                        <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                             {renderChart()}
                         </div>
                     </>
