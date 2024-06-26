@@ -5,8 +5,6 @@ import IntensityChart from './IntensityChart';
 import LikelihoodChart from './LikelihoodChart';
 import RelevanceChart from './RelevanceChart';
 import YearlyTrendsChart from './YearlyTrendsChart';
-import { FaSun, FaMoon } from 'react-icons/fa';
-import { BiExport } from 'react-icons/bi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,6 +12,7 @@ import 'tailwindcss/tailwind.css';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { exportToCSV, exportToPDF } from '../utils/exportUtils';
+import Sidebar from './Sidebar';
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
@@ -136,98 +135,82 @@ const Dashboard = () => {
 
     return (
         <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen transition-colors duration-300`}>
-            <div className="container p-6 mx-auto">
-                <div className="flex items-center justify-center mb-8">
-                    <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
-                        Data Visualization Dashboard
-                    </h1>
-                    <div className="absolute flex items-center space-x-4 right-6">
-                        <button 
-                            onClick={toggleDarkMode} 
-                            className="text-2xl focus:outline-none" 
-                            aria-label="Toggle Dark Mode"
-                        >
-                            {darkMode ? <FaSun /> : <FaMoon />}
-                        </button>
-                        <div className="relative">
-                            <button 
-                                onClick={() => setShowExportMenu(!showExportMenu)} 
-                                className="text-2xl focus:outline-none" 
-                                aria-label="Export Data"
-                            >
-                                <BiExport />
-                            </button>
-                            {showExportMenu && (
-                                <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
-                                    <button onClick={() => handleExport('csv')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as CSV</button>
-                                    <button onClick={() => handleExport('pdf')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as PDF</button>
-                                    <button onClick={() => handleExport('zip')} className="block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Export as ZIP</button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
-                    <div className="p-4 bg-blue-100 rounded-lg shadow-md dark:bg-blue-900 dark:text-white">
-                        <h2 className="text-xl font-semibold">Total Records</h2>
-                        <p className="mt-2 text-2xl">{filteredData.length}</p>
-                    </div>
-                    <div className="p-4 bg-green-100 rounded-lg shadow-md dark:bg-green-900 dark:text-white">
-                        <h2 className="text-xl font-semibold">Unique Topics</h2>
-                        <p className="mt-2 text-2xl">{topics.length}</p>
-                    </div>
-                    <div className="p-4 bg-yellow-100 rounded-lg shadow-md dark:bg-yellow-900 dark:text-white">
-                        <h2 className="text-xl font-semibold">Unique Sectors</h2>
-                        <p className="mt-2 text-2xl">{sectors.length}</p>
-                    </div>
-                </div>
-                <FilterComponent 
-                    setFilters={setFilters} 
+            <div className="flex">
+                <Sidebar 
                     darkMode={darkMode} 
-                    topics={topics} 
-                    sectors={sectors} 
-                    years={years} 
-                    defaultFilters={filters}
+                    toggleDarkMode={toggleDarkMode}
+                    setShowExportMenu={setShowExportMenu}
+                    showExportMenu={showExportMenu}
+                    handleExport={handleExport}
                 />
-                {loading ? (
-                    <div className="flex items-center justify-center h-64">
-                        <ClipLoader color={darkMode ? '#ffffff' : '#000000'} loading={loading} size={50} />
+                <div className="flex-1 p-6">
+                    <div className="mb-8">
+                        <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
+                            Data Visualization Dashboard
+                        </h1>
                     </div>
-                ) : (
-                    <>
-                        <div className="flex justify-center mb-4 space-x-4">
-                            <button
-                                className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
-                                onClick={() => setActiveChart('intensity')}
-                            >
-                                Intensity
-                            </button>
-                            <button
-                                className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
-                                onClick={() => setActiveChart('likelihood')}
-                            >
-                                Likelihood
-                            </button>
-                            <button
-                                className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
-                                onClick={() => setActiveChart('relevance')}
-                            >
-                                Relevance
-                            </button>
-                            <button
-                                className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
-                                onClick={() => setActiveChart('trends')}
-                            >
-                                Trends
-                            </button>
+                    <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
+                        <div className="p-4 bg-blue-100 rounded-lg shadow-md dark:bg-blue-900 dark:text-white">
+                            <h2 className="text-xl font-semibold">Total Records</h2>
+                            <p className="mt-2 text-2xl">{filteredData.length}</p>
                         </div>
-                        <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                            {renderChart()}
+                        <div className="p-4 bg-green-100 rounded-lg shadow-md dark:bg-green-900 dark:text-white">
+                            <h2 className="text-xl font-semibold">Unique Topics</h2>
+                            <p className="mt-2 text-2xl">{topics.length}</p>
                         </div>
-                    </>
-                )}
-                <ToastContainer />
+                        <div className="p-4 bg-yellow-100 rounded-lg shadow-md dark:bg-yellow-900 dark:text-white">
+                            <h2 className="text-xl font-semibold">Unique Sectors</h2>
+                            <p className="mt-2 text-2xl">{sectors.length}</p>
+                        </div>
+                    </div>
+                    <FilterComponent 
+                        setFilters={setFilters} 
+                        darkMode={darkMode} 
+                        topics={topics} 
+                        sectors={sectors} 
+                        years={years} 
+                        defaultFilters={filters}
+                    />
+                    {loading ? (
+                        <div className="flex items-center justify-center h-64">
+                            <ClipLoader color={darkMode ? '#ffffff' : '#000000'} loading={loading} size={50} />
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex justify-center mb-4 space-x-4">
+                                <button
+                                    className={`px-4 py-2 rounded ${activeChart === 'intensity' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
+                                    onClick={() => setActiveChart('intensity')}
+                                >
+                                    Intensity
+                                </button>
+                                <button
+                                    className={`px-4 py-2 rounded ${activeChart === 'likelihood' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
+                                    onClick={() => setActiveChart('likelihood')}
+                                >
+                                    Likelihood
+                                </button>
+                                <button
+                                    className={`px-4 py-2 rounded ${activeChart === 'relevance' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
+                                    onClick={() => setActiveChart('relevance')}
+                                >
+                                    Relevance
+                                </button>
+                                <button
+                                    className={`px-4 py-2 rounded ${activeChart === 'trends' ? 'bg-blue-500 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'} transition-colors duration-300`}
+                                    onClick={() => setActiveChart('trends')}
+                                >
+                                    Trends
+                                </button>
+                            </div>
+                            <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                                {renderChart()}
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
