@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaSun, FaMoon, FaHome, FaChartBar, FaFilter, FaSearch, FaUserCircle } from 'react-icons/fa';
+import { FaSun, FaMoon, FaHome, FaFilter, FaSearch, FaUserCircle, FaChartBar } from 'react-icons/fa';
 import { BiExport } from 'react-icons/bi';
 
 const Sidebar = ({ darkMode, toggleDarkMode, setShowExportMenu, showExportMenu, handleExport, setActiveChart }) => {
@@ -8,7 +8,7 @@ const Sidebar = ({ darkMode, toggleDarkMode, setShowExportMenu, showExportMenu, 
             <div className="mb-6">
                 <h2 className="text-2xl font-bold">Dashboard Controls</h2>
             </div>
-            <div className="flex items-center mb-4 space-x-2">
+            <div className="flex items-center mb-6 space-x-2">
                 <FaUserCircle className="text-3xl" />
                 <div>
                     <p className="text-lg">John Doe</p>
@@ -25,37 +25,31 @@ const Sidebar = ({ darkMode, toggleDarkMode, setShowExportMenu, showExportMenu, 
                     <FaSearch className="absolute top-0 right-0 mt-2 mr-4 text-gray-500" />
                 </div>
             </div>
-            <nav className="space-y-4">
+            <nav className="space-y-2">
                 <button
-                    onClick={() => setActiveChart('intensity')}
+                    onClick={() => setActiveChart('overview')}
+                    className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
+                >
+                    <FaHome className="mr-2" />
+                    Dashboard Overview
+                </button>
+                <button
+                    onClick={() => setActiveChart('filters')}
+                    className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
+                >
+                    <FaFilter className="mr-2" />
+                    Filters
+                </button>
+                <button
+                    onClick={() => setActiveChart('analytics')}
                     className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
                 >
                     <FaChartBar className="mr-2" />
-                    Intensity
+                    Analytics
                 </button>
-                <button
-                    onClick={() => setActiveChart('likelihood')}
-                    className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
-                >
-                    <FaChartBar className="mr-2" />
-                    Likelihood
-                </button>
-                <button
-                    onClick={() => setActiveChart('relevance')}
-                    className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
-                >
-                    <FaChartBar className="mr-2" />
-                    Relevance
-                </button>
-                <button
-                    onClick={() => setActiveChart('trends')}
-                    className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
-                >
-                    <FaChartBar className="mr-2" />
-                    Trends
-                </button>
+                {/* Add more menu items here */}
             </nav>
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-2">
                 <button
                     onClick={toggleDarkMode}
                     className="flex items-center px-4 py-2 text-lg transition bg-gray-700 rounded hover:bg-gray-600"
