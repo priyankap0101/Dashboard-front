@@ -94,8 +94,9 @@ const Dashboard = () => {
   };
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
   const handleExport = (format) => {
@@ -121,7 +122,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
     setDarkMode(savedDarkMode);
   }, []);
 
@@ -146,15 +147,9 @@ const Dashboard = () => {
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
       } min-h-screen transition-colors duration-300`}
     >
-      <Header /> {/* Include the Header component here */}
+      <Header toggleSidebar={() => {}} /> {/* Include the Header component */}
       <div className="flex">
-        <Sidebar
-          darkMode={darkMode}
-          toggleDarkMode={toggleDarkMode}
-          setShowExportMenu={setShowExportMenu}
-          showExportMenu={showExportMenu}
-          handleExport={handleExport}
-        />
+        <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} /> {/* Pass darkMode and toggleDarkMode to Sidebar */}
         <div className="flex-1 p-6">
           <div className="mb-8">
             <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
