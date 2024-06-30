@@ -1,29 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { getData } from "../services/dataService";
-import IntensityChart from "./IntensityChart";
-import LikelihoodChart from "./LikelihoodChart";
-import RelevanceChart from "./RelevanceChart";
-import YearlyTrendsChart from "./YearlyTrendsChart";
+
 import ClipLoader from "react-spinners/ClipLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import CityChart from "./CityChart";
+import TopicChart from "./TopicChart";
+import SwotChart from "./SwotChart";
+import ImpactChart from "./ImpactChart";
+
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
+import { Line, Pie, Radar } from 'react-chartjs-2';
+
+// Registering components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  RadialLinearScale
+);
+
+// Your chart component
+const YourChartComponent = () => {
+  return <Line data={data} options={options} />;
+};
+
 
 const Analytics = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [activeChart, setActiveChart] = useState("intensity");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const result = await getData(); // Replace with your actual data fetching logic
+        const result = await getData();
         setData(result);
       } catch (error) {
-        console.error("Error fetching data:", error);
         toast.error("Error fetching data");
       }
       setLoading(false);
@@ -42,81 +63,53 @@ const Analytics = () => {
     setDarkMode(savedDarkMode);
   }, []);
 
-  const renderChart = () => {
-    switch (activeChart) {
-      case "intensity":
-        return <IntensityChart data={data} />;
-      case "likelihood":
-        return <LikelihoodChart data={data} />;
-      case "relevance":
-        return <RelevanceChart data={data} />;
-      case "trends":
-        return <YearlyTrendsChart data={data} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className={`min-h-screen ${darkMode ? "dark" : ""}`}>
       <Header toggleSidebar={() => {}} />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">Analytics Dashboard</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+              Analytics Dashboard
+            </h1>
           </div>
-          <div className="flex justify-center mb-4 space-x-4">
-            <button
-              className={`px-4 py-2 rounded ${
-                activeChart === "intensity"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-              }`}
-              onClick={() => setActiveChart("intensity")}
-            >
-              Intensity
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                activeChart === "likelihood"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-              }`}
-              onClick={() => setActiveChart("likelihood")}
-            >
-              Likelihood
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                activeChart === "relevance"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-              }`}
-              onClick={() => setActiveChart("relevance")}
-            >
-              Relevance
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                activeChart === "trends"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-              }`}
-              onClick={() => setActiveChart("trends")}
-            >
-              Trends
-            </button>
-          </div>
-          <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-            {loading ? (
-              <div className="flex items-center justify-center h-64">
-                <ClipLoader color={darkMode ? "#ffffff" : "#000000"} loading={loading} size={50} />
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <ClipLoader
+                color={darkMode ? "#ffffff" : "#000000"}
+                loading={loading}
+                size={50}
+              />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
+                  City
+                </h2>
+                <CityChart data={data} />
               </div>
-            ) : (
-              renderChart() || <p className="text-center text-gray-500">No data available</p>
-            )}
-          </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
+                  Topic
+                </h2>
+                <TopicChart data={data} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
+                  SWOT
+                </h2>
+                <SwotChart data={data} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
+                  Impact
+                </h2>
+                <ImpactChart data={data} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <ToastContainer />

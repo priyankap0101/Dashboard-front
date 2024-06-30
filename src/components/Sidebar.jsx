@@ -11,7 +11,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                         <NavLink
                             to="/"
                             className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                             activeClassName="bg-gray-700"
                         >
                             <FaChartBar />
                             <span>Dashboard</span>
