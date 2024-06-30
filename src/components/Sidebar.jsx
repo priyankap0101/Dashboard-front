@@ -10,8 +10,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                             activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaChartBar />
                             <span>Dashboard</span>
@@ -20,8 +19,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/analytics"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaChartBar />
                             <span>Analytics</span>
@@ -30,8 +28,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/crm"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaUserFriends />
                             <span>CRM</span>
@@ -40,8 +37,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/ecommerce"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaShoppingCart />
                             <span>E-commerce</span>
@@ -50,8 +46,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/logistics"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaTruck />
                             <span>Logistics</span>
@@ -60,8 +55,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     <li>
                         <NavLink
                             to="/academy"
-                            className={`flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-                            activeClassName="bg-gray-700"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
                         >
                             <FaSchool />
                             <span>Academy</span>
@@ -69,7 +63,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     </li>
                 </ul>
             </nav>
-            
+
             {/* Dark Mode Toggle */}
             <div className="flex items-center mt-4">
                 <button

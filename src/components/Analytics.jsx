@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import CityChart from "./CityChart";
+
 import TopicChart from "./TopicChart";
 import SwotChart from "./SwotChart";
 import ImpactChart from "./ImpactChart";
@@ -88,7 +88,7 @@ const Analytics = () => {
                 <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
                   City
                 </h2>
-                <CityChart data={data} />
+                {/* <CityChart data={data} /> */}
               </div>
               <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
