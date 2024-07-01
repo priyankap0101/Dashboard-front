@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaSearch, FaUserCircle, FaBell, FaLanguage, FaBars } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     const navigate = useNavigate();
-    const [darkMode, setDarkMode] = useState(false); // State for dark mode
-
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode); // Toggle dark mode state
-    };
 
     return (
-        <header className={`flex items-center justify-between px-6 py-4 text-white ${darkMode ? 'bg-gray-900' : 'bg-gray-800'} shadow-md`}>
+        <header className={`flex items-center justify-between px-6 py-4 shadow-md ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-800 text-white'}`}>
             {/* Left section */}
             <div className="flex items-center space-x-4">
                 <button onClick={toggleSidebar} className="text-2xl">
                     <FaBars />
                 </button>
-                <div className={`relative ${darkMode ? 'text-gray-300' : 'text-gray-900'}`}>
+                <div className="relative">
                     <input
                         type="text"
                         placeholder="Search..."
-                        className={`w-64 px-4 py-2 ${darkMode ? 'bg-gray-700' : 'bg-white'} rounded-full focus:outline-none`}
+                        className={`w-64 px-4 py-2 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-900'} rounded-full focus:outline-none`}
                     />
-                    <FaSearch className="absolute top-0 right-0 mt-3 mr-4 text-gray-500" />
+                    <FaSearch className={`absolute top-0 right-0 mt-3 mr-4 ${darkMode ? 'text-gray-500' : 'text-gray-900'}`} />
                 </div>
             </div>
 
