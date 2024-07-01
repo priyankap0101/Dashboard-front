@@ -25,6 +25,7 @@ const App = () => {
                         <Route path="/ecommerce" element={<ECommerce />} />
                         <Route path="/logistics" element={<Logistics />} />
                         <Route path="/academy" element={<Academy />} />
+                        
                         {/* Add more routes as needed */}
                     </Routes>
                 </div>

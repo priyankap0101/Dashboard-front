@@ -13,6 +13,8 @@ import ImpactChart from "./ImpactChart";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
 import { Line, Pie, Radar } from 'react-chartjs-2';
+import CityChart from "./CityChart";
+import PESTLEChart from "./PESTLEChart";
 
 // Registering components
 ChartJS.register(
@@ -88,7 +90,7 @@ const Analytics = () => {
                 <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
                   City
                 </h2>
-                {/* <CityChart data={data} /> */}
+                <CityChart data={data} />
               </div>
               <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
@@ -102,12 +104,19 @@ const Analytics = () => {
                 </h2>
                 <SwotChart data={data} />
               </div>
-              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+              {/* <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <h2 className="mb-4 text-xl font-semibold text-center dark:text-gray-100">
                   Impact
                 </h2>
                 <ImpactChart data={data} />
-              </div>
+              </div> */}
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+     
+      <div className="charts-container">
+        {/* Other charts */}
+        <PESTLEChart data={data} />
+      </div>
+    </div>
             </div>
           )}
         </div>
