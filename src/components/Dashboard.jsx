@@ -35,7 +35,6 @@ const Dashboard = () => {
         setData(result);
         setFilteredData(result);
         extractFilterOptions(result);
-        setDefaultFilters(result);
       } catch (error) {
         toast.error("Error fetching data");
       }
@@ -44,18 +43,6 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
-
-  const setDefaultFilters = (data) => {
-    const defaultTopic = [...new Set(data.map((item) => item.topic))][0];
-    const defaultSector = [...new Set(data.map((item) => item.sector))][0];
-    const defaultYear = [...new Set(data.map((item) => item.year))][0];
-
-    setFilters({
-      topics: [defaultTopic],
-      sectors: [defaultSector],
-      endYear: [defaultYear.toString()],
-    });
-  };
 
   useEffect(() => {
     const applyFilters = () => {
@@ -199,7 +186,7 @@ const Dashboard = () => {
             topics={topics}
             sectors={sectors}
             years={years}
-            defaultFilters={filters}
+            defaultFilters={{}}
           />
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -236,7 +223,7 @@ const Dashboard = () => {
                   className={`px-4 py-2 rounded ${
                     activeChart === "relevance"
                       ? "bg-blue-500 text-white"
-                      : "bg-gray-300 dark:bg-gray-700 dark:text-white"
+                      : "bg-gray-700 dark:bg-gray-700 dark:text-white"
                   } transition-colors duration-300`}
                   onClick={() => setActiveChart("relevance")}
                 >

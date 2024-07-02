@@ -10,12 +10,11 @@ import TopicChart from "./TopicChart";
 import SwotChart from "./SwotChart";
 import CityChart from "./CityChart";
 import PESTLEChart from "./PESTLEChart";
+import Modal from "./Modal";
+import { CSVLink } from "react-csv";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
 import { Line, Pie, Radar } from 'react-chartjs-2';
-import { CSVLink } from "react-csv";
-import Modal from "./Modal"; // Assuming Modal component file location
 
-// Registering ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -65,7 +64,7 @@ const Analytics = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,16 +81,16 @@ const Analytics = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+    setDarkMode(savedDarkMode);
+  }, []);
+
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
-
-  useEffect(() => {
-    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
-    setDarkMode(savedDarkMode);
-  }, []);
 
   const csvData = data.map(item => ({
     city: item.city,
@@ -100,7 +99,6 @@ const Analytics = () => {
     pestle: item.pestle
   }));
 
-  // Function to toggle modal visibility
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -137,16 +135,15 @@ const Analytics = () => {
               className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2"
               variants={containerVariants}
             >
-              <ChartCard title="City" chart={<CityChart data={data} />} csvData={csvData.map(item => ({ city: item.city }))} />
-              <ChartCard title="Topic" chart={<TopicChart data={data} />} csvData={csvData.map(item => ({ topic: item.topic }))} />
-              <ChartCard title="SWOT" chart={<SwotChart data={data} />} csvData={csvData.map(item => ({ swot: item.swot }))} />
-              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} />
+              <ChartCard title="City" chart={<CityChart data={data} width="100%" height={120} />} csvData={csvData.map(item => ({ city: item.city }))} />
+              <ChartCard title="Topic" chart={<TopicChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ topic: item.topic }))} />
+              <ChartCard title="SWOT" chart={<SwotChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ swot: item.swot }))} />
+              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} />
             </motion.div>
           )}
         </div>
       </div>
       <ToastContainer />
-      {/* Modal component usage */}
       {showModal && (
         <Modal onClose={toggleModal}>
           <h2>Modal Content</h2>
@@ -172,7 +169,7 @@ const ChartCard = ({ title, chart, csvData }) => (
       >
         {title}
       </motion.h2>
-      <div className="flex-1">
+      <div className="flex-1 h-80">
         {chart}
       </div>
       <motion.div

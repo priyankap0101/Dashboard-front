@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
 
-const FilterComponent = ({ setFilters, topics, sectors, years, defaultFilters }) => {
+const FilterComponent = ({ setFilters, topics, sectors, years }) => {
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [selectedSectors, setSelectedSectors] = useState([]);
     const [selectedYears, setSelectedYears] = useState([]);
-
-    useEffect(() => {
-        if (defaultFilters.topics && defaultFilters.topics.length > 0) {
-            setSelectedTopics(defaultFilters.topics.map(topic => ({ label: topic, value: topic })));
-        }
-        if (defaultFilters.sectors && defaultFilters.sectors.length > 0) {
-            setSelectedSectors(defaultFilters.sectors.map(sector => ({ label: sector, value: sector })));
-        }
-        if (defaultFilters.years && defaultFilters.years.length > 0) {
-            setSelectedYears(defaultFilters.years.map(year => ({ label: year.toString(), value: year.toString() })));
-        }
-    }, [defaultFilters]);
 
     const handleApplyFilters = () => {
         const filters = {
