@@ -12,8 +12,10 @@ import CityChart from "./CityChart";
 import PESTLEChart from "./PESTLEChart";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
 import { Line, Pie, Radar } from 'react-chartjs-2';
+import { CSVLink } from "react-csv";
+import Modal from "./Modal"; // Assuming Modal component file location
 
-// Registering components
+// Registering ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -48,10 +50,22 @@ const itemVariants = {
   }
 };
 
+const buttonVariants = {
+  hover: {
+    scale: 1.05,
+    transition: { duration: 0.3 }
+  },
+  tap: {
+    scale: 0.95,
+    transition: { duration: 0.3 }
+  }
+};
+
 const Analytics = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,6 +92,18 @@ const Analytics = () => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
     setDarkMode(savedDarkMode);
   }, []);
+
+  const csvData = data.map(item => ({
+    city: item.city,
+    topic: item.topic,
+    swot: item.swot,
+    pestle: item.pestle
+  }));
+
+  // Function to toggle modal visibility
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
   return (
     <motion.div
@@ -111,85 +137,65 @@ const Analytics = () => {
               className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2"
               variants={containerVariants}
             >
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.h2
-                  className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
-                  variants={itemVariants}
-                >
-                  City
-                </motion.h2>
-                <motion.div
-                  variants={itemVariants}
-                >
-                  <CityChart data={data} />
-                </motion.div>
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.h2
-                  className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
-                  variants={itemVariants}
-                >
-                  Topic
-                </motion.h2>
-                <motion.div
-                  variants={itemVariants}
-                >
-                  <TopicChart data={data} />
-                </motion.div>
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.h2
-                  className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
-                  variants={itemVariants}
-                >
-                  SWOT
-                </motion.h2>
-                <motion.div
-                  variants={itemVariants}
-                >
-                  <SwotChart data={data} />
-                </motion.div>
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.h2
-                  className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
-                  variants={itemVariants}
-                >
-                  PESTLE
-                </motion.h2>
-                <motion.div
-                  variants={itemVariants}
-                >
-                  <PESTLEChart data={data} />
-                </motion.div>
-              </motion.div>
+              <ChartCard title="City" chart={<CityChart data={data} />} csvData={csvData.map(item => ({ city: item.city }))} />
+              <ChartCard title="Topic" chart={<TopicChart data={data} />} csvData={csvData.map(item => ({ topic: item.topic }))} />
+              <ChartCard title="SWOT" chart={<SwotChart data={data} />} csvData={csvData.map(item => ({ swot: item.swot }))} />
+              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} />
             </motion.div>
           )}
         </div>
       </div>
       <ToastContainer />
+      {/* Modal component usage */}
+      {showModal && (
+        <Modal onClose={toggleModal}>
+          <h2>Modal Content</h2>
+          <p>This is where you can add your modal content.</p>
+          <button onClick={toggleModal}>Close Modal</button>
+        </Modal>
+      )}
     </motion.div>
   );
 };
+
+const ChartCard = ({ title, chart, csvData }) => (
+  <motion.div
+    className="relative h-full"
+    variants={itemVariants}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md h-full flex flex-col justify-between">
+      <motion.h2
+        className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
+        variants={itemVariants}
+      >
+        {title}
+      </motion.h2>
+      <div className="flex-1">
+        {chart}
+      </div>
+      <motion.div
+        variants={itemVariants}
+        className="flex justify-end mt-4"
+      >
+        <CSVLink
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-sm transition duration-300 inline-flex items-center"
+          data={csvData}
+          filename={`${title.toLowerCase()}_data.csv`}
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M15.5 3a.5.5 0 01.5.5v12a.5.5 0 01-1 0v-12a.5.5 0 01.5-.5z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M4.293 12.293a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L7.414 12H13a1 1 0 110 2H7.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          Download CSV
+        </CSVLink>
+      </motion.div>
+    </div>
+  </motion.div>
+);
 
 export default Analytics;

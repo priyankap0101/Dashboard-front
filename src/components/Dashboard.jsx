@@ -158,7 +158,7 @@ const Dashboard = () => {
         <div className="flex-1 p-6">
           <div className="mb-8">
             <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
-              Data Visualization Dashboard
+              {/* Data Visualization Dashboard */}
             </h1>
           </div>
           <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
