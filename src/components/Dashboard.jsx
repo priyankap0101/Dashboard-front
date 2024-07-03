@@ -73,7 +73,7 @@ const Dashboard = () => {
   const extractFilterOptions = (data) => {
     const uniqueTopics = [...new Set(data.map((item) => item.topic))];
     const uniqueSectors = [...new Set(data.map((item) => item.sector))];
-    const uniqueYears = [...new Set(data.map((item) => item.year))];
+    const uniqueYears = [...new Set(data.map((item) => item.year.toString()))];
 
     setTopics(uniqueTopics);
     setSectors(uniqueSectors);
@@ -145,7 +145,7 @@ const Dashboard = () => {
         <div className="flex-1 p-6">
           <div className="mb-8">
             <h1 className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text drop-shadow-lg animate-fade-in">
-              {/* Data Visualization Dashboard */}
+              Data Visualization Dashboard
             </h1>
           </div>
           <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
@@ -157,7 +157,7 @@ const Dashboard = () => {
               }`}
             >
               <h2 className="text-xl font-semibold">Total Records</h2>
-              <p className="mt-2 text-2xl">{filteredData.length}</p>
+              <p className="mt-2 text-2xl">{data.length}</p> {/* Display total records initially */}
             </div>
             <div
               className={`p-4 rounded-lg shadow-md ${
@@ -186,7 +186,6 @@ const Dashboard = () => {
             topics={topics}
             sectors={sectors}
             years={years}
-            defaultFilters={{}}
           />
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -223,7 +222,7 @@ const Dashboard = () => {
                   className={`px-4 py-2 rounded ${
                     activeChart === "relevance"
                       ? "bg-blue-500 text-white"
-                      : "bg-gray-700 dark:bg-gray-700 dark:text-white"
+                      : "bg-gray-300 dark:bg-gray-700 dark:text-white"
                   } transition-colors duration-300`}
                   onClick={() => setActiveChart("relevance")}
                 >

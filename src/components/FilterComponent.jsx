@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
 
 const FilterComponent = ({ setFilters, topics, sectors, years }) => {
@@ -10,7 +10,7 @@ const FilterComponent = ({ setFilters, topics, sectors, years }) => {
         const filters = {
             topics: selectedTopics.map(option => option.value),
             sectors: selectedSectors.map(option => option.value),
-            years: selectedYears.map(option => parseInt(option.value)), // Convert back to numbers if needed
+            endYear: selectedYears.map(option => option.value), // Using endYear to match the filtering logic
         };
         setFilters(filters);
     };
