@@ -1,38 +1,52 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-const ImpactChart = ({ data }) => {
-  // Calculate impact data counts
-  const impactData = data.reduce((acc, item) => {
-    acc[item.impact] = (acc[item.impact] || 0) + 1;
-    return acc;
-  }, {});
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-  // Prepare chart data
+const ImpactChart = ({ data, darkMode }) => {
   const chartData = {
-    labels: Object.keys(impactData),
+    labels: data.map(item => item.label),
     datasets: [
       {
-        label: 'Impact Analysis',
-        data: Object.values(impactData),
-        fill: false,
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 1,
+        label: 'Impact',
+        data: data.map(item => item.value),
+        backgroundColor: darkMode ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)',
+        borderColor: darkMode ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)',
+        borderWidth: 2,
       },
     ],
   };
 
-  // Chart options
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
-      },
-      title: {
         display: true,
-        text: 'Impact Analysis (Line Chart)',
+        position: 'top',
+        labels: {
+          color: darkMode ? '#ffffff' : '#000000',
+        },
+      },
+      tooltip: {
+        enabled: true,
+        backgroundColor: darkMode ? '#333333' : '#ffffff',
+        titleColor: darkMode ? '#ffffff' : '#000000',
+        bodyColor: darkMode ? '#ffffff' : '#000000',
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: darkMode ? '#ffffff' : '#000000',
+        },
+      },
+      y: {
+        ticks: {
+          color: darkMode ? '#ffffff' : '#000000',
+          beginAtZero: true,
+        },
       },
     },
   };

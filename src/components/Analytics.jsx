@@ -162,7 +162,7 @@ const ChartCard = ({ title, chart, csvData }) => (
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md h-full flex flex-col justify-between">
+    <div className="flex flex-col justify-between h-full p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <motion.h2
         className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
         variants={itemVariants}
@@ -177,14 +177,14 @@ const ChartCard = ({ title, chart, csvData }) => (
         className="flex justify-end mt-4"
       >
         <CSVLink
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-sm transition duration-300 inline-flex items-center"
+          className="inline-flex items-center px-4 py-2 text-sm font-bold text-white transition duration-300 bg-blue-500 rounded-md hover:bg-blue-700"
           data={csvData}
           filename={`${title.toLowerCase()}_data.csv`}
           variants={buttonVariants}
           whileHover="hover"
           whileTap="tap"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M15.5 3a.5.5 0 01.5.5v12a.5.5 0 01-1 0v-12a.5.5 0 01.5-.5z" clipRule="evenodd" />
             <path fillRule="evenodd" d="M4.293 12.293a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L7.414 12H13a1 1 0 110 2H7.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>

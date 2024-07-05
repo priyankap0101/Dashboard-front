@@ -1,132 +1,37 @@
 import React, { useState } from 'react';
-import { MultiSelect } from 'react-multi-select-component';
 
-const FilterComponent = ({ setFilters, topics, sectors, years }) => {
-    const [selectedTopics, setSelectedTopics] = useState([]);
-    const [selectedSectors, setSelectedSectors] = useState([]);
-    const [selectedYears, setSelectedYears] = useState([]);
+const Filter = ({ applyFilters }) => {
+  const [year, setYear] = useState('');
+  const [region, setRegion] = useState('');
 
-    const handleApplyFilters = () => {
-        const filters = {
-            topics: selectedTopics.map(option => option.value),
-            sectors: selectedSectors.map(option => option.value),
-            endYear: selectedYears.map(option => option.value), // Using endYear to match the filtering logic
-        };
-        setFilters(filters);
-    };
+  const handleApplyFilters = () => {
+    applyFilters({ year, region });
+  };
 
-    const handleClearFilters = () => {
-        setSelectedTopics([]);
-        setSelectedSectors([]);
-        setSelectedYears([]);
-        setFilters({});
-    };
-
-    const formatOptions = (options) => {
-        if (!options || !Array.isArray(options)) {
-            return [];
-        }
-    
-        return options.map(option => ({
-            label: option ? option.toString() : '',
-            value: option ? option.toString() : ''
-        }));
-    };
-
-    const customStyles = {
-        option: (provided, state) => ({
-            ...provided,
-            color: state.isSelected ? '#000000' : '#000000',
-            backgroundColor: state.isSelected ? '#edf2f7' : '#ffffff',
-            '&:hover': {
-                backgroundColor: '#f0f4f8',
-                color: '#000000',
-            },
-        }),
-        control: (provided, state) => ({
-            ...provided,
-            backgroundColor: '#ffffff',
-            borderColor: '#ced4da',
-            '&:hover': {
-                borderColor: '#adb5bd',
-            },
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            color: '#000000',
-        }),
-        multiValue: (provided) => ({
-            ...provided,
-            backgroundColor: '#f0f4f8',
-        }),
-        multiValueLabel: (provided) => ({
-            ...provided,
-            color: '#000000',
-        }),
-        multiValueRemove: (provided) => ({
-            ...provided,
-            color: '#000000',
-            '&:hover': {
-                backgroundColor: '#ced4da',
-                color: '#ffffff',
-            },
-        }),
-    };
-
-    return (
-        <div className="p-4 mb-8 text-gray-900 bg-white rounded-lg shadow-md">
-            <h2 className="mb-4 text-xl font-semibold">Filters</h2>
-            <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3">
-                <div>
-                    <label className="block mb-2 text-sm font-medium">Topics</label>
-                    <MultiSelect
-                        options={formatOptions(topics)}
-                        value={selectedTopics}
-                        onChange={setSelectedTopics}
-                        labelledBy="Select Topics"
-                        className="multi-select"
-                        styles={customStyles}
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2 text-sm font-medium">Sectors</label>
-                    <MultiSelect
-                        options={formatOptions(sectors)}
-                        value={selectedSectors}
-                        onChange={setSelectedSectors}
-                        labelledBy="Select Sectors"
-                        className="multi-select"
-                        styles={customStyles}
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2 text-sm font-medium">Years</label>
-                    <MultiSelect
-                        options={formatOptions(years)}
-                        value={selectedYears}
-                        onChange={setSelectedYears}
-                        labelledBy="Select Years"
-                        className="multi-select"
-                        styles={customStyles}
-                    />
-                </div>
-            </div>
-            <div className="flex justify-end space-x-4">
-                <button
-                    onClick={handleClearFilters}
-                    className="px-4 py-2 font-medium text-white bg-gray-500 rounded hover:bg-gray-600"
-                >
-                    Clear Filters
-                </button>
-                <button
-                    onClick={handleApplyFilters}
-                    className="px-4 py-2 font-medium text-white bg-blue-500 rounded hover:bg-blue-600"
-                >
-                    Apply Filters
-                </button>
-            </div>
-        </div>
-    );
+  return (
+    <div className="mb-4">
+      <input
+        type="text"
+        placeholder="Year"
+        value={year}
+        onChange={(e) => setYear(e.target.value)}
+        className="p-2 mr-2 border rounded"
+      />
+      <input
+        type="text"
+        placeholder="Region"
+        value={region}
+        onChange={(e) => setRegion(e.target.value)}
+        className="p-2 mr-2 border rounded"
+      />
+      <button
+        onClick={handleApplyFilters}
+        className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+      >
+        Apply Filters
+      </button>
+    </div>
+  );
 };
 
-export default FilterComponent;
+export default Filter;

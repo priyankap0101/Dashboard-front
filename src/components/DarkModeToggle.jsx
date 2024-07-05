@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const DarkModeToggle = ({ onToggle }) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(savedDarkMode);
-    onToggle(savedDarkMode);
-  }, [onToggle]);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode);
-    onToggle(newDarkMode);
-  };
-
-  return (
-    <button onClick={toggleDarkMode} className={`text-xl ${darkMode ? 'text-gray-300' : 'text-white'}`}>
-      {darkMode ? 'Light' : 'Dark'} Mode
-    </button>
-  );
+const DarkModeToggle = ({ darkMode, toggleDarkMode }) => {
+    return (
+        <div className="dark-mode-toggle">
+            <button
+                className={`w-full py-2 rounded-md ${darkMode ? 'bg-gray-600 text-white' : 'bg-gray-300 text-gray-800'}`}
+                onClick={toggleDarkMode}
+            >
+                {darkMode ? 'Dark Mode ON' : 'Dark Mode OFF'}
+            </button>
+        </div>
+    );
 };
 
 export default DarkModeToggle;
