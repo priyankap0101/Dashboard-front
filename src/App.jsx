@@ -5,6 +5,8 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Analytics from './components/Analytics'; // Import the Analytics component
 import Profile from './components/Profile';
+import SaveProfile from './components/SaveProfile';
+import UpdateProfile from './components/UpdateProfile';
 
 // Placeholder components for other routes
 const CRM = () => <div>CRM Content</div>;
@@ -26,7 +28,10 @@ const App = () => {
                         <Route path="/ecommerce" element={<ECommerce />} />
                         <Route path="/logistics" element={<Logistics />} />
                         <Route path="/academy" element={<Academy />} />
+                        
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="/saveprofile" element={<SaveProfile />} />
+                        <Route path="/updateprofile" element={<UpdateProfile />} />
                         {/* Add more routes as needed */}
                     </Routes>
                 </div>

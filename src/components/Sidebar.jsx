@@ -69,6 +69,20 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                             <FaSchool />
                             <span>Profile</span>
                         </NavLink>
+                        <NavLink
+                            to="/saveprofile"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
+                        >
+                            <FaSchool />
+                            <span>Save Profile</span>
+                        </NavLink>
+                        <NavLink
+                            to="/updateprofile"
+                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
+                        >
+                            <FaSchool />
+                            <span>Update Profile</span>
+                        </NavLink>
                     </li>
                 </ul>
             </nav>

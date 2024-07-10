@@ -18,8 +18,7 @@ const containerVariants = {
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: {
-    opacity: 1,
-    scale: 1,
+    opacity: 1, scale: 1,
     transition: {
       duration: 0.5,
       ease: "easeOut"
@@ -29,7 +28,7 @@ const itemVariants = {
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    id: 4, // Profile ID
+    id: 1, // Assuming you know the profile ID
     firstName: '',
     lastName: '',
     email: '',
@@ -39,7 +38,7 @@ const Profile = () => {
     state: '',
     zip: ''
   });
-  const [isNewProfile, setIsNewProfile] = useState(true); // Flag to determine if the profile is new
+
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -47,18 +46,20 @@ const Profile = () => {
     setDarkMode(savedDarkMode);
 
     // Fetch existing profile data
-    fetch(`/api/getProfile/${profile.id}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data) {
-          setProfile(data);
-          setIsNewProfile(false); // Profile data exists, so it's not a new profile
+    fetch(`/api/profile/${profile.id}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        return response.json();
+      })
+      .then(data => {
+        setProfile(data);
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
       });
-  }, []);
+  }, [profile.id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,32 +69,24 @@ const Profile = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch('/api/updateProfile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(profile),
-      });
-
-      if (response.ok) {
-        if (isNewProfile) {
-          toast.success('Profile created successfully!');
-          setIsNewProfile(false); // Once saved, it's no longer a new profile
-        } else {
-          toast.success('Profile updated successfully!');
-        }
-      } else {
-        toast.error('Failed to save profile. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error saving profile:', error);
-      toast.error('An error occurred. Please try again.');
-    }
+    fetch('/api/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profile)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Profile updated:', data);
+      toast.success('Profile updated successfully!');
+    })
+    .catch(error => {
+      console.error('Error updating profile:', error);
+      toast.error('Failed to update profile!');
+    });
   };
 
   const toggleDarkMode = () => {
@@ -117,13 +110,13 @@ const Profile = () => {
             </h1>
           </div>
           <motion.div
-            className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:shadow-2xl"
+            className="max-w-2xl p-8 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:shadow-2xl"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
           >
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <motion.div variants={itemVariants} className="col-span-1">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <motion.div variants={itemVariants}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>
                 <input
                   type="text"
@@ -133,7 +126,7 @@ const Profile = () => {
                   className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
                 />
               </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
+              <motion.div variants={itemVariants}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Last Name</label>
                 <input
                   type="text"
@@ -143,7 +136,7 @@ const Profile = () => {
                   className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
                 />
               </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
+              <motion.div variants={itemVariants}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <input
                   type="email"
@@ -153,62 +146,10 @@ const Profile = () => {
                   className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
                 />
               </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={profile.phone}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants} className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={profile.address}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={profile.city}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
-                <input
-                  type="text"
-                  name="state"
-                  value={profile.state}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants} className="col-span-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Zip</label>
-                <input
-                  type="text"
-                  name="zip"
-                  value={profile.zip}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants} className="col-span-2">
-                <button
-                  type="submit"
-                  className="w-full px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  {isNewProfile ? 'Save Profile' : 'Update Profile'}
+              {/* Add other fields similarly */}
+              <motion.div variants={itemVariants}>
+                <button type="submit" className="px-4 py-2 font-semibold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Update Profile
                 </button>
               </motion.div>
             </form>
