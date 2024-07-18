@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-const SaveProfile = () => {
+const Register = () => {
   const [profile, setProfile] = useState({
     firstName: "",
     lastName: "",
@@ -62,7 +62,7 @@ const SaveProfile = () => {
         <Sidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800">
-            <h2 className="mb-6 text-2xl font-bold">Save Profile</h2>
+            <h2 className="mb-6 text-2xl font-bold">Register</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -161,12 +161,22 @@ const SaveProfile = () => {
                     className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
                   />
                 </div>
+                <div>
+                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Password:</label>
+                  <input
+                    type="text"
+                    name="zip"
+                    value={profile.password}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                  />
+                </div>
               </div>
               <button
                 type="submit"
                 className="w-full py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
               >
-                Save Profile
+                Register
               </button>
             </form>
             {success && (
@@ -180,4 +190,4 @@ const SaveProfile = () => {
   );
 };
 
-export default SaveProfile;
+export default Register;
