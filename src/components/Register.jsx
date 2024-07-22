@@ -1,193 +1,133 @@
-import React, { useState } from "react";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+// src/components/Register.jsx
+
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [zip, setZip] = useState('');
+    const [password, setPassword] = useState('');
 
-  const [darkMode, setDarkMode] = useState(false);
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/api/profile/register', {
+                firstName,
+                lastName,
+                email,
+                phone,
+                address,
+                city,
+                state,
+                zip,
+                password,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            });
+            console.log('Registration successful:', response.data);
+        } catch (error) {
+            console.error('Error registering:', error);
+        }
+    };
 
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({
-      ...profile,
-      [name]: value,
-    });
-  };
-
-  const saveProfile = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(profile),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const savedProfile = await response.json();
-      console.log("Profile saved successfully:", savedProfile);
-      setSuccess(true);
-    } catch (error) {
-      console.error("Error saving profile:", error);
-      setError(error.message);
-    }
-  };
-
-  return (
-    <div
-      className={`min-h-screen transition-colors duration-300 ${
-        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
-      }`}
-    >
-      <Header />
-
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800">
-            <h2 className="mb-6 text-2xl font-bold">Register</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                saveProfile();
-              }}
-              className="space-y-6"
-            >
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    return (
+        <div>
+            <h2>Register</h2>
+            <form onSubmit={handleRegister}>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">First Name:</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={profile.firstName}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    required
-                  />
+                    <label>First Name:</label>
+                    <input
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Last Name:</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={profile.lastName}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={profile.email}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    required
-                  />
+                    <label>Last Name:</label>
+                    <input
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Phone:</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={profile.phone}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Address:</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={profile.address}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                  />
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">City:</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={profile.city}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">State:</label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={profile.state}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                  />
+                    <label>Phone:</label>
+                    <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Zip:</label>
-                  <input
-                    type="text"
-                    name="zip"
-                    value={profile.zip}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                  />
+                    <label>Address:</label>
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                  <label className="block mb-1 text-gray-700 dark:text-gray-300">Password:</label>
-                  <input
-                    type="text"
-                    name="zip"
-                    value={profile.password}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                  />
+                    <label>City:</label>
+                    <input
+                        type="text"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        required
+                    />
                 </div>
-              </div>
-              <button
-                type="submit"
-                className="w-full py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-              >
-                Register
-              </button>
+                <div>
+                    <label>State:</label>
+                    <input
+                        type="text"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Zip Code:</label>
+                    <input
+                        type="text"
+                        value={zip}
+                        onChange={(e) => setZip(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit">Register</button>
             </form>
-            {success && (
-              <p className="mt-4 text-green-600">Profile saved successfully!</p>
-            )}
-            {error && <p className="mt-4 text-red-600">Error: {error}</p>}
-          </div>
-        </main>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default Register;
