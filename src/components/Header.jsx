@@ -36,24 +36,24 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     setShowNotifications(false);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    // Fetch search suggestions from API
-    if (e.target.value) {
-      fetch(`http://localhost:8080/api/profile/search?query=${e.target.value}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Search suggestions:", data); // Add console log to check data
-          if (Array.isArray(data)) {
-            setSearchSuggestions(data);
-          } else {
-            setSearchSuggestions([]);
-          }
-        })
-        .catch((err) => {
-          console.error("Error fetching search suggestions:", err);
+  const handleSearchChange = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query.length > 2) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/profile/search?query=${query}`);
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setSearchSuggestions(data);
+        } else {
           setSearchSuggestions([]);
-        });
+        }
+      } catch (error) {
+        console.error("Error fetching search suggestions:", error);
+        setSearchSuggestions([]);
+      }
     } else {
       setSearchSuggestions([]);
     }
@@ -72,6 +72,21 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     setShowLanguageMenu(false);
   };
 
+  const handleSuggestionClick = (profileId) => {
+    navigate(`/profile/${profileId}`);
+    setSearchQuery("");
+    setSearchSuggestions([]);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/searchprofile/${searchQuery}`);
+      setSearchQuery("");
+      setSearchSuggestions([]);
+    }
+  };
+
   return (
     <header className={`flex items-center justify-between px-6 py-4 shadow-md transition duration-300 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}>
       {/* Left section */}
@@ -80,18 +95,26 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
           <FaBars />
         </button>
         <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className={`w-64 px-4 py-2 rounded-full focus:outline-none transition duration-300 ${darkMode ? "bg-gray-700 text-gray-300 border-gray-600" : "bg-gray-100 text-gray-800 border-gray-300"}`}
-          />
-          <FaSearch className={`absolute top-0 right-0 mt-3 mr-4 transition duration-300 ${darkMode ? "text-gray-500 cursor-pointer" : "text-gray-600 cursor-pointer"}`} />
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className={`w-64 px-4 py-2 rounded-full focus:outline-none transition duration-300 ${darkMode ? "bg-gray-700 text-gray-300 border-gray-600" : "bg-gray-100 text-gray-800 border-gray-300"}`}
+            />
+            <button type="submit" className={`absolute top-0 right-0 mt-3 mr-4 transition duration-300 ${darkMode ? "text-gray-500" : "text-gray-600"}`}>
+              <FaSearch />
+            </button>
+          </form>
           {searchSuggestions.length > 0 && (
             <ul className={`absolute left-0 w-full mt-2 border rounded-lg shadow-lg max-h-60 overflow-y-auto ${darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-800 border-gray-300"}`}>
-              {searchSuggestions.map((suggestion, index) => (
-                <li key={index} className="px-4 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700">
+              {searchSuggestions.map((suggestion) => (
+                <li
+                  key={suggestion.id}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                  onClick={() => handleSuggestionClick(suggestion.id)}
+                >
                   {suggestion.firstName} {suggestion.lastName}
                 </li>
               ))}
