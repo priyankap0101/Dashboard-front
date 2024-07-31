@@ -18,7 +18,7 @@
     "debug": "^4.3.5",
     "dotenv": "^16.4.5",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.2.12",
+    "framer-motion": "^11.3.19",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "jszip": "^3.10.1",
