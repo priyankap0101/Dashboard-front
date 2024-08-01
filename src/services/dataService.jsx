@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Your existing token
 const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || 'dashboardaccess';
 
 // Existing functions for fetching data from APIs
@@ -61,7 +60,7 @@ const getAllPestles = async () => {
 };
 
 // Dummy data functions for sales, orders, total profit, etc.
-export const getSalesData = async () => {
+const getSalesData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -80,7 +79,7 @@ export const getSalesData = async () => {
     }
 };
 
-export const getOrdersData = async () => {
+const getOrdersData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -99,7 +98,7 @@ export const getOrdersData = async () => {
     }
 };
 
-export const getTotalProfitData = async () => {
+const getTotalProfitData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -118,7 +117,7 @@ export const getTotalProfitData = async () => {
     }
 };
 
-export const getRevenueGrowthData = async () => {
+const getRevenueGrowthData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -137,7 +136,7 @@ export const getRevenueGrowthData = async () => {
     }
 };
 
-export const getSalesByCountriesData = async () => {
+const getSalesByCountriesData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -156,8 +155,7 @@ export const getSalesByCountriesData = async () => {
     }
 };
 
-// Updated dummy data function with unique project names
-export const getProjectStatusData = async () => {
+const getProjectStatusData = async () => {
     try {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -178,4 +176,15 @@ export const getProjectStatusData = async () => {
 };
 
 // Export the functions
-export { getData, getAllCities, getAllSwots, getAllPestles };
+export {
+    getData,
+    getAllCities,
+    getAllSwots,
+    getAllPestles,
+    getSalesData,
+    getOrdersData,
+    getTotalProfitData,
+    getRevenueGrowthData,
+    getSalesByCountriesData,
+    getProjectStatusData,
+};
