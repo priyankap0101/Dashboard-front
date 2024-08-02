@@ -105,22 +105,23 @@ const Analytics = () => {
 
   return (
     <motion.div
-      className={`min-h-screen ${darkMode ? "dark" : ""}`}
+      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <Header toggleSidebar={() => {}} />
+      <Header toggleSidebar={() => {}} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+        <div className={`flex-1 p-6 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
           <div className="mb-8">
-            <motion.h1
-              className="text-4xl font-bold text-gray-900 dark:text-gray-100"
-              variants={itemVariants}
-            >
-              Analytics Dashboard
-            </motion.h1>
+          <motion.h1
+  className={`text-4xl font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}
+  variants={itemVariants}
+>
+  Analytics Dashboard
+</motion.h1>
+
           </div>
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -135,10 +136,10 @@ const Analytics = () => {
               className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2"
               variants={containerVariants}
             >
-              <ChartCard title="City" chart={<CityChart data={data} width="100%" height={120} />} csvData={csvData.map(item => ({ city: item.city }))} />
-              <ChartCard title="Topic" chart={<TopicChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ topic: item.topic }))} />
-              <ChartCard title="SWOT" chart={<SwotChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ swot: item.swot }))} />
-              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} width="100%" height={320} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} />
+              <ChartCard title="City" chart={<CityChart data={data} darkMode={darkMode} width="100%" height={120} />} csvData={csvData.map(item => ({ city: item.city }))} darkMode={darkMode} />
+              <ChartCard title="Topic" chart={<TopicChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ topic: item.topic }))} darkMode={darkMode} />
+              <ChartCard title="SWOT" chart={<SwotChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ swot: item.swot }))} darkMode={darkMode} />
+              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} darkMode={darkMode} />
             </motion.div>
           )}
         </div>
@@ -155,16 +156,16 @@ const Analytics = () => {
   );
 };
 
-const ChartCard = ({ title, chart, csvData }) => (
+const ChartCard = ({ title, chart, csvData, darkMode }) => (
   <motion.div
     className="relative h-full"
     variants={itemVariants}
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
-    <div className="flex flex-col justify-between h-full p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div className={`flex flex-col justify-between h-full p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
       <motion.h2
-        className="mb-4 text-xl font-semibold text-center dark:text-gray-100"
+        className="mb-4 text-xl font-semibold text-center"
         variants={itemVariants}
       >
         {title}

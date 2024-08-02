@@ -1,16 +1,12 @@
-// PESTLEChart.jsx
-
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-const PESTLEChart = ({ data }) => {
-  // Calculate PESTLE data counts
+const PESTLEChart = ({ data, darkMode }) => {
   const pestleData = data.reduce((acc, item) => {
     acc[item.pestle] = (acc[item.pestle] || 0) + 1;
     return acc;
   }, {});
 
-  // Prepare chart data
   const chartData = {
     labels: Object.keys(pestleData),
     datasets: [
@@ -18,23 +14,37 @@ const PESTLEChart = ({ data }) => {
         label: 'PESTLE Analysis',
         data: Object.values(pestleData),
         fill: false,
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: darkMode ? 'rgba(255, 206, 86, 0.2)' : 'rgba(255, 99, 132, 0.2)',
+        borderColor: darkMode ? 'rgba(255, 206, 86, 1)' : 'rgba(255, 99, 132, 1)',
         borderWidth: 2,
       },
     ],
   };
 
-  // Chart options
   const options = {
-    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: darkMode ? '#ffffff' : '#000000',
+        },
+      },
+      x: {
+        ticks: {
+          color: darkMode ? '#ffffff' : '#000000',
+        },
+      },
+    },
     plugins: {
       legend: {
-        position: 'top',
+        labels: {
+          color: darkMode ? '#ffffff' : '#000000',
+        },
       },
       title: {
         display: true,
-        text: 'PESTLE ',
+        text: 'PESTLE Analysis',
+        color: darkMode ? '#ffffff' : '#000000',
       },
     },
   };
