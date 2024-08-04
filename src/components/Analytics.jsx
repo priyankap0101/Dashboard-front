@@ -12,8 +12,20 @@ import CityChart from "./CityChart";
 import PESTLEChart from "./PESTLEChart";
 import Modal from "./Modal";
 import { CSVLink } from "react-csv";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, RadialLinearScale } from 'chart.js';
-import { Line, Pie, Radar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  RadialLinearScale,
+  BarElement
+} from 'chart.js';
+import { Line, Pie, Radar, Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -24,22 +36,23 @@ ChartJS.register(
   Tooltip,
   Legend,
   ArcElement,
-  RadialLinearScale
+  RadialLinearScale,
+  BarElement
 );
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.2
     }
   }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { 
+  visible: {
     opacity: 1,
     scale: 1,
     transition: {
@@ -103,6 +116,143 @@ const Analytics = () => {
     setShowModal(!showModal);
   };
 
+  // Dummy data for new charts
+  const salesData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [{
+      label: 'Sales ($)',
+      data: [1200, 1900, 3000, 5000, 2000, 3000, 4000, 5500, 6000, 7000, 8000, 9000],
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2
+    }]
+  };
+
+  const salesOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Sales: $${context.raw}`
+        }
+      }
+    }
+  };
+
+  const revenueData = {
+    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+    datasets: [{
+      label: 'Revenue ($)',
+      data: [15000, 20000, 25000, 30000],
+      backgroundColor: 'rgba(153, 102, 255, 0.2)',
+      borderColor: 'rgba(153, 102, 255, 1)',
+      borderWidth: 2
+    }]
+  };
+
+  const revenueOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Revenue: $${context.raw}`
+        }
+      }
+    }
+  };
+
+  const lineData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [{
+      label: 'Expenses ($)',
+      data: [500, 600, 700, 800, 900, 1000],
+      borderColor: 'rgba(255, 99, 132, 1)',
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      fill: true,
+      tension: 0.3
+    }]
+  };
+
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Expenses: $${context.raw}`
+        }
+      }
+    }
+  };
+
+  const pieData = {
+    labels: ['Marketing', 'Development', 'Design', 'Sales'],
+    datasets: [{
+      label: 'Department Expenses ($)',
+      data: [2000, 3000, 4000, 2500],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)'
+      ],
+      borderWidth: 2
+    }]
+  };
+
+  const pieOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Expenses: $${context.raw}`
+        }
+      }
+    }
+  };
+
+  const radarData = {
+    labels: ['JavaScript', 'Python', 'Java', 'C++', 'PHP'],
+    datasets: [{
+      label: 'Skill Levels (%)',
+      data: [80, 70, 60, 50, 40],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2
+    }]
+  };
+
+  const radarOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Skill Level: ${context.raw}%`
+        }
+      }
+    }
+  };
+
   return (
     <motion.div
       className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}
@@ -115,13 +265,12 @@ const Analytics = () => {
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className={`flex-1 p-6 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
           <div className="mb-8">
-          <motion.h1
-  className={`text-4xl font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}
-  variants={itemVariants}
->
-  Analytics Dashboard
-</motion.h1>
-
+            <motion.h1
+              className={`text-4xl font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}
+              variants={itemVariants}
+            >
+              Analytics Dashboard
+            </motion.h1>
           </div>
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -133,67 +282,53 @@ const Analytics = () => {
             </div>
           ) : (
             <motion.div
-              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2"
+              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
               variants={containerVariants}
             >
-              <ChartCard title="City" chart={<CityChart data={data} darkMode={darkMode} width="100%" height={120} />} csvData={csvData.map(item => ({ city: item.city }))} darkMode={darkMode} />
-              <ChartCard title="Topic" chart={<TopicChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ topic: item.topic }))} darkMode={darkMode} />
-              <ChartCard title="SWOT" chart={<SwotChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ swot: item.swot }))} darkMode={darkMode} />
-              <ChartCard title="PESTLE" chart={<PESTLEChart data={data} darkMode={darkMode} width="100%" height={320} />} csvData={csvData.map(item => ({ pestle: item.pestle }))} darkMode={darkMode} />
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold">Sales Over Time</h2>
+                <Line data={salesData} options={salesOptions} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold">Revenue by Quarter</h2>
+                <Bar data={revenueData} options={revenueOptions} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold">Expenses Overview</h2>
+                <Line data={lineData} options={lineOptions} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold">Department Expenses</h2>
+                <Pie data={pieData} options={pieOptions} />
+              </div>
+              <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <h2 className="mb-4 text-xl font-semibold">Skill Levels</h2>
+                <Radar data={radarData} options={radarOptions} />
+              </div>
             </motion.div>
           )}
+          <div className="flex justify-end mt-6">
+            <motion.button
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={toggleModal}
+            >
+              Export Data
+            </motion.button>
+            <Modal show={showModal} onClose={toggleModal}>
+              <h2 className="mb-4 text-xl font-semibold">Export Data</h2>
+              <CSVLink data={csvData} filename="analytics-data.csv" className="px-4 py-2 text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600">
+                Download CSV
+              </CSVLink>
+            </Modal>
+          </div>
+          <ToastContainer />
         </div>
       </div>
-      <ToastContainer />
-      {showModal && (
-        <Modal onClose={toggleModal}>
-          <h2>Modal Content</h2>
-          <p>This is where you can add your modal content.</p>
-          <button onClick={toggleModal}>Close Modal</button>
-        </Modal>
-      )}
     </motion.div>
   );
 };
-
-const ChartCard = ({ title, chart, csvData, darkMode }) => (
-  <motion.div
-    className="relative h-full"
-    variants={itemVariants}
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-  >
-    <div className={`flex flex-col justify-between h-full p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
-      <motion.h2
-        className="mb-4 text-xl font-semibold text-center"
-        variants={itemVariants}
-      >
-        {title}
-      </motion.h2>
-      <div className="flex-1 h-80">
-        {chart}
-      </div>
-      <motion.div
-        variants={itemVariants}
-        className="flex justify-end mt-4"
-      >
-        <CSVLink
-          className="inline-flex items-center px-4 py-2 text-sm font-bold text-white transition duration-300 bg-blue-500 rounded-md hover:bg-blue-700"
-          data={csvData}
-          filename={`${title.toLowerCase()}_data.csv`}
-          variants={buttonVariants}
-          whileHover="hover"
-          whileTap="tap"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M15.5 3a.5.5 0 01.5.5v12a.5.5 0 01-1 0v-12a.5.5 0 01.5-.5z" clipRule="evenodd" />
-            <path fillRule="evenodd" d="M4.293 12.293a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L7.414 12H13a1 1 0 110 2H7.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-          Download CSV
-        </CSVLink>
-      </motion.div>
-    </div>
-  </motion.div>
-);
 
 export default Analytics;

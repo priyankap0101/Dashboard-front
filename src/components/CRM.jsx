@@ -205,7 +205,7 @@ const CRM = () => {
     <div className={`flex h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
       <Sidebar darkMode={darkMode} />
       <div className="flex flex-col flex-1">
-        <Header darkMode={darkMode} />
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
         <div className="flex-1 p-6 overflow-auto">
           <ToastContainer />
           {error && (
@@ -241,88 +241,93 @@ const CRM = () => {
             </motion.div>
 
             <motion.div variants={itemVariants} className={`p-4 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}>
-              <h2 className="mb-4 text-2xl font-bold">Sales Performance</h2>
-              <Bar data={salesChartData} options={darkMode ? darkModeOptions : lightModeOptions} />
+              <h2 className="mb-4 text-2xl font-bold">Sales</h2>
+              <Doughnut data={doughnutChartData} options={darkMode ? darkModeOptions : lightModeOptions} />
+            </motion.div>
+
+            <motion.div variants={itemVariants} className={`p-4 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+              <h2 className="mb-4 text-2xl font-bold">Performance</h2>
+              <Radar data={salesChartData} options={darkMode ? darkModeOptions : lightModeOptions} />
             </motion.div>
           </motion.div>
 
-          <section className="mt-6">
+          <div className="mt-8">
             <h2 className="mb-4 text-2xl font-bold">Active Projects</h2>
-            <ul className="pl-5 list-disc">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {activeProjects.map((project) => (
-                <li key={project.name} className={`p-3 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                  <span className="font-bold">{project.name}</span> - {project.status} - Progress: {project.progress}% - {project.icon}
-                </li>
+                <div
+                  key={project.name}
+                  className={`p-4 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}
+                >
+                  <h3 className="mb-2 text-xl font-bold">{project.icon} {project.name}</h3>
+                  <p>Status: {project.status}</p>
+                  <div className="relative pt-1">
+                    <div className="flex h-2 mb-4 overflow-hidden text-xs bg-gray-200 rounded">
+                      <div
+                        style={{ width: `${project.progress}%` }}
+                        className={`flex flex-col justify-center text-center text-white shadow-none ${project.progress === 100 ? "bg-green-500" : project.progress >= 50 ? "bg-blue-500" : "bg-red-500"}`}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
-          </section>
+            </div>
+          </div>
 
-          <section className="mt-6">
+          <div className="mt-8">
             <h2 className="mb-4 text-2xl font-bold">Recent Transactions</h2>
-            <table className={`w-full table-auto ${darkMode ? "text-white" : "text-gray-900"}`}>
-              <thead>
-                <tr>
-                  <th className="p-2 border">ID</th>
-                  <th className="p-2 border">Date</th>
-                  <th className="p-2 border">Amount</th>
-                  <th className="p-2 border">Type</th>
-                  <th className="p-2 border">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentTransactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td className="p-2 border">{transaction.id}</td>
-                    <td className="p-2 border">{transaction.date}</td>
-                    <td className="p-2 border">{transaction.amount}</td>
-                    <td className="p-2 border">{transaction.type}</td>
-                    <td className="p-2 border">{transaction.status}</td>
+            <div className="overflow-auto rounded-lg shadow-md">
+              <table className={`w-full ${darkMode ? "text-white" : "text-gray-900"}`}>
+                <thead>
+                  <tr className="bg-gray-300">
+                    <th className="p-3 text-left">ID</th>
+                    <th className="p-3 text-left">Date</th>
+                    <th className="p-3 text-left">Amount</th>
+                    <th className="p-3 text-left">Type</th>
+                    <th className="p-3 text-left">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
+                </thead>
+                <tbody>
+                  {recentTransactions.map((transaction) => (
+                    <tr key={transaction.id} className={`${darkMode ? "bg-gray-800" : "bg-white"} ${transaction.status === "Pending" ? "bg-yellow-200" : transaction.status === "Failed" ? "bg-red-200" : ""}`}>
+                      <td className="p-3">{transaction.id}</td>
+                      <td className="p-3">{transaction.date}</td>
+                      <td className="p-3">{transaction.amount}</td>
+                      <td className="p-3">{transaction.type}</td>
+                      <td className="p-3">{transaction.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-          <section className="mt-6">
+          <div className="mt-8">
             <h2 className="mb-4 text-2xl font-bold">Feedback</h2>
-            <ul className="pl-5 list-disc">
-              {feedbackMessages.map((feedback) => (
-                <li key={feedback.name} className={`p-3 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                  <strong>{feedback.name}</strong>: {feedback.message} (Date: {feedback.date})
-                </li>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {feedbackMessages.map((message, index) => (
+                <div key={index} className={`p-4 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+                  <h3 className="mb-2 text-xl font-bold">{message.name}</h3>
+                  <p>{message.message}</p>
+                  <p className="text-sm text-gray-500">{message.date}</p>
+                </div>
               ))}
-            </ul>
-          </section>
+            </div>
+          </div>
 
-          <section className="mt-6">
-            <h2 className="mb-4 text-2xl font-bold">Performance Metrics</h2>
-            <ul className="pl-5 list-disc">
-              {performanceMetrics.map((metric) => (
-                <li key={metric.metric} className={`p-3 ${darkMode ? "text-white" : "text-gray-900"}`}>
-                  <strong>{metric.metric}</strong>: {metric.value}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="mt-6">
+          <form className="mt-8" onSubmit={handleFeedbackSubmit}>
             <h2 className="mb-4 text-2xl font-bold">Submit Feedback</h2>
-            <form onSubmit={handleFeedbackSubmit} className="flex flex-col">
-              <textarea
-                value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
-                className={`p-2 mb-4 border rounded-lg ${darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white text-gray-900 border-gray-300"}`}
-                placeholder="Enter your feedback here"
-                rows="4"
-              />
-              <button
-                type="submit"
-                className={`p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 ${darkMode ? "bg-blue-700 hover:bg-blue-800" : ""}`}
-              >
-                Submit Feedback
-              </button>
-            </form>
-          </section>
+            <textarea
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              rows="4"
+              className={`w-full p-2 mb-4 border rounded-lg ${darkMode ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-900"}`}
+              placeholder="Enter your feedback"
+            ></textarea>
+            <button type="submit" className={`px-4 py-2 font-bold rounded ${darkMode ? "bg-blue-500 text-white" : "bg-blue-300 text-gray-900"}`}>
+              Submit
+            </button>
+          </form>
         </div>
       </div>
     </div>

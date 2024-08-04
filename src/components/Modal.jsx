@@ -17,21 +17,21 @@ const Modal = ({ show, onClose, children }) => {
 
   return (
     <motion.div 
-      className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
       variants={backdropVariants}
       initial="hidden"
       animate="visible"
       onClick={onClose}
     >
       <motion.div 
-        className="bg-white p-8 rounded shadow-lg"
+        className="p-8 bg-white rounded shadow-lg"
         variants={modalVariants}
         initial="hidden"
         animate="visible"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         <button 
-          className="absolute top-0 right-0 m-4 text-black text-xl"
+          className="absolute top-0 right-0 m-4 text-xl text-black"
           onClick={onClose}
         >
           &times;
