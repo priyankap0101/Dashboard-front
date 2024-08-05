@@ -12,6 +12,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import SearchProfile from "./components/SearchProfile";
 import CRM from "./components/CRM"; // Correctly import CRM
+import Ecommerce from "./components/Ecommerce";
 
 // Placeholder components for other routes
 const ECommerce = () => <div>E-commerce Content</div>;
@@ -27,7 +28,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/crm/*" element={<CRM />} /> {/* Updated path */}
-            <Route path="/ecommerce" element={<ECommerce />} />
+            <Route path="/ecommerce" element={<Ecommerce />} />
             <Route path="/logistics" element={<Logistics />} />
             <Route path="/academy" element={<Academy />} />
             <Route path="/profile/:id" element={<Profile />} />
