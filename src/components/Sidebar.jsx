@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaChartBar,
@@ -6,144 +6,164 @@ import {
   FaShoppingCart,
   FaTruck,
   FaSchool,
+  FaMoon,
+  FaSun,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
-  return (
-    <aside
-      className={`w-64 min-h-screen p-4 text-white ${
-        darkMode ? "bg-gray-800" : "bg-gray-200"
-      }`}
-    >
-      <nav>
-        <ul className="space-y-4">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaChartBar />
-              <span>Dashboard</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/analytics"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaChartBar />
-              <span>Analytics</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/crm"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaUserFriends />
-              <span>CRM</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/ecommerce"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaShoppingCart />
-              <span>E-commerce</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/logistics"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaTruck />
-              <span>Logistics</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/academy"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaSchool />
-              <span>Academy</span>
-            </NavLink>
-          </li>
-          <li>
-            {/* <NavLink
-                            to="/profile"
-                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
-                        >
-                            <FaSchool />
-                            <span>Profile</span>
-                        </NavLink>
-                        <NavLink
-                            to="/saveprofile"
-                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
-                        >
-                            <FaSchool />
-                            <span>Save Profile</span>
-                        </NavLink> */}
-            {/* <NavLink
-                            to="/updateprofile"
-                            className={({ isActive }) => `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${darkMode ? 'text-white' : 'text-gray-800'} ${isActive ? 'bg-gray-700' : ''}`}
-                        >
-                            <FaSchool />
-                            <span>Update Profile</span>
-                        </NavLink> */}
-            <NavLink
-              to="/register"
-              className={({ isActive }) =>
-                `flex items-center p-2 space-x-2 rounded hover:bg-gray-700 ${
-                  darkMode ? "text-white" : "text-gray-800"
-                } ${isActive ? "bg-gray-700" : ""}`
-              }
-            >
-              <FaSchool />
-              <span>Register</span>
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-      {/* Dark Mode Toggle */}
-      <div className="flex items-center mt-4">
+  const linkStyle = `flex items-center p-3 space-x-3 rounded-md transition-all duration-300`;
+  const linkActiveStyle = `bg-indigo-500 text-white shadow-lg`;
+  const linkHoverStyle = `hover:bg-indigo-400 hover:text-white`;
+  const baseTextStyle = `text-base font-semibold`;
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
+  return (
+    <div className="flex">
+      <aside
+        className={`transition-all duration-300 ${
+          isSidebarCollapsed ? "w-20" : "w-64"
+        } min-h-screen p-6 ${
+          darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+        }`}
+      >
         <button
-          className={`w-full py-2 rounded-md ${
-            darkMode ? "bg-gray-600 text-white" : "bg-gray-300 text-gray-800"
-          }`}
-          onClick={toggleDarkMode}
+          className="mb-4 text-2xl lg:hidden"
+          onClick={toggleSidebar}
         >
-          {darkMode ? "Dark Mode ON" : "Dark Mode OFF"}
+          {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
         </button>
+        <nav className={`${isSidebarCollapsed ? "hidden" : "block"} lg:block`}>
+          <ul className="space-y-4">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaChartBar size={20} />
+                <span>Dashboard</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/analytics"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaChartBar size={20} />
+                <span>Analytics</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/crm"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaUserFriends size={20} />
+                <span>CRM</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/ecommerce"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaShoppingCart size={20} />
+                <span>E-commerce</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/logistics"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaTruck size={20} />
+                <span>Logistics</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/academy"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaSchool size={20} />
+                <span>Academy</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                    isActive ? linkActiveStyle : ""
+                  }`
+                }
+              >
+                <FaSchool size={20} />
+                <span>Register</span>
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Dark Mode Toggle */}
+        <div className={`flex items-center mt-8 ${isSidebarCollapsed ? "justify-center" : ""}`}>
+          <button
+            className={`w-full py-3 rounded-md flex items-center justify-center transition-all duration-300 ${
+              darkMode
+                ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+            } shadow-md`}
+            onClick={toggleDarkMode}
+          >
+            {darkMode ? (
+              <>
+                <FaSun className="mr-2" />
+                {!isSidebarCollapsed && "Light Mode"}
+              </>
+            ) : (
+              <>
+                <FaMoon className="mr-2" />
+                {!isSidebarCollapsed && "Dark Mode"}
+              </>
+            )}
+          </button>
+        </div>
+      </aside>
+
+      <div className="flex-grow">
+        {/* Main content goes here */}
       </div>
-    </aside>
+    </div>
   );
 };
 
