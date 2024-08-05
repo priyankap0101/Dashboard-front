@@ -13,10 +13,11 @@ import Login from "./components/Login";
 import SearchProfile from "./components/SearchProfile";
 import CRM from "./components/CRM"; // Correctly import CRM
 import Ecommerce from "./components/Ecommerce";
+import Logistics from "./components/Logistics";
 
 // Placeholder components for other routes
 const ECommerce = () => <div>E-commerce Content</div>;
-const Logistics = () => <div>Logistics Content</div>;
+// const Logistics = () => <div>Logistics Content</div>;
 const Academy = () => <div>Academy Content</div>;
 
 const App = () => {
