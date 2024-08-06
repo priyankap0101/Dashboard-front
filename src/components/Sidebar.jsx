@@ -108,7 +108,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
             </li>
             <li>
               <NavLink
-                to="/academy"
+                to="/resource"
                 className={({ isActive }) =>
                   `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
                     isActive ? linkActiveStyle : ""
@@ -116,7 +116,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaSchool size={20} />
-                <span>Academy</span>
+                <span>Resource Allocation</span>
               </NavLink>
             </li>
             <li>

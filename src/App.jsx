@@ -14,6 +14,7 @@ import SearchProfile from "./components/SearchProfile";
 import CRM from "./components/CRM"; // Correctly import CRM
 import Ecommerce from "./components/Ecommerce";
 import Logistics from "./components/Logistics";
+import ResourceAllocation from "./components/ResourceAllocation";
 
 // Placeholder components for other routes
 const ECommerce = () => <div>E-commerce Content</div>;
@@ -32,6 +33,8 @@ const App = () => {
             <Route path="/ecommerce" element={<Ecommerce />} />
             <Route path="/logistics" element={<Logistics />} />
             <Route path="/academy" element={<Academy />} />
+            <Route path="/resource" element={<ResourceAllocation />} />
+            
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/saveprofile" element={<SaveProfile />} />
             <Route path="/updateprofile" element={<UpdateProfile />} />
