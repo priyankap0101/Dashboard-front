@@ -1,39 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaUserCircle, FaBell, FaLanguage, FaBars } from "react-icons/fa";
+import {
+  FaSearch, FaUserCircle, FaBell, FaGlobe, FaBars, FaSignOutAlt,
+  FaMoon, FaSun, FaCog, FaShareAlt, FaEnvelope, FaCircle, FaSpinner
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
+const Header = ({ toggleSidebar, darkMode, toggleDarkMode, theme, setTheme }) => {
   const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [userName, setUserName] = useState("John Doe");
-  const [profilePic, setProfilePic] = useState("https://via.placeholder.com/40");
+  const [profilePic, setProfilePic] = useState("https://via.placeholder.com/32");
+  const [userStatus, setUserStatus] = useState("Online");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch user data (mock)
     setUserName("John Doe");
-    setProfilePic("https://via.placeholder.com/40");
+    setProfilePic("https://via.placeholder.com/32");
   }, []);
 
   const toggleProfileMenu = () => {
-    setShowProfileMenu((prev) => !prev);
+    setShowProfileMenu(!showProfileMenu);
     setShowNotifications(false);
     setShowLanguageMenu(false);
+    setShowMessages(false);
   };
 
   const toggleNotifications = () => {
-    setShowNotifications((prev) => !prev);
+    setShowNotifications(!showNotifications);
     setShowProfileMenu(false);
+    setShowLanguageMenu(false);
+    setShowMessages(false);
+  };
+
+  const toggleMessages = () => {
+    setShowMessages(!showMessages);
+    setShowProfileMenu(false);
+    setShowNotifications(false);
     setShowLanguageMenu(false);
   };
 
   const toggleLanguageMenu = () => {
-    setShowLanguageMenu((prev) => !prev);
+    setShowLanguageMenu(!showLanguageMenu);
     setShowProfileMenu(false);
     setShowNotifications(false);
+    setShowMessages(false);
   };
 
   const handleSearchChange = async (e) => {
@@ -41,6 +57,7 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     setSearchQuery(query);
 
     if (query.length > 2) {
+      setLoading(true);
       try {
         const response = await fetch(`http://localhost:8080/api/profile/search?query=${query}`);
         const data = await response.json();
@@ -48,6 +65,8 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
       } catch (error) {
         console.error("Error fetching search suggestions:", error);
         setSearchSuggestions([]);
+      } finally {
+        setLoading(false);
       }
     } else {
       setSearchSuggestions([]);
@@ -80,35 +99,57 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     }
   };
 
+  const handleShareProfile = () => {
+    const profileUrl = window.location.origin + '/profile';
+    navigator.clipboard.writeText(profileUrl)
+      .then(() => {
+        alert("Profile URL copied to clipboard!");
+      })
+      .catch((error) => {
+        console.error("Error copying profile URL:", error);
+      });
+  };
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+  };
+
   return (
-    <header className={`flex items-center justify-between px-6 py-4 shadow-md transition duration-300 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}>
+    <header className={`flex items-center justify-between px-6 py-4 shadow-md transition-all duration-300 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
       {/* Left section */}
       <div className="flex items-center space-x-4">
-        <button onClick={toggleSidebar} className="text-2xl transition-transform duration-300 hover:text-blue-500">
+        <button onClick={toggleSidebar} className="text-2xl transition-transform transform hover:text-blue-500 hover:scale-105">
           <FaBars />
         </button>
-        <div className="relative">
-          <form onSubmit={handleSearchSubmit} className="flex items-center">
+        <div className="relative flex-grow max-w-md">
+          <form onSubmit={handleSearchSubmit} className="flex items-center bg-gray-100 rounded-full shadow-sm dark:bg-gray-800">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search profiles..."
               value={searchQuery}
               onChange={handleSearchChange}
-              className={`w-64 px-4 py-2 rounded-full focus:outline-none transition duration-300 ${darkMode ? "bg-gray-700 text-gray-300 border-gray-600" : "bg-gray-100 text-gray-800 border-gray-300"}`}
+              className={`w-full px-4 py-2 rounded-full focus:outline-none transition-colors duration-300 ${darkMode ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-800"}`}
             />
-            <button type="submit" className={`absolute top-0 right-0 mt-2 mr-4 transition duration-300 ${darkMode ? "text-gray-500" : "text-gray-600"}`}>
+            <button type="submit" className={`px-4 text-lg ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
               <FaSearch />
             </button>
           </form>
-          {searchSuggestions.length > 0 && (
-            <ul className={`absolute left-0 w-full mt-2 border rounded-lg shadow-lg max-h-60 overflow-y-auto transition-opacity ${darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-800 border-gray-300"}`}>
+          {loading && <FaSpinner className="absolute text-gray-500 transform -translate-y-1/2 right-3 top-1/2 animate-spin" />}
+          {searchSuggestions.length > 0 && !loading && (
+            <ul className={`absolute left-0 w-full mt-2 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg ${darkMode ? "bg-gray-800" : "bg-white"}`}>
               {searchSuggestions.map((suggestion) => (
                 <li
                   key={suggestion.id}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className={`px-4 py-2 cursor-pointer hover:${darkMode ? "bg-gray-700 text-white" : "bg-gray-100"} rounded-lg transition-colors duration-300`}
                   onClick={() => handleSuggestionClick(suggestion.id)}
                 >
-                  {suggestion.firstName} {suggestion.lastName}
+                  <div className="flex items-center space-x-2">
+                    <img src={suggestion.profilePic || "https://via.placeholder.com/32"} alt="Profile" className="w-8 h-8 rounded-full" />
+                    <div>
+                      <p>{suggestion.firstName} {suggestion.lastName}</p>
+                      <p className="text-sm text-gray-500">{suggestion.email}</p>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -118,52 +159,129 @@ const Header = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
 
       {/* Right section */}
       <div className="flex items-center space-x-4">
-        <span className="hidden text-sm font-medium md:block">Welcome, {userName}</span>
-        <div className="relative">
-          <button className={`text-xl transition duration-300 hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-600"}`} onClick={toggleLanguageMenu}>
-            <FaLanguage />
-          </button>
-          {showLanguageMenu && (
-            <div className={`absolute right-0 w-48 py-2 mt-2 rounded-lg shadow-xl border transition-opacity ${darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-800 border-gray-300"}`}>
-              {["English", "Spanish", "French"].map((language) => (
-                <button key={language} className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => handleLanguageChange(language)}>
-                  {language}
-                </button>
-              ))}
-            </div>
-          )}
+        <span className="hidden text-sm font-medium md:block">{userName}</span>
+        <div className="flex items-center space-x-2">
+          <FaCircle className={`text-xs ${userStatus === "Online" ? "text-green-500" : userStatus === "Away" ? "text-yellow-500" : "text-red-500"}`} />
+          <span className="hidden text-sm md:block">{userStatus}</span>
         </div>
         <div className="relative">
-          <button className={`relative text-xl transition duration-300 hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-600"}`} onClick={toggleNotifications}>
-            <FaBell />
-            <span className="absolute top-0 right-0 px-2 mt-1 mr-1 text-xs text-white bg-red-500 rounded-full">3</span>
+          <button onClick={toggleMessages} className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"} hover:text-blue-500`} title="Messages">
+            <FaEnvelope />
           </button>
-          {showNotifications && (
-            <div className={`absolute right-0 w-64 py-2 mt-2 rounded-lg shadow-xl border transition-opacity ${darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-800 border-gray-300"}`}>
-              <div className="px-4 py-2 border-b dark:border-gray-600">Notifications</div>
-              {["Notification 1", "Notification 2", "Notification 3"].map((notification, index) => (
-                <div key={index} className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
-                  {notification}
+          {showMessages && (
+            <div className={`absolute right-0 mt-2 w-64 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+              <div className={`px-4 py-2 border-b ${darkMode ? "dark:border-gray-700 text-white" : "border-gray-300"}`}>Messages</div>
+              {[
+                {
+                  user: "Alice Johnson",
+                  message: "Hi, could you please send me the report?",
+                  profilePic: "https://via.placeholder.com/32"
+                },
+                {
+                  user: "Bob Smith",
+                  message: "Don't forget our meeting tomorrow at 10 AM.",
+                  profilePic: "https://via.placeholder.com/32"
+                },
+                {
+                  user: "Charlie Brown",
+                  message: "Can you review the code I submitted?",
+                  profilePic: "https://wallpapers.com/images/high/profile-picture-f67r1m9y562wdtin.webp"
+                }
+              ].map((msg, index) => (
+                <div key={index} className={`px-4 py-2 hover:${darkMode ? "bg-gray-700 text-white" : "bg-gray-100"} rounded-lg transition-colors duration-300`}>
+                  <div className="flex items-center space-x-2">
+                    <img src={msg.profilePic} alt="User" className="w-8 h-8 rounded-full" />
+                    <div>
+                      <p className="font-semibold">{msg.user}</p>
+                      <p className="text-sm text-gray-500">{msg.message}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
+              <button className="w-full px-4 py-2 text-blue-500 rounded-b-lg hover:bg-blue-50 dark:hover:bg-blue-700" onClick={toggleMessages}>View All</button>
             </div>
           )}
         </div>
         <div className="relative">
-          <button className={`text-xl transition duration-300 hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-600"}`} onClick={toggleProfileMenu}>
-            <img src={profilePic} alt="Profile" className="w-8 h-8 rounded-full" />
+          <button onClick={toggleNotifications} className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"} hover:text-blue-500`} title="Notifications">
+            <FaBell />
           </button>
-          {showProfileMenu && (
-            <div className={`absolute right-0 w-48 py-2 mt-2 rounded-lg shadow-xl border transition-opacity ${darkMode ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-800 border-gray-300"}`}>
-              <button className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => navigate("/profile")}>View Profile</button>
-              <button className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => navigate("/register")}>Register</button>
-              <button className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => navigate("/login")}>Login</button>
-              <button className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700" onClick={handleLogout}>Logout</button>
+          {showNotifications && (
+            <div className={`absolute right-0 mt-2 w-64 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+              <div className={`px-4 py-2 border-b ${darkMode ? "dark:border-gray-700 text-white" : "border-gray-300"}`}>Notifications</div>
+              {[
+                {
+                  title: "New Comment",
+                  detail: "John commented on your post."
+                },
+                {
+                  title: "New Follower",
+                  detail: "Jane Doe started following you."
+                },
+                {
+                  title: "Task Deadline",
+                  detail: "Your task is due tomorrow."
+                }
+              ].map((notification, index) => (
+                <div key={index} className={`px-4 py-2 hover:${darkMode ? "bg-gray-700 text-white" : "bg-gray-100"} rounded-lg transition-colors duration-300`}>
+                  <p className="font-semibold">{notification.title}</p>
+                  <p className="text-sm text-gray-500">{notification.detail}</p>
+                </div>
+              ))}
+              <button className="w-full px-4 py-2 text-blue-500 rounded-b-lg hover:bg-blue-50 dark:hover:bg-blue-700" onClick={toggleNotifications}>View All</button>
             </div>
           )}
         </div>
-        <button onClick={toggleDarkMode} className={`text-xl transition duration-300 px-3 py-1 rounded-full ${darkMode ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-gray-200 text-gray-800 hover:bg-gray-300"}`}>
-          {darkMode ? "Light" : "Dark"} Mode
+        <div className="relative">
+          <button onClick={toggleLanguageMenu} className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"} hover:text-blue-500`} title="Language">
+            <FaGlobe />
+          </button>
+          {showLanguageMenu && (
+            <div className={`absolute right-0 mt-2 w-48 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+              <div className={`px-4 py-2 border-b ${darkMode ? "dark:border-gray-700 text-white" : "border-gray-300"}`}>Select Language</div>
+              <div className="flex flex-col">
+                {["English", "Spanish", "French", "German"].map((language, index) => (
+                  <button
+                    key={index}
+                    className={`px-4 py-2 text-left hover:${darkMode ? "bg-gray-700 text-white" : "bg-gray-100"} rounded-lg transition-colors duration-300`}
+                    onClick={() => handleLanguageChange(language)}
+                  >
+                    {language}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="relative">
+          <button onClick={toggleProfileMenu} className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"} hover:text-blue-500`} title="Profile">
+            <FaUserCircle />
+          </button>
+          {showProfileMenu && (
+            <div className={`absolute right-0 mt-2 w-48 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+              <div className={`px-4 py-2 border-b ${darkMode ? "dark:border-gray-700 text-white" : "border-gray-300"}`}>
+                <div className="flex items-center space-x-2">
+                  <img src={profilePic} alt="Profile" className="w-8 h-8 rounded-full" />
+                  <div>
+                    <p className="font-semibold">{userName}</p>
+                    <p className="text-sm text-gray-500">View Profile</p>
+                  </div>
+                </div>
+              </div>
+              <button className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={handleShareProfile}>
+                <FaShareAlt className="inline mr-2" /> Share Profile
+              </button>
+              <button className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={handleLogout}>
+                <FaSignOutAlt className="inline mr-2" /> Logout
+              </button>
+              <button className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => navigate("/settings")}>
+                <FaCog className="inline mr-2" /> Settings
+              </button>
+            </div>
+          )}
+        </div>
+        <button onClick={toggleDarkMode} className={`text-xl ${darkMode ? "text-gray-300" : "text-gray-600"}`} title="Toggle Dark Mode">
+          {darkMode ? <FaSun /> : <FaMoon />}
         </button>
       </div>
     </header>

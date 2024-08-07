@@ -38,6 +38,7 @@
     "react-multi-select-component": "^4.3.4",
     "react-router-dom": "^6.23.1",
     "react-spring": "^9.7.3",
+    "react-tooltip": "^5.28.0",
     "recharts": "^2.12.7",
     "three": "^0.165.0",
     "three-spritetext": "^1.8.2"
