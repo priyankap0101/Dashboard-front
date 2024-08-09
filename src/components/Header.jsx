@@ -6,60 +6,60 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const navigate = useNavigate();
-
-  const handleMenuToggle = (menu) => {
-    if (menu === 'notifications') setShowNotifications(!showNotifications);
-    if (menu === 'profile') setShowProfileMenu(!showProfileMenu);
-    if (menu === 'language') setShowLanguageMenu(!showLanguageMenu);
-  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleLogout = () => {
-    // Logic to handle logout
-  };
-
-  const handleLanguageChange = (language) => {
-    // Logic to handle language change
-  };
-
-  const handleShareProfile = () => {
-    // Logic to handle profile sharing
+  const toggleProfileMenu = () => setShowProfileMenu(prev => !prev);
+  const toggleLanguageMenu = () => setShowLanguageMenu(prev => !prev);
+  const handleProfileNavigation = (path) => {
+    toggleProfileMenu();
+    navigate(path);
   };
 
   return (
     <header className={`flex items-center justify-between px-4 py-2 border-b ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}>
-      {/* Left Aligned Title */}
-      <div className="flex-1">
-        <h1 className="text-xl font-bold md:text-2xl">Dashboard</h1>
+      {/* Title and Search Toggle */}
+      <div className="flex items-center flex-1">
+        <h1 className="flex-1 text-xl font-bold md:text-2xl">Dashboard</h1>
+        <button
+          className="ml-4 text-2xl md:hidden hover:text-blue-500"
+          onClick={() => setShowSearchBar(prev => !prev)}
+          aria-label="Toggle Search Bar"
+        >
+          <FaSearch />
+        </button>
       </div>
 
-      {/* Centered Icons */}
-      <div className="flex justify-center flex-1 space-x-4">
-        <button
-          onClick={() => handleMenuToggle('notifications')}
-          className="relative text-2xl hover:text-blue-500"
-          aria-label="Notifications"
-        >
+      {/* Search Bar */}
+      <div className={`relative flex-1 ${showSearchBar || window.innerWidth >= 768 ? 'block' : 'hidden'}`}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search..."
+          className={`w-full md:w-80 lg:w-96 px-4 py-2 rounded-full focus:outline-none transition-all duration-300 ${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}
+        />
+        {showSearchBar && (
+          <FaSearch className={`absolute right-3 top-3 text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+        )}
+      </div>
+
+      {/* Right Side Icons */}
+      <div className="flex items-center ml-4 space-x-4">
+        <button className="text-2xl hover:text-blue-500" aria-label="Notifications">
           <FaBell />
-          {showNotifications && (
-            <div className={`absolute right-0 mt-2 w-48 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}>
-              {/* Notification Items */}
-              <div className="p-2 text-sm">No new notifications</div>
-            </div>
-          )}
         </button>
 
         <div className="relative">
           <button
-            onClick={() => handleMenuToggle('profile')}
-            className="flex items-center space-x-2 hover:text-blue-500"
+            onClick={toggleProfileMenu}
+            className="flex items-center space-x-2 text-2xl hover:text-blue-500"
             aria-label="Profile"
           >
             <img
@@ -71,54 +71,44 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
           </button>
           {showProfileMenu && (
             <div className={`absolute right-0 mt-2 w-48 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}>
-              <button
-                className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700"
-                onClick={() => { handleMenuToggle('profile'); navigate("/profile"); }}
-              >
+              <button className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700" onClick={() => handleProfileNavigation("/profile")}>
                 <FaUserCircle className="mr-2" /> Profile
               </button>
-              <button
-                className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700"
-                onClick={() => { handleMenuToggle('profile'); navigate("/settings"); }}
-              >
+              <button className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700" onClick={() => handleProfileNavigation("/settings")}>
                 <FaCog className="mr-2" /> Settings
               </button>
-              <button
-                className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700"
-                onClick={handleShareProfile}
-              >
+              <button className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700" onClick={() => { /* Handle Share Profile */ }}>
                 <FaShareAlt className="mr-2" /> Share Profile
               </button>
-              <button
-                className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700"
-                onClick={handleLogout}
-              >
+              <button className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700" onClick={() => { /* Handle Logout */ }}>
                 <FaSignOutAlt className="mr-2" /> Logout
               </button>
             </div>
           )}
         </div>
 
-        <button
-          onClick={() => handleMenuToggle('language')}
-          className="relative text-2xl hover:text-blue-500"
-          aria-label="Change Language"
-        >
-          <FaGlobe />
+        <div className="relative">
+          <button
+            onClick={toggleLanguageMenu}
+            className="text-2xl hover:text-blue-500"
+            aria-label="Change Language"
+          >
+            <FaGlobe />
+          </button>
           {showLanguageMenu && (
             <div className={`absolute right-0 mt-2 w-48 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}>
               {['English', 'Spanish', 'French'].map((language) => (
                 <button
                   key={language}
                   className="w-full px-4 py-2 text-left hover:bg-blue-50 dark:hover:bg-blue-700"
-                  onClick={() => handleLanguageChange(language)}
+                  onClick={() => { /* Handle Language Change */ }}
                 >
                   {language}
                 </button>
               ))}
             </div>
           )}
-        </button>
+        </div>
 
         <button
           onClick={toggleDarkMode}
@@ -127,20 +117,6 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
         >
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>
-      </div>
-
-      {/* Right Aligned Search Input */}
-      <div className="flex justify-end flex-1">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search..."
-            className={`px-4 py-2 rounded-full focus:outline-none ${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}
-          />
-          <FaSearch className={`absolute right-3 top-3 text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
-        </div>
       </div>
     </header>
   );
