@@ -146,7 +146,7 @@ const Dashboard = () => {
               Data Visualization Dashboard
             </h1>
           </div>
-          <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-3">
             <div
               className={`p-4 rounded-lg shadow-md ${
                 darkMode
@@ -195,9 +195,9 @@ const Dashboard = () => {
             </div>
           ) : (
             <>
-              <div className="flex justify-center mb-4 space-x-4">
+              <div className="flex flex-wrap justify-center mb-4 space-x-4">
                 <button
-                  className={`px-4 py-2 rounded ${
+                  className={`px-4 py-2 mb-2 md:mb-0 rounded ${
                     activeChart === "intensity"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 dark:bg-gray-700 dark:text-white"
@@ -207,7 +207,7 @@ const Dashboard = () => {
                   Intensity
                 </button>
                 <button
-                  className={`px-4 py-2 rounded ${
+                  className={`px-4 py-2 mb-2 md:mb-0 rounded ${
                     activeChart === "likelihood"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 dark:bg-gray-700 dark:text-white"
@@ -217,7 +217,7 @@ const Dashboard = () => {
                   Likelihood
                 </button>
                 <button
-                  className={`px-4 py-2 rounded ${
+                  className={`px-4 py-2 mb-2 md:mb-0 rounded ${
                     activeChart === "relevance"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 dark:bg-gray-700 dark:text-white"
@@ -227,7 +227,7 @@ const Dashboard = () => {
                   Relevance
                 </button>
                 <button
-                  className={`px-4 py-2 rounded ${
+                  className={`px-4 py-2 mb-2 md:mb-0 rounded ${
                     activeChart === "trends"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 dark:bg-gray-700 dark:text-white"
