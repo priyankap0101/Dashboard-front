@@ -1,10 +1,13 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
-const LikelihoodChart = ({ data }) => {
-    // Function to transform data into required format for pie chart
+// Register required components with ChartJS
+ChartJS.register(LineElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+const LikelihoodChart = ({ data, darkMode }) => {
+    // Transform data
     const transformData = () => {
-        // Assuming 'data' contains fields like 'likelihood' with values like 'Low', 'Medium', 'High'
         const likelihoodCounts = data.reduce((acc, curr) => {
             const likelihood = curr.likelihood;
             if (acc[likelihood]) {
@@ -15,52 +18,94 @@ const LikelihoodChart = ({ data }) => {
             return acc;
         }, {});
 
-        // Transform into an array of objects with name and value properties
-        const transformedData = Object.keys(likelihoodCounts).map((likelihood) => ({
-            name: likelihood,
+        return Object.keys(likelihoodCounts).map((likelihood) => ({
+            label: likelihood,
             value: likelihoodCounts[likelihood],
         }));
-
-        return transformedData;
     };
 
-    // Get transformed data for the pie chart
     const likelihoodData = transformData();
 
-    // Colors for the pie chart slices
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28']; // Add more colors as needed
+    const chartData = {
+        labels: likelihoodData.map(item => item.label),
+        datasets: [
+            {
+                label: 'Likelihood Distribution',
+                data: likelihoodData.map(item => item.value),
+                borderColor: darkMode ? '#9ACD32' : '#1F77B4',
+                backgroundColor: darkMode ? 'rgba(154, 205, 50, 0.2)' : 'rgba(31, 119, 180, 0.2)',
+                tension: 0.4,
+                borderWidth: 2,
+                pointBackgroundColor: darkMode ? '#9ACD32' : '#1F77B4',
+                pointBorderColor: darkMode ? '#333' : '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+            },
+        ],
+    };
+
+    const options = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}`,
+                },
+                backgroundColor: darkMode ? '#555' : '#333',
+                titleColor: darkMode ? '#fff' : '#fff',
+                bodyColor: darkMode ? '#fff' : '#fff',
+                borderColor: darkMode ? '#888' : '#666',
+                borderWidth: 1,
+            },
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        size: 14,
+                        weight: 'bold',
+                    },
+                    color: darkMode ? '#ddd' : '#333',
+                },
+            },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: {
+                    display: false,
+                    color: darkMode ? '#444' : '#ddd',
+                },
+                ticks: {
+                    color: darkMode ? '#ddd' : '#333',
+                    font: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                },
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: darkMode ? '#444' : '#ddd',
+                },
+                ticks: {
+                    color: darkMode ? '#ddd' : '#333',
+                    font: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                },
+            },
+        },
+    };
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md">
-<h2 className="mb-4 text-3xl font-bold text-center text-gray-800">Likelihood Distribution</h2>
-            <ResponsiveContainer width="100%" height={400}>
-                <PieChart>
-                    <Pie
-                        dataKey="value"
-                        data={likelihoodData}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={120}
-                        fill="#8884d8"
-                        label
-                    >
-                        {likelihoodData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                    <Tooltip
-                        formatter={(value) => `${value}`}
-                        labelStyle={{ color: '#333', fontWeight: 'bold' }}
-                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #ccc' }}
-                    />
-                    <Legend 
-                        layout="vertical" 
-                        align="right" 
-                        verticalAlign="middle" 
-                        wrapperStyle={{ paddingTop: '20px' }}
-                    />
-                </PieChart>
-            </ResponsiveContainer>
+        <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+            <h2 className={`mb-4 text-3xl font-bold text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>Likelihood Distribution</h2>
+            <div style={{ position: 'relative', height: '400px', width: '100%' }}>
+                <Line data={chartData} options={options} />
+            </div>
         </div>
     );
 };
