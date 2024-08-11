@@ -25,25 +25,7 @@ const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
-
-  const dummyEngagementData = [
-    { metric: "Clicks", value: 500 },
-    { metric: "Views", value: 1500 },
-    { metric: "Shares", value: 200 },
-  ];
-
-  const dummySentimentData = [
-    { sentiment: "Positive", percentage: 60 },
-    { sentiment: "Negative", percentage: 20 },
-    { sentiment: "Neutral", percentage: 20 },
-  ];
-
-  const dummyRegionData = [
-    { region: "North America", percentage: 40 },
-    { region: "Europe", percentage: 30 },
-    { region: "Asia", percentage: 20 },
-    { region: "Other", percentage: 10 },
-  ];
+  const [expandedChart, setExpandedChart] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,17 +48,17 @@ const Dashboard = () => {
     const applyFilters = () => {
       let filteredResult = data;
 
-      if (filters.endYear && filters.endYear.length > 0) {
+      if (filters.endYear?.length) {
         filteredResult = filteredResult.filter((item) =>
           filters.endYear.includes(item.year.toString())
         );
       }
-      if (filters.topics && filters.topics.length > 0) {
+      if (filters.topics?.length) {
         filteredResult = filteredResult.filter((item) =>
           filters.topics.includes(item.topic)
         );
       }
-      if (filters.sectors && filters.sectors.length > 0) {
+      if (filters.sectors?.length) {
         filteredResult = filteredResult.filter((item) =>
           filters.sectors.includes(item.sector)
         );
@@ -99,8 +81,9 @@ const Dashboard = () => {
   };
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", newDarkMode);
   };
 
   const handleExport = (format) => {
@@ -130,10 +113,14 @@ const Dashboard = () => {
     setDarkMode(savedDarkMode);
   }, []);
 
+  const handleShowMore = (chartType) => {
+    setExpandedChart(expandedChart === chartType ? null : chartType);
+  };
+
   return (
     <div
       className={`${
-        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+        darkMode ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-800"
       } min-h-screen transition-colors duration-300`}
     >
       <Header
@@ -143,14 +130,12 @@ const Dashboard = () => {
       />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <div className="flex-1 p-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-extrabold text-gray-800 dark:text-gray-100">
-              Data Visualization Dashboard
-            </h1>
-          </div>
+        <main className="flex-1 p-6 lg:p-8">
+          <header className="mb-6">
+            <h1 className="text-4xl font-bold">Data Visualization Dashboard</h1>
+          </header>
 
-          <div className="mb-6">
+          <section className="mb-6">
             <FilterComponent
               filters={filters}
               setFilters={setFilters}
@@ -158,113 +143,112 @@ const Dashboard = () => {
               sectors={sectors}
               years={years}
             />
-          </div>
+          </section>
 
           {loading ? (
-            <div className="flex items-center justify-center">
-              <ClipLoader color={"#123abc"} loading={loading} size={150} />
+            <div className="flex items-center justify-center h-64">
+              <ClipLoader color={"#4A90E2"} loading={loading} size={150} />
             </div>
           ) : (
             <>
-              <div className="space-y-8">
-                <div className="p-4 text-white bg-blue-500 rounded-lg shadow-lg dark:bg-blue-700">
+              <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
+                <div className="p-6 text-white bg-blue-600 rounded-lg shadow-md">
                   <h2 className="text-xl font-semibold">Total Records</h2>
-                  <p className="mt-2 text-2xl font-bold">
+                  <p className="mt-2 text-3xl font-bold">
                     {filteredData.length}
                   </p>
                 </div>
-                <div className="p-4 text-white bg-green-500 rounded-lg shadow-lg dark:bg-green-700">
+                <div className="p-6 text-white bg-green-600 rounded-lg shadow-md">
                   <h2 className="text-xl font-semibold">Unique Topics</h2>
-                  <p className="mt-2 text-2xl font-bold">{topics.length}</p>
+                  <p className="mt-2 text-3xl font-bold">{topics.length}</p>
                 </div>
-                <div className="p-4 text-white bg-purple-500 rounded-lg shadow-lg dark:bg-purple-700">
+                <div className="p-6 text-white bg-purple-600 rounded-lg shadow-md">
                   <h2 className="text-xl font-semibold">Unique Sectors</h2>
-                  <p className="mt-2 text-2xl font-bold">{sectors.length}</p>
+                  <p className="mt-2 text-3xl font-bold">{sectors.length}</p>
                 </div>
-              </div>
+              </section>
 
-              {/* Key Data Visualizations */}
-              <div className="mt-12 space-y-8">
-                <h2 className="mb-4 text-2xl font-bold">
+              <section className="mt-12">
+                <h2 className="mb-6 text-2xl font-bold">
                   Key Data Visualizations
                 </h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <IntensityChart data={filteredData} />
-                  <LikelihoodChart data={filteredData} />
-                  <RelevanceChart data={filteredData} />
-                  <YearlyTrendsChart data={filteredData} />
-                </div>
-              </div>
-
-              {/* Engagement Metrics */}
-              <div className="mt-12 space-y-8">
-                <h2 className="mb-4 text-2xl font-bold">Engagement Metrics</h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  {dummyEngagementData.map((item, index) => (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {[
+                    { component: IntensityChart, name: "IntensityChart" },
+                    { component: LikelihoodChart, name: "LikelihoodChart" },
+                    { component: RelevanceChart, name: "RelevanceChart" },
+                    { component: YearlyTrendsChart, name: "YearlyTrendsChart" },
+                  ].map(({ component: ChartComponent, name }) => (
                     <div
-                      key={index}
-                      className={`p-4 rounded-lg shadow-md ${
-                        darkMode ? "bg-blue-800" : "bg-blue-100"
-                      }`}
+                      key={name}
+                      className={`relative transition-all duration-300 ${
+                        expandedChart === name ? "lg:col-span-2" : "col-span-1"
+                      } bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4`}
+                      style={{
+                        height: expandedChart === name ? "auto" : "500px",
+                      }}
                     >
-                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                        {item.metric}
-                      </h3>
-                      <p className="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
-                        {item.value}
-                      </p>
+                      <ChartComponent data={filteredData} />
+                      <button
+                        onClick={() => handleShowMore(name)}
+                        className="absolute px-4 py-2 text-blue-600 transition-transform bg-white border border-blue-600 rounded-lg shadow-lg bottom-2 right-2 dark:bg-gray-700 dark:text-gray-200 hover:scale-105"
+                      >
+                        {expandedChart === name ? "Show Less" : "Show More"}
+                      </button>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              {/* Sentiment Analysis */}
-              <div className="mt-12 space-y-8">
-                <h2 className="mb-4 text-2xl font-bold">Sentiment Analysis</h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  {dummySentimentData.map((item, index) => (
-                    <div
-                      key={index}
-                      className={`p-4 rounded-lg shadow-md ${
-                        darkMode ? "bg-purple-800" : "bg-purple-100"
-                      }`}
-                    >
-                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                        {item.sentiment}
-                      </h3>
-                      <p className="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
-                        {item.percentage}%
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <section className="flex justify-end mt-12">
+                <button
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                  className="px-4 py-2 font-semibold text-white transition-colors bg-blue-700 rounded-lg shadow-lg hover:bg-blue-800"
+                >
+                  Export Data
+                </button>
+              </section>
 
-              {/* Region Distribution */}
-              <div className="mt-12 space-y-8">
-                <h2 className="mb-4 text-2xl font-bold">Region Distribution</h2>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  {dummyRegionData.map((item, index) => (
-                    <div
-                      key={index}
-                      className={`p-4 rounded-lg shadow-md ${
-                        darkMode ? "bg-red-800" : "bg-red-100"
-                      }`}
-                    >
-                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                        {item.region}
-                      </h3>
-                      <p className="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
-                        {item.percentage}%
-                      </p>
+              {showExportMenu && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="p-8 bg-white rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
+                    <h3 className="mb-4 text-xl font-bold">
+                      Choose Export Format
+                    </h3>
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => handleExport("csv")}
+                        className="px-4 py-2 font-semibold text-white transition-colors bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
+                      >
+                        Export as CSV
+                      </button>
+                      <button
+                        onClick={() => handleExport("pdf")}
+                        className="px-4 py-2 font-semibold text-white transition-colors bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+                      >
+                        Export as PDF
+                      </button>
+                      <button
+                        onClick={() => handleExport("zip")}
+                        className="px-4 py-2 font-semibold text-white transition-colors bg-purple-500 rounded-lg shadow-lg hover:bg-purple-600"
+                      >
+                        Export as ZIP
+                      </button>
+                      <button
+                        onClick={() => setShowExportMenu(false)}
+                        className="px-4 py-2 font-semibold text-white transition-colors bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600"
+                      >
+                        Cancel
+                      </button>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              <ToastContainer />
             </>
           )}
-          <ToastContainer />
-        </div>
+        </main>
       </div>
     </div>
   );
