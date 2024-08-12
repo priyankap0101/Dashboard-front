@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, LabelList, Brush, ReferenceLine
 } from 'recharts';
-import { PDFDownloadLink, Page, Text, View, Document } from '@react-pdf/renderer';
-import { FaDownload, FaChartLine, FaChartBar, FaFilter, FaExpand, FaCompress } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaFilter, FaExpand, FaCompress, FaDownload } from 'react-icons/fa';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // Sample data
 const sampleData = [
@@ -21,8 +22,20 @@ const IntensityGraphChart = ({ data = sampleData }) => {
   const [chartType, setChartType] = useState('line');
   const [filter, setFilter] = useState('all');
 
+  // Function to filter data based on intensity
+  const getFilteredData = () => {
+    if (filter === 'all') {
+      return data;
+    }
+    return data.filter(d => d.intensity > 5);
+  };
+
+  // Filtered data based on the selected filter
+  const filteredData = getFilteredData();
+  
+
+  // Slice data if not showing all
   const initialDataCount = 5;
-  const filteredData = filter === 'all' ? data : data.filter(d => d.intensity > 5);
   const displayedData = showAll ? filteredData : filteredData.slice(0, initialDataCount);
 
   const chartData = Array.isArray(displayedData) ? displayedData.map((item, index) => ({
@@ -73,7 +86,7 @@ const IntensityGraphChart = ({ data = sampleData }) => {
                 <stop offset="95%" stopColor="#4a90e2" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Brush dataKey="name" height={20} stroke="#8884d8" />
+            <Brush dataKey="name" height={30}  stroke="#8884d8"  />
             <ReferenceLine y={10} label="Threshold" stroke="red" />
           </LineChart>
         );
@@ -125,58 +138,86 @@ const IntensityGraphChart = ({ data = sampleData }) => {
     }
   };
 
+  const downloadChartAsImage = () => {
+    const chartElement = document.querySelector('.recharts-responsive-container');
+    if (chartElement) {
+      html2canvas(chartElement).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/jpeg');
+        link.download = 'chart.jpg';
+        link.click();
+      });
+    }
+  };
+
+  const downloadChartAsPDF = () => {
+    const chartElement = document.querySelector('.recharts-responsive-container');
+    if (chartElement) {
+      html2canvas(chartElement).then(canvas => {
+        const imgData = canvas.toDataURL('image/jpeg');
+        const pdf = new jsPDF();
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 295; // A4 height in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+
+        pdf.save('chart.pdf');
+      });
+    }
+  };
+
+  const toggleFilter = () => {
+    setFilter(prevFilter => (prevFilter === 'all' ? 'high' : 'all'));
+  };
+
   return (
     <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
       <div className="flex items-center justify-between gap-2 mb-4">
         <button
           onClick={() => setShowAll(!showAll)}
-          className="px-4 py-2 text-sm font-semibold transition-transform duration-300 ease-in-out bg-red-600 rounded-lg shadow-md hover:bg-red-700 focus:ring-4 focus:ring-red-500 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-400"
+          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-gray-600 rounded-lg shadow-md hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
         >
-          {showAll ? <FaCompress className="inline-block mr-1" /> : <FaExpand className="inline-block mr-1" />}
-          {showAll ? 'Show Less Insights' : 'Show More Insights'}
+          {showAll ? 'Show Less' : 'Show More'}
         </button>
         <button
           onClick={() => setChartType(chartType === 'line' ? 'bar' : 'line')}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-gray-700 rounded-lg shadow-md hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out ${chartType === 'line' ? 'bg-gray-700' : 'bg-gray-600'} hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 text-white dark:focus:ring-gray-800`}
         >
           <FaChartLine className={`inline-block mr-1 ${chartType === 'line' ? 'opacity-50' : ''}`} />
-          <FaChartBar className={`inline-block mr-1 ${chartType === 'bar' ? 'opacity-50' : ''}`} />
           {chartType === 'line' ? 'Switch to Bar Chart' : 'Switch to Line Chart'}
         </button>
-        <button
-          onClick={() => setFilter(filter === 'all' ? 'high' : 'all')}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-gray-700 rounded-lg shadow-md hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+        {/* <button
+          onClick={toggleFilter}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out ${filter === 'all' ? 'bg-gray-700' : 'bg-gray-600'} hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 text-white dark:focus:ring-gray-800`}
         >
           <FaFilter className="inline-block mr-1" />
-          {filter === 'all' ? 'Filter High Intensity' : 'Show All'}
-        </button>
-        <PDFDownloadLink
-          document={
-            <Document>
-              <Page size="A4" style={{ padding: 20 }}>
-                <Text style={{ fontSize: 18, marginBottom: 12 }}>Intensity Graph Report</Text>
-                {filteredData.map((item, index) => (
-                  <View key={index} style={{ marginBottom: 8 }}>
-                    <Text>{`Topic: ${item.topic}`}</Text>
-                    <Text>{`Intensity: ${item.intensity}`}</Text>
-                  </View>
-                ))}
-              </Page>
-            </Document>
-          }
-          fileName="intensity-report.pdf"
+          {filter === 'all' ? 'Show High Intensity Only' : 'Show All'}
+        </button> */}
+        <button
+          onClick={downloadChartAsImage}
+          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
         >
-          {({ blob, url, loading, error }) =>
-            loading ? 'Generating PDF...' : (
-              <button
-                className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:ring-4 focus:ring-green-500 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-400"
-              >
-                <FaDownload className="inline-block mr-1" />
-                Download Report
-              </button>
-            )
-          }
-        </PDFDownloadLink>
+          <FaDownload className="inline-block mr-1" />
+          Download JPG
+        </button>
+        <button
+          onClick={downloadChartAsPDF}
+          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:ring-4 focus:ring-green-500 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-400"
+        >
+          <FaDownload className="inline-block mr-1" />
+          Download PDF
+        </button>
       </div>
       <div className="h-96">
         <ResponsiveContainer>

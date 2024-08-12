@@ -14,6 +14,7 @@ import JSZip from "jszip";
 import { exportToCSV, exportToPDF } from "../utils/exportUtils";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import DetailedChart from "./DetailedChart";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -90,9 +91,11 @@ const Dashboard = () => {
     switch (format) {
       case "csv":
         exportToCSV(filteredData, "data_export.csv");
+        toast.success("Data exported as CSV");
         break;
       case "pdf":
         exportToPDF(filteredData, "data_export.pdf");
+        toast.success("Data exported as PDF");
         break;
       case "zip":
         const zip = new JSZip();
@@ -100,6 +103,7 @@ const Dashboard = () => {
         zip.file("data_export.pdf", exportToPDF(filteredData, null, true));
         zip.generateAsync({ type: "blob" }).then((content) => {
           saveAs(content, "data_export.zip");
+          toast.success("Data exported as ZIP");
         });
         break;
       default:
@@ -115,6 +119,47 @@ const Dashboard = () => {
 
   const handleShowMore = (chartType) => {
     setExpandedChart(expandedChart === chartType ? null : chartType);
+  };
+
+  const openDetailedChart = (chartType) => {
+    const detailedChartWindow = window.open("", "_blank", "width=800,height=600");
+    if (detailedChartWindow) {
+      detailedChartWindow.document.write("<html><head><title>Detailed Chart</title></head><body>");
+      detailedChartWindow.document.write("<div id='chart'></div>");
+      detailedChartWindow.document.write("<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>");
+      detailedChartWindow.document.write("<script src='https://cdn.jsdelivr.net/npm/react-chartjs-2@3.0.0/dist/react-chartjs-2.min.js'></script>");
+      detailedChartWindow.document.write(`
+        <script>
+          const ctx = document.getElementById('chart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: ${JSON.stringify({
+              labels: filteredData.map(item => item.label),
+              datasets: [{
+                label: 'Detailed Data',
+                data: filteredData.map(item => item.value),
+                backgroundColor: '#4A90E2',
+              }],
+            })},
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return 'Value: ' + context.raw;
+                    },
+                  },
+                },
+              },
+            },
+          });
+        </script>
+      `);
+      detailedChartWindow.document.write("</body></html>");
+      detailedChartWindow.document.close();
+    }
   };
 
   return (
@@ -151,103 +196,73 @@ const Dashboard = () => {
             </div>
           ) : (
             <>
-              <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
-                <div className="p-6 text-white bg-blue-600 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold">Total Records</h2>
-                  <p className="mt-2 text-3xl font-bold">
-                    {filteredData.length}
-                  </p>
-                </div>
-                <div className="p-6 text-white bg-green-600 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold">Unique Topics</h2>
-                  <p className="mt-2 text-3xl font-bold">{topics.length}</p>
-                </div>
-                <div className="p-6 text-white bg-purple-600 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold">Unique Sectors</h2>
-                  <p className="mt-2 text-3xl font-bold">{sectors.length}</p>
-                </div>
-              </section>
-
-              <section className="mt-12">
-                <h2 className="mb-6 text-2xl font-bold">
-                  Key Data Visualizations
-                </h2>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {[
-                    { component: IntensityChart, name: "IntensityChart" },
-                    { component: LikelihoodChart, name: "LikelihoodChart" },
-                    { component: RelevanceChart, name: "RelevanceChart" },
-                    { component: YearlyTrendsChart, name: "YearlyTrendsChart" },
-                  ].map(({ component: ChartComponent, name }) => (
-                    <div
-                      key={name}
-                      className={`relative transition-all duration-300 ${
-                        expandedChart === name ? "lg:col-span-2" : "col-span-1"
-                      } bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4`}
-                      style={{
-                        height: expandedChart === name ? "auto" : "500px",
-                      }}
+              <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-2">
+                {[
+                  { component: IntensityChart, name: "IntensityChart" },
+                  { component: LikelihoodChart, name: "LikelihoodChart" },
+                  { component: RelevanceChart, name: "RelevanceChart" },
+                  { component: YearlyTrendsChart, name: "YearlyTrendsChart" },
+                ].map(({ component: ChartComponent, name }) => (
+                  <div
+                    key={name}
+                    className={`relative p-6 bg-white rounded-lg shadow-lg ${
+                      expandedChart === name
+                        ? "border-2 border-blue-500"
+                        : ""
+                    } hover:shadow-xl transition-shadow duration-300`}
+                  >
+                    <h3 className="mb-4 text-xl font-semibold">{name}</h3>
+                    <ChartComponent data={filteredData} />
+                    <button
+                      className="absolute text-blue-500 top-2 right-2"
+                      onClick={() => handleShowMore(name)}
                     >
-                      <ChartComponent data={filteredData} />
-                      <button
-                        onClick={() => handleShowMore(name)}
-                        className="absolute px-4 py-2 text-blue-600 transition-transform bg-white border border-blue-600 rounded-lg shadow-lg bottom-2 right-2 dark:bg-gray-700 dark:text-gray-200 hover:scale-105"
-                      >
-                        {expandedChart === name ? "Show Less" : "Show More"}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="flex justify-end mt-12">
-                <button
-                  onClick={() => setShowExportMenu(!showExportMenu)}
-                  className="px-4 py-2 font-semibold text-white transition-colors bg-blue-700 rounded-lg shadow-lg hover:bg-blue-800"
-                >
-                  Export Data
-                </button>
-              </section>
-
-              {showExportMenu && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="p-8 bg-white rounded-lg shadow-lg dark:bg-gray-900 dark:text-gray-200">
-                    <h3 className="mb-4 text-xl font-bold">
-                      Choose Export Format
-                    </h3>
-                    <div className="flex gap-4">
-                      <button
-                        onClick={() => handleExport("csv")}
-                        className="px-4 py-2 font-semibold text-white transition-colors bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
-                      >
-                        Export as CSV
-                      </button>
-                      <button
-                        onClick={() => handleExport("pdf")}
-                        className="px-4 py-2 font-semibold text-white transition-colors bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
-                      >
-                        Export as PDF
-                      </button>
-                      <button
-                        onClick={() => handleExport("zip")}
-                        className="px-4 py-2 font-semibold text-white transition-colors bg-purple-500 rounded-lg shadow-lg hover:bg-purple-600"
-                      >
-                        Export as ZIP
-                      </button>
-                      <button
-                        onClick={() => setShowExportMenu(false)}
-                        className="px-4 py-2 font-semibold text-white transition-colors bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600"
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                      {expandedChart === name ? "Show Less" : "Show More"}
+                    </button>
+                    <button
+                      className="absolute text-green-500 bottom-2 right-2"
+                      onClick={() => openDetailedChart(name)}
+                    >
+                      View Detailed Graph
+                    </button>
                   </div>
-                </div>
-              )}
-
-              <ToastContainer />
+                ))}
+              </section>
             </>
           )}
+
+          <button
+            className="fixed p-3 text-white transition-shadow duration-300 bg-blue-600 rounded-full shadow-lg bottom-6 right-6 hover:shadow-xl"
+            onClick={() => setShowExportMenu(!showExportMenu)}
+          >
+            Export Data
+          </button>
+
+          {showExportMenu && (
+            <div className="fixed p-4 bg-white rounded-lg shadow-lg bottom-16 right-6">
+              <h3 className="mb-2 text-lg font-semibold">Export Options</h3>
+              <button
+                className="block w-full px-4 py-2 mb-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                onClick={() => handleExport("csv")}
+              >
+                Export as CSV
+              </button>
+              <button
+                className="block w-full px-4 py-2 mb-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
+                onClick={() => handleExport("pdf")}
+              >
+                Export as PDF
+              </button>
+              <button
+                className="block w-full px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700"
+                onClick={() => handleExport("zip")}
+              >
+                Export as ZIP
+              </button>
+            </div>
+          )}
+
+          <ToastContainer position="bottom-right" />
         </main>
       </div>
     </div>
