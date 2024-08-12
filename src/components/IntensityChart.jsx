@@ -1,84 +1,130 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, LabelList, Brush, ReferenceLine
-} from 'recharts';
-import { FaChartLine, FaChartBar, FaFilter, FaExpand, FaCompress, FaDownload } from 'react-icons/fa';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  LabelList,
+  Brush,
+  ReferenceLine,
+} from "recharts";
+import {
+  FaChartLine,
+  FaChartBar,
+  FaFilter,
+  FaExpand,
+  FaCompress,
+  FaDownload,
+  FaSyncAlt,
+} from "react-icons/fa";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // Sample data
 const sampleData = [
-  { topic: 'Topic 1', intensity: 4 },
-  { topic: 'Topic 2', intensity: 7 },
-  { topic: 'Topic 3', intensity: 6 },
-  { topic: 'Topic 4', intensity: 8 },
-  { topic: 'Topic 5', intensity: 5 },
-  { topic: 'Topic 6', intensity: 9 },
-  { topic: 'Topic 7', intensity: 6 },
+  { topic: "Topic 1", intensity: 4 },
+  { topic: "Topic 2", intensity: 7 },
+  { topic: "Topic 3", intensity: 6 },
+  { topic: "Topic 4", intensity: 8 },
+  { topic: "Topic 5", intensity: 5 },
+  { topic: "Topic 6", intensity: 9 },
+  { topic: "Topic 7", intensity: 6 },
 ];
 
 const IntensityGraphChart = ({ data = sampleData }) => {
   const [showAll, setShowAll] = useState(false);
-  const [chartType, setChartType] = useState('line');
-  const [filter, setFilter] = useState('all');
+  const [chartType, setChartType] = useState("line");
+  const [filter, setFilter] = useState("all");
 
   // Function to filter data based on intensity
   const getFilteredData = () => {
-    if (filter === 'all') {
+    if (filter === "all") {
       return data;
     }
-    return data.filter(d => d.intensity > 5);
+    return data.filter((d) => d.intensity > 5);
   };
 
   // Filtered data based on the selected filter
   const filteredData = getFilteredData();
-  
 
   // Slice data if not showing all
   const initialDataCount = 5;
-  const displayedData = showAll ? filteredData : filteredData.slice(0, initialDataCount);
+  const displayedData = showAll
+    ? filteredData
+    : filteredData.slice(0, initialDataCount);
 
-  const chartData = Array.isArray(displayedData) ? displayedData.map((item, index) => ({
-    name: item.topic || `Topic ${index + 1}`,
-    intensity: item.intensity || 0
-  })) : [];
+  const chartData = Array.isArray(displayedData)
+    ? displayedData.map((item, index) => ({
+        name: item.topic || `Topic ${index + 1}`,
+        intensity: item.intensity || 0,
+      }))
+    : [];
 
   const renderChart = () => {
     switch (chartType) {
-      case 'line':
+      case "line":
         return (
-          <LineChart data={chartData} margin={{ top: 20, right: 20, left: 20, bottom: 40 }}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
             <XAxis
               dataKey="name"
-              tick={{ fill: '#555', fontSize: '12px' }}
-              axisLine={{ stroke: '#ddd', strokeWidth: 1 }}
-              tickLine={{ stroke: '#ddd' }}
-              label={{ value: 'Topics', position: 'bottom', fill: '#555', fontSize: '14px' }}
+              tick={{ fill: "#555", fontSize: "10px" }}
+              axisLine={{ stroke: "#ddd", strokeWidth: 1 }}
+              tickLine={{ stroke: "#ddd" }}
+              label={{
+                value: "Topics",
+                position: "bottom",
+                fill: "#555",
+                fontSize: "12px",
+              }}
             />
             <YAxis
-              tick={{ fill: '#555', fontSize: '12px' }}
-              axisLine={{ stroke: '#ddd', strokeWidth: 1 }}
-              tickLine={{ stroke: '#ddd' }}
-              label={{ value: 'Intensity', angle: -90, position: 'left', fill: '#555', fontSize: '14px' }}
+              tick={{ fill: "#555", fontSize: "10px" }}
+              axisLine={{ stroke: "#ddd", strokeWidth: 1 }}
+              tickLine={{ stroke: "#ddd" }}
+              label={{
+                value: "Intensity",
+                angle: -90,
+                position: "left",
+                fill: "#555",
+                fontSize: "12px",
+              }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', fontSize: '12px' }}
-              labelStyle={{ color: '#555', fontSize: '12px' }}
-              itemStyle={{ color: '#555', fontSize: '12px' }}
-              formatter={(value) => [`Intensity: ${value}`, '']}
+              contentStyle={{
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                fontSize: "10px",
+              }}
+              labelStyle={{ color: "#555", fontSize: "10px" }}
+              itemStyle={{ color: "#555", fontSize: "10px" }}
+              formatter={(value) => [`Intensity: ${value}`, ""]}
             />
-            <Legend wrapperStyle={{ bottom: 0, left: 0 }} align="left" verticalAlign="bottom" />
+            <Legend
+              wrapperStyle={{ bottom: 0, left: 0 }}
+              align="left"
+              verticalAlign="bottom"
+            />
             <Line
               type="monotone"
               dataKey="intensity"
               stroke="url(#lineGradient)"
               strokeWidth={2}
-              dot={{ stroke: '#4a90e2', strokeWidth: 1, r: 4, fill: '#fff' }}
-              activeDot={{ r: 6, stroke: '#4a90e2', strokeWidth: 2 }}
+              dot={{ stroke: "#4a90e2", strokeWidth: 1, r: 3, fill: "#fff" }}
+              activeDot={{ r: 5, stroke: "#4a90e2", strokeWidth: 2 }}
               isAnimationActive={true}
             >
-              <LabelList dataKey="intensity" position="top" fontSize={10} />
+              <LabelList dataKey="intensity" position="top" fontSize={8} />
             </Line>
             <defs>
               <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
@@ -86,42 +132,65 @@ const IntensityGraphChart = ({ data = sampleData }) => {
                 <stop offset="95%" stopColor="#4a90e2" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Brush dataKey="name" height={30}  stroke="#8884d8"  />
+            <Brush dataKey="name" height={20} stroke="#8884d8" />
             <ReferenceLine y={10} label="Threshold" stroke="red" />
           </LineChart>
         );
-      case 'bar':
+      case "bar":
         return (
-          <BarChart data={chartData} margin={{ top: 20, right: 20, left: 20, bottom: 40 }}>
+          <BarChart
+            data={chartData}
+            margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
             <XAxis
               dataKey="name"
-              tick={{ fill: '#555', fontSize: '12px' }}
-              axisLine={{ stroke: '#ddd', strokeWidth: 1 }}
-              tickLine={{ stroke: '#ddd' }}
-              label={{ value: 'Topics', position: 'bottom', fill: '#555', fontSize: '14px' }}
+              tick={{ fill: "#555", fontSize: "10px" }}
+              axisLine={{ stroke: "#ddd", strokeWidth: 1 }}
+              tickLine={{ stroke: "#ddd" }}
+              label={{
+                value: "Topics",
+                position: "bottom",
+                fill: "#555",
+                fontSize: "12px",
+              }}
             />
             <YAxis
-              tick={{ fill: '#555', fontSize: '12px' }}
-              axisLine={{ stroke: '#ddd', strokeWidth: 1 }}
-              tickLine={{ stroke: '#ddd' }}
-              label={{ value: 'Intensity', angle: -90, position: 'left', fill: '#555', fontSize: '14px' }}
+              tick={{ fill: "#555", fontSize: "10px" }}
+              axisLine={{ stroke: "#ddd", strokeWidth: 1 }}
+              tickLine={{ stroke: "#ddd" }}
+              label={{
+                value: "Intensity",
+                angle: -90,
+                position: "left",
+                fill: "#555",
+                fontSize: "12px",
+              }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', fontSize: '12px' }}
-              labelStyle={{ color: '#555', fontSize: '12px' }}
-              itemStyle={{ color: '#555', fontSize: '12px' }}
-              formatter={(value) => [`Intensity: ${value}`, '']}
+              contentStyle={{
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                fontSize: "10px",
+              }}
+              labelStyle={{ color: "#555", fontSize: "10px" }}
+              itemStyle={{ color: "#555", fontSize: "10px" }}
+              formatter={(value) => [`Intensity: ${value}`, ""]}
             />
-            <Legend wrapperStyle={{ bottom: 0, left: 0 }} align="left" verticalAlign="bottom" />
+            <Legend
+              wrapperStyle={{ bottom: 0, left: 0 }}
+              align="left"
+              verticalAlign="bottom"
+            />
             <Bar
               dataKey="intensity"
               fill="url(#barGradient)"
-              barSize={20}
+              barSize={15}
               radius={[4, 4, 0, 0]}
               isAnimationActive={true}
             >
-              <LabelList dataKey="intensity" position="top" fontSize={10} />
+              <LabelList dataKey="intensity" position="top" fontSize={8} />
             </Bar>
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
@@ -129,7 +198,15 @@ const IntensityGraphChart = ({ data = sampleData }) => {
                 <stop offset="95%" stopColor="#4a90e2" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Brush dataKey="name" height={20} stroke="#8884d8" />
+            <Brush
+              dataKey="name"
+              height={15}
+              stroke="#8884d8"
+              fill="#8884d8"
+              fontFamily="2px"
+              width={100} // Adjust this value to reduce the width
+              style={{ cursor: "pointer" }}
+            />
             <ReferenceLine y={10} label="Threshold" stroke="red" />
           </BarChart>
         );
@@ -139,91 +216,101 @@ const IntensityGraphChart = ({ data = sampleData }) => {
   };
 
   const downloadChartAsImage = () => {
-    const chartElement = document.querySelector('.recharts-responsive-container');
+    const chartElement = document.querySelector(
+      ".recharts-responsive-container"
+    );
     if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/jpeg');
-        link.download = 'chart.jpg';
+      html2canvas(chartElement).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/jpeg");
+        link.download = "chart.jpg";
         link.click();
       });
     }
   };
 
   const downloadChartAsPDF = () => {
-    const chartElement = document.querySelector('.recharts-responsive-container');
+    const chartElement = document.querySelector(
+      ".recharts-responsive-container"
+    );
     if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
-        const imgData = canvas.toDataURL('image/jpeg');
+      html2canvas(chartElement).then((canvas) => {
+        const imgData = canvas.toDataURL("image/jpeg");
         const pdf = new jsPDF();
         const imgWidth = 210; // A4 width in mm
         const pageHeight = 295; // A4 height in mm
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
         let heightLeft = imgHeight;
         let position = 0;
 
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
 
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           pdf.addPage();
-          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
           heightLeft -= pageHeight;
         }
 
-        pdf.save('chart.pdf');
+        pdf.save("chart.pdf");
       });
     }
   };
 
   const toggleFilter = () => {
-    setFilter(prevFilter => (prevFilter === 'all' ? 'high' : 'all'));
+    setFilter((prevFilter) => (prevFilter === "all" ? "high" : "all"));
+  };
+
+  const toggleChartType = () => {
+    setChartType((prevType) => (prevType === "line" ? "bar" : "line"));
   };
 
   return (
     <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
-      <div className="flex items-center justify-between gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
-          onClick={() => setShowAll(!showAll)}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-gray-600 rounded-lg shadow-md hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-blue-500 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+          onClick={() => setShowAll((prev) => !prev)}
         >
-          {showAll ? 'Show Less' : 'Show More'}
+          {showAll ? "Show Less" : "Show All"}
         </button>
         <button
-          onClick={() => setChartType(chartType === 'line' ? 'bar' : 'line')}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out ${chartType === 'line' ? 'bg-gray-700' : 'bg-gray-600'} hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 text-white dark:focus:ring-gray-800`}
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-green-500 rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
+          onClick={toggleChartType}
         >
-          <FaChartLine className={`inline-block mr-1 ${chartType === 'line' ? 'opacity-50' : ''}`} />
-          {chartType === 'line' ? 'Switch to Bar Chart' : 'Switch to Line Chart'}
+          {chartType === "line" ? <FaChartBar /> : <FaChartLine />}
         </button>
-        {/* <button
+        <button
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-yellow-500 rounded hover:bg-yellow-600 dark:bg-yellow-700 dark:hover:bg-yellow-800"
           onClick={toggleFilter}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out ${filter === 'all' ? 'bg-gray-700' : 'bg-gray-600'} hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 text-white dark:focus:ring-gray-800`}
         >
-          <FaFilter className="inline-block mr-1" />
-          {filter === 'all' ? 'Show High Intensity Only' : 'Show All'}
-        </button> */}
+          <FaFilter />
+        </button>
         <button
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-red-500 rounded hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
           onClick={downloadChartAsImage}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
         >
-          <FaDownload className="inline-block mr-1" />
-          Download JPG
+          <FaDownload />
         </button>
         <button
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-purple-500 rounded hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800"
           onClick={downloadChartAsPDF}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:ring-4 focus:ring-green-500 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-400"
         >
-          <FaDownload className="inline-block mr-1" />
-          Download PDF
+          <FaDownload />
+        </button>
+        <button
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-gray-500 rounded hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-800"
+          onClick={() => window.location.reload()}
+        >
+          <FaSyncAlt />
         </button>
       </div>
-      <div className="h-96">
-        <ResponsiveContainer>
-          {renderChart()}
-        </ResponsiveContainer>
-      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        {" "}
+        {/* Reduced height */}
+        {renderChart()}
+      </ResponsiveContainer>
     </div>
   );
 };

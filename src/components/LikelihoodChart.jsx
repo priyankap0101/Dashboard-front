@@ -150,7 +150,7 @@ const LikelihoodChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-gray-800' : 'bg-white'} transition-all duration-500 ease-in-out`}>
+    <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
       <div className="flex mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
