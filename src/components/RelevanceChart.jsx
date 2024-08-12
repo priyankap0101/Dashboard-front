@@ -5,13 +5,13 @@ import {
 } from 'recharts';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { FaDownload, FaChartPie, FaChartLine, FaToggleOn, FaToggleOff } from 'react-icons/fa'; // Use FaChartPie and FaChartLine
+import { FaDownload, FaChartPie, FaChartLine } from 'react-icons/fa';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4D4F'];
 
 const RelevanceChart = ({ data = [], darkMode }) => {
   const [showAll, setShowAll] = useState(false);
-  const [chartType, setChartType] = useState('pie'); // State to toggle chart type
+  const [chartType, setChartType] = useState('pie');
 
   const initialDataCount = 5;
   const displayedData = showAll ? data : data.slice(0, initialDataCount);
@@ -61,11 +61,11 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   };
 
   return (
-    <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
-      <div className="flex mb-4 space-x-2">
+    <div className={`p-6 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
+      <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
-          className={`px-4 py-2 text-sm font-semibold rounded-md shadow-sm transition-all duration-300 ease-in-out
+          className={`px-3 py-1 text-xs font-medium rounded-md transition-all duration-300 ease-in-out
             ${showAll ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'}
             ${darkMode ? 'text-white' : 'text-white'}`}
         >
@@ -73,30 +73,30 @@ const RelevanceChart = ({ data = [], darkMode }) => {
         </button>
         <button
           onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform bg-purple-500 rounded-md shadow-sm hover:scale-105 hover:bg-purple-600 focus:ring-4 focus:ring-purple-400"
+          className="px-3 py-1 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-purple-500 rounded-md shadow-sm hover:scale-105 hover:bg-purple-600 focus:ring-4 focus:ring-purple-400"
         >
           {chartType === 'pie' ? (
             <>
               <FaChartPie className="inline-block mr-1 text-sm" />
-              Switch to Radar Chart
+              Radar Chart
             </>
           ) : (
             <>
               <FaChartLine className="inline-block mr-1 text-sm" />
-              Switch to Pie Chart
+              Pie Chart
             </>
           )}
         </button>
         <button
           onClick={downloadChartAsImage}
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-sm hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
+          className="px-3 py-1 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-sm hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
         >
           <FaDownload className="inline-block mr-1 text-sm" />
           JPG
         </button>
         <button
           onClick={downloadChartAsPDF}
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-sm hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
+          className="px-3 py-1 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-sm hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
         >
           <FaDownload className="inline-block mr-1 text-sm" />
           PDF
