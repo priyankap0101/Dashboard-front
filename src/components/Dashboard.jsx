@@ -14,6 +14,10 @@ import JSZip from "jszip";
 import { exportToCSV, exportToPDF } from "../utils/exportUtils";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { FiDownload } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -25,6 +29,7 @@ const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,11 +68,18 @@ const Dashboard = () => {
         );
       }
 
+      // Apply search filter
+      if (searchTerm) {
+        filteredResult = filteredResult.filter((item) =>
+          item.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
       setFilteredData(filteredResult);
     };
 
     applyFilters();
-  }, [data, filters]);
+  }, [data, filters, searchTerm]);
 
   const extractFilterOptions = (data) => {
     const uniqueTopics = [...new Set(data.map((item) => item.topic))];
@@ -128,9 +140,20 @@ const Dashboard = () => {
       />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex-1 p-6 lg:p-8">
-          <header className="mb-6">
+        <main className="flex-1 p-4 lg:p-6">
+          <header className="flex items-center justify-between mb-6">
             <h1 className="text-4xl font-bold">Data Visualization Dashboard</h1>
+            <input
+              type="text"
+              className={`w-64 p-2 rounded-md focus:outline-none focus:ring-2 ${
+                darkMode
+                  ? "bg-gray-800 text-gray-200 focus:ring-blue-500"
+                  : "bg-white text-gray-800 focus:ring-blue-500"
+              }`}
+              placeholder="Search by topic..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </header>
 
           <section className="mb-6">
@@ -151,50 +174,83 @@ const Dashboard = () => {
             <>
               <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-2">
                 {[
-                  { component: IntensityChart, name: "IntensityChart" },
-                  { component: LikelihoodChart, name: "LikelihoodChart" },
-                  { component: RelevanceChart, name: "RelevanceChart" },
-                  { component: YearlyTrendsChart, name: "YearlyTrendsChart" },
+                  { component: IntensityChart, name: "Intensity Chart" },
+                  { component: LikelihoodChart, name: "Likelihood Chart" },
+                  { component: RelevanceChart, name: "Relevance Chart" },
+                  { component: YearlyTrendsChart, name: "Yearly Trends Chart" },
                 ].map(({ component: ChartComponent, name }, index) => (
-                  <div
+                  <motion.div
                     key={index}
-                    className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    className={`p-4 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-800" : "bg-white"
+                    }`}
                   >
                     <h2 className="mb-4 text-xl font-semibold">{name}</h2>
                     <ChartComponent data={filteredData} />
-                  </div>
+                  </motion.div>
                 ))}
               </section>
 
-              <button
-                className="fixed p-4 text-white bg-gray-800 rounded-full bottom-8 right-8 hover:bg-gray-900"
+              <Tooltip id="download-tooltip" effect="solid" />
+
+              <motion.button
+                className="fixed flex items-center justify-center p-4 text-white bg-blue-600 rounded-full bottom-8 right-8 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
                 onClick={() => setShowExportMenu(!showExportMenu)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                data-tip="Download Options"
+                data-for="download-tooltip"
               >
+                <FiDownload className="mr-2" />
                 Export Data
-              </button>
+              </motion.button>
 
               {showExportMenu && (
-                <div className="fixed p-4 bg-white rounded-lg shadow-lg bottom-24 right-8">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className={`fixed p-4 rounded-lg shadow-lg bottom-24 right-8 ${
+                    darkMode
+                      ? "bg-gray-700 text-gray-200"
+                      : "bg-white text-gray-800"
+                  }`}
+                >
                   <h3 className="mb-2 text-lg font-semibold">Export Options</h3>
                   <button
-                    className="block p-2 mb-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                    className={`block w-full p-2 mb-2 rounded-md ${
+                      darkMode
+                        ? "bg-blue-500 hover:bg-blue-600 text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                    }`}
                     onClick={() => handleExport("csv")}
                   >
                     Export as CSV
                   </button>
                   <button
-                    className="block p-2 mb-2 text-white bg-red-600 rounded-md hover:bg-red-700"
+                    className={`block w-full p-2 mb-2 rounded-md ${
+                      darkMode
+                        ? "bg-blue-500 hover:bg-blue-600 text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                    }`}
                     onClick={() => handleExport("pdf")}
                   >
                     Export as PDF
                   </button>
                   <button
-                    className="block p-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                    className={`block w-full p-2 rounded-md ${
+                      darkMode
+                        ? "bg-blue-500 hover:bg-blue-600 text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                    }`}
                     onClick={() => handleExport("zip")}
                   >
                     Export as ZIP
                   </button>
-                </div>
+                </motion.div>
               )}
             </>
           )}

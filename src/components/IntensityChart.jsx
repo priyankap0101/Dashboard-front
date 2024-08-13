@@ -300,7 +300,7 @@ const IntensityGraphChart = ({ data = sampleData }) => {
           <FaDownload />
         </button>
         <button
-          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-gray-500 rounded hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-800"
+          className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-gray-500 rounded hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-900"
           onClick={() => window.location.reload()}
         >
           <FaSyncAlt />

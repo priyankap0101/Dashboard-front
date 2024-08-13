@@ -54,10 +54,8 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
   };
 
   return (
-    <div className={`p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} border ${darkMode ? 'border-gray-700' : 'border-gray-300'} max-w-full md:max-w-3xl mx-auto`}>
-      <h3 className={`mb-4 text-2xl font-semibold text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-        Yearly Trends Chart
-      </h3>
+    <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
+    
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
@@ -69,7 +67,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
         </button>
         <button
           onClick={() => setChartType(chartType === 'bar' ? 'pie' : 'bar')}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-purple-500 rounded-md shadow-sm hover:scale-105 hover:bg-purple-600 focus:ring-4 focus:ring-purple-400"
+          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-purple-500 rounded-md shadow-md hover:scale-105 hover:bg-purple-600 focus:ring-4 focus:ring-purple-400"
         >
           {chartType === 'bar' ? (
             <>
@@ -85,24 +83,24 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
         </button>
         <button
           onClick={downloadChartAsImage}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-sm hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
+          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-md hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
         >
           <FaDownload className="inline-block mr-1 text-xs" />
           JPG
         </button>
         <button
           onClick={downloadChartAsPDF}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-sm hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
+          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-md hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
         >
           <FaDownload className="inline-block mr-1 text-xs" />
           PDF
         </button>
       </div>
-      <div className="p-4 rounded-lg chart-container" style={{ position: 'relative', height: '300px', width: '100%' }}>
+      <div className={`p-4 rounded-lg chart-container`} style={{ position: 'relative', height: '350px', width: '100%' }}>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'bar' ? (
             <BarChart data={displayedData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#444' : '#e0e0e0'} />
+              <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#444' : '#ddd'} />
               <XAxis
                 dataKey="year"
                 tick={{ fill: darkMode ? '#ddd' : '#555', fontSize: 12 }}
@@ -117,7 +115,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
                 label={{ value: 'Intensity', angle: -90, position: 'left', fill: darkMode ? '#ddd' : '#555', fontSize: 14 }}
               />
               <Tooltip
-                contentStyle={{ backgroundColor: darkMode ? '#555' : '#fff', border: `1px solid ${darkMode ? '#888' : '#ccc'}`, borderRadius: '8px' }}
+                contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: `1px solid ${darkMode ? '#555' : '#ccc'}`, borderRadius: '8px' }}
                 labelStyle={{ color: darkMode ? '#fff' : '#000' }}
                 itemStyle={{ color: darkMode ? '#fff' : '#000' }}
                 cursor={false}
@@ -136,7 +134,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           ) : (
             <PieChart>
               <Tooltip
-                contentStyle={{ backgroundColor: darkMode ? '#555' : '#fff', border: `1px solid ${darkMode ? '#888' : '#ccc'}`, borderRadius: '8px' }}
+                contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: `1px solid ${darkMode ? '#555' : '#ccc'}`, borderRadius: '8px' }}
                 labelStyle={{ color: darkMode ? '#fff' : '#000' }}
                 itemStyle={{ color: darkMode ? '#fff' : '#000' }}
                 cursor={false}
