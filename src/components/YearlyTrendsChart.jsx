@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, LabelList,
@@ -10,14 +10,17 @@ import { FaDownload, FaChartBar, FaChartPie } from 'react-icons/fa';
 const YearlyTrendsChart = ({ data = [], darkMode }) => {
   const [showAll, setShowAll] = useState(false);
   const [chartType, setChartType] = useState('bar'); // Default to BarChart
+  const chartRef = useRef(null); // Ref for chart container
 
   const initialDataCount = 5;
   const displayedData = showAll ? data : data.slice(0, initialDataCount);
 
   const downloadChartAsImage = () => {
-    const chartElement = document.querySelector('.chart-container');
-    if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current, {
+        useCORS: true, // Handle cross-origin images
+        backgroundColor: null, // Transparent background
+      }).then(canvas => {
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/jpeg');
         link.download = 'chart.jpg';
@@ -27,9 +30,11 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
   };
 
   const downloadChartAsPDF = () => {
-    const chartElement = document.querySelector('.chart-container');
-    if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current, {
+        useCORS: true,
+        backgroundColor: null,
+      }).then(canvas => {
         const imgData = canvas.toDataURL('image/jpeg');
         const pdf = new jsPDF();
         const imgWidth = 210;
@@ -55,7 +60,6 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
 
   return (
     <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
-    
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
@@ -96,7 +100,11 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           PDF
         </button>
       </div>
-      <div className={`p-4 rounded-lg chart-container`} style={{ position: 'relative', height: '350px', width: '100%' }}>
+      <div
+        ref={chartRef} // Attach ref to chart container
+        className={`p-4 rounded-lg chart-container`} 
+        style={{ position: 'relative', height: '350px', width: '100%' }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'bar' ? (
             <BarChart data={displayedData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>

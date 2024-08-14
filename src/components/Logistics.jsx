@@ -21,7 +21,7 @@ import {
   RadialLinearScale,
   BarElement
 } from 'chart.js';
-import { Line, Pie, Radar, Bar } from 'react-chartjs-2';
+import { Line, Pie, Radar, Bar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -48,6 +48,7 @@ const containerVariants = {
     },
   },
 };
+
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.95 },
@@ -275,6 +276,144 @@ const Logistics = () => {
     }
   };
 
+  const productDistributionData = {
+    labels: ['Electronics', 'Furniture', 'Clothing', 'Toys'],
+    datasets: [{
+      label: 'Product Distribution',
+      data: [300, 450, 250, 350],
+      backgroundColor: [
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(75, 192, 192, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  const productDistributionOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${context.raw} units`,
+        }
+      }
+    }
+  };
+
+  const monthlyExpensesData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [
+      {
+        label: 'Transport',
+        data: [500, 600, 700, 800, 600, 700, 800, 900, 700, 800, 900, 1000],
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+      },
+      {
+        label: 'Storage',
+        data: [300, 400, 500, 600, 500, 600, 700, 800, 600, 700, 800, 900],
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      },
+      {
+        label: 'Miscellaneous',
+        data: [200, 300, 400, 500, 400, 500, 600, 700, 500, 600, 700, 800],
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      }
+    ]
+  };
+
+  const monthlyExpensesOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.dataset.label}: $${context.raw}`,
+          title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        stacked: true
+      }
+    }
+  };
+
+  const deliveryStatusData = {
+    labels: ['On Time', 'Delayed', 'In Transit', 'Cancelled'],
+    datasets: [{
+      data: [60, 20, 15, 5],
+      backgroundColor: [
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(153, 102, 255, 0.2)'
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(153, 102, 255, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  const deliveryStatusOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${context.raw}%`,
+        }
+      }
+    }
+  };
+
+  const fleetUtilizationData = {
+    labels: ['Truck', 'Van', 'Bike', 'Drone'],
+    datasets: [{
+      label: 'Utilization (%)',
+      data: [80, 90, 70, 85],
+      backgroundColor: 'rgba(153, 102, 255, 0.6)',
+      borderColor: 'rgba(153, 102, 255, 1)',
+      borderWidth: 1
+    }]
+  };
+
+  const fleetUtilizationOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Utilization: ${context.raw}%`,
+        }
+      }
+    }
+  };
+
   return (
     <motion.div
       className={`min-h-screen ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}
@@ -310,6 +449,15 @@ const Logistics = () => {
             </ChartCard>
             <ChartCard title="Fleet Efficiency">
               <Bar data={fleetEfficiencyData} options={fleetEfficiencyOptions} />
+            </ChartCard>
+            <ChartCard title="Monthly Expenses">
+              <Bar data={monthlyExpensesData} options={monthlyExpensesOptions} />
+            </ChartCard>
+            <ChartCard title="Delivery Status">
+              <Pie data={deliveryStatusData} options={deliveryStatusOptions} />
+            </ChartCard>
+            <ChartCard title="Fleet Utilization">
+              <Bar data={fleetUtilizationData} options={fleetUtilizationOptions} />
             </ChartCard>
           </div>
           {loading && (

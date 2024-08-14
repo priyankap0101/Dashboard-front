@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis
@@ -12,6 +12,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4D4F'];
 const RelevanceChart = ({ data = [], darkMode }) => {
   const [showAll, setShowAll] = useState(false);
   const [chartType, setChartType] = useState('pie');
+  const chartRef = useRef(null); // Create a ref for the chart container
 
   const initialDataCount = 5;
   const displayedData = showAll ? data : data.slice(0, initialDataCount);
@@ -22,9 +23,11 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   }));
 
   const downloadChartAsImage = () => {
-    const chartElement = document.querySelector('.chart-container');
-    if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current, {
+        useCORS: true,
+        backgroundColor: null,
+      }).then(canvas => {
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/jpeg');
         link.download = 'chart.jpg';
@@ -34,9 +37,11 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   };
 
   const downloadChartAsPDF = () => {
-    const chartElement = document.querySelector('.chart-container');
-    if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current, {
+        useCORS: true,
+        backgroundColor: null,
+      }).then(canvas => {
         const imgData = canvas.toDataURL('image/jpeg');
         const pdf = new jsPDF();
         const imgWidth = 210;
@@ -102,7 +107,7 @@ const RelevanceChart = ({ data = [], darkMode }) => {
           PDF
         </button>
       </div>
-      <div className="chart-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
+      <div ref={chartRef} className="chart-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'pie' ? (
             <PieChart>
