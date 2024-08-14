@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  FaChartBar,
+  FaChartBar, // Dashboard icon
+  FaChartLine, // Analytics icon
   FaUserFriends,
   FaShoppingCart,
   FaTruck,
@@ -31,11 +32,14 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           isSidebarCollapsed ? "w-20" : "w-64"
         } min-h-screen p-6 ${
           darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+        } border-r ${
+          darkMode ? "border-gray-700" : "border-gray-300"
         }`}
       >
         <button
           className="mb-4 text-2xl lg:hidden"
           onClick={toggleSidebar}
+          aria-label="Toggle Sidebar"
         >
           {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
         </button>
@@ -51,7 +55,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaChartBar size={20} />
-                <span>Dashboard</span>
+                {!isSidebarCollapsed && <span>Dashboard</span>}
               </NavLink>
             </li>
             <li>
@@ -63,8 +67,8 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                   }`
                 }
               >
-                <FaChartBar size={20} />
-                <span>Analytics</span>
+                <FaChartLine size={20} />
+                {!isSidebarCollapsed && <span>Analytics</span>}
               </NavLink>
             </li>
             <li>
@@ -77,7 +81,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaUserFriends size={20} />
-                <span>CRM</span>
+                {!isSidebarCollapsed && <span>CRM</span>}
               </NavLink>
             </li>
             <li>
@@ -90,7 +94,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaShoppingCart size={20} />
-                <span>E-commerce</span>
+                {!isSidebarCollapsed && <span>E-commerce</span>}
               </NavLink>
             </li>
             <li>
@@ -103,7 +107,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaTruck size={20} />
-                <span>Logistics</span>
+                {!isSidebarCollapsed && <span>Logistics</span>}
               </NavLink>
             </li>
             <li>
@@ -116,7 +120,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaSchool size={20} />
-                <span>Resource Allocation</span>
+                {!isSidebarCollapsed && <span>Resource Allocation</span>}
               </NavLink>
             </li>
             <li>
@@ -129,14 +133,18 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
               >
                 <FaSchool size={20} />
-                <span>Register</span>
+                {!isSidebarCollapsed && <span>Register</span>}
               </NavLink>
             </li>
           </ul>
         </nav>
 
         {/* Dark Mode Toggle */}
-        <div className={`flex items-center mt-8 ${isSidebarCollapsed ? "justify-center" : ""}`}>
+        <div
+          className={`flex items-center mt-8 ${
+            isSidebarCollapsed ? "justify-center" : ""
+          }`}
+        >
           <button
             className={`w-full py-3 rounded-md flex items-center justify-center transition-all duration-300 ${
               darkMode
@@ -144,6 +152,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 : "bg-gray-300 text-gray-800 hover:bg-gray-400"
             } shadow-md`}
             onClick={toggleDarkMode}
+            aria-label="Toggle Dark Mode"
           >
             {darkMode ? (
               <>

@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { getData } from "../services/dataService";
-import FilterComponent from "./FilterComponent";
 import IntensityChart from "./IntensityChart";
 import LikelihoodChart from "./LikelihoodChart";
 import RelevanceChart from "./RelevanceChart";
@@ -23,11 +22,8 @@ import "react-tooltip/dist/react-tooltip.css";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({});
   const [filteredData, setFilteredData] = useState([]);
-  const [topics, setTopics] = useState([]);
-  const [sectors, setSectors] = useState([]);
-  const [years, setYears] = useState([]);
+  const [sortOption, setSortOption] = useState("topic"); // New state for sorting
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
@@ -40,7 +36,6 @@ const Dashboard = () => {
         const result = await getData();
         setData(result);
         setFilteredData(result);
-        extractFilterOptions(result);
       } catch (error) {
         toast.error("Error fetching data");
       }
@@ -51,24 +46,8 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const applyFilters = () => {
+    const applyFiltersAndSort = () => {
       let filteredResult = data;
-
-      if (filters.endYear?.length) {
-        filteredResult = filteredResult.filter((item) =>
-          filters.endYear.includes(item.year.toString())
-        );
-      }
-      if (filters.topics?.length) {
-        filteredResult = filteredResult.filter((item) =>
-          filters.topics.includes(item.topic)
-        );
-      }
-      if (filters.sectors?.length) {
-        filteredResult = filteredResult.filter((item) =>
-          filters.sectors.includes(item.sector)
-        );
-      }
 
       // Apply search filter
       if (searchTerm) {
@@ -77,21 +56,20 @@ const Dashboard = () => {
         );
       }
 
+      // Sort data
+      if (sortOption) {
+        filteredResult = filteredResult.sort((a, b) => {
+          if (a[sortOption] < b[sortOption]) return -1;
+          if (a[sortOption] > b[sortOption]) return 1;
+          return 0;
+        });
+      }
+
       setFilteredData(filteredResult);
     };
 
-    applyFilters();
-  }, [data, filters, searchTerm]);
-
-  const extractFilterOptions = (data) => {
-    const uniqueTopics = [...new Set(data.map((item) => item.topic))];
-    const uniqueSectors = [...new Set(data.map((item) => item.sector))];
-    const uniqueYears = [...new Set(data.map((item) => item.year.toString()))];
-
-    setTopics(uniqueTopics);
-    setSectors(uniqueSectors);
-    setYears(uniqueYears);
-  };
+    applyFiltersAndSort();
+  }, [data, sortOption, searchTerm]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -147,7 +125,7 @@ const Dashboard = () => {
             <h1 className="text-4xl font-bold">Data Visualization Dashboard</h1>
             <input
               type="text"
-              className={`w-64 p-2 rounded-md focus:outline-none focus:ring-2 ${
+              className={`w-full md:w-80 p-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 ${
                 darkMode
                   ? "bg-gray-800 text-gray-200 focus:ring-blue-500"
                   : "bg-white text-gray-800 focus:ring-blue-500"
@@ -156,17 +134,20 @@ const Dashboard = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className={`ml-4 p-2 border rounded-md shadow-sm ${
+                darkMode
+                  ? "bg-gray-900 text-gray-200 border-gray-700"
+                  : "bg-white text-gray-800 border-gray-300"
+              }`}
+            >
+              <option value="topic">Sort by Topic</option>
+              <option value="year">Sort by Year</option>
+              <option value="sector">Sort by Sector</option>
+            </select>
           </header>
-
-          <section className="mb-6">
-            <FilterComponent
-              filters={filters}
-              setFilters={setFilters}
-              topics={topics}
-              sectors={sectors}
-              years={years}
-            />
-          </section>
 
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -183,45 +164,35 @@ const Dashboard = () => {
                 ].map(({ component: ChartComponent, name }, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className={`p-4 rounded-lg shadow-lg ${
+                    className={`p-6 rounded-lg shadow-lg ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
                   >
-                    <h2 className="mb-4 text-xl font-semibold">{name}</h2>
+                    <h2 className="mb-4 text-2xl font-semibold">{name}</h2>
                     <ChartComponent data={filteredData} />
                   </motion.div>
                 ))}
               </section>
 
-              <Tooltip id="download-tooltip" effect="solid" />
-
-              <motion.button
-                className="fixed flex items-center justify-center p-4 text-white bg-blue-600 rounded-full bottom-8 right-8 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                onClick={() => setShowExportMenu(!showExportMenu)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                data-tip="Download Options"
-                data-for="download-tooltip"
-              >
-                <FiDownload className="mr-2" />
-                Export Data
-              </motion.button>
+              <div className="flex justify-end mb-4">
+                <button
+                  className="flex items-center p-3 text-white bg-gray-800 rounded-md hover:bg-gray-700"
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                >
+                  <FiDownload className="inline-block mr-2" />
+                  Export
+                </button>
+              </div>
 
               {showExportMenu && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className={`fixed p-4 rounded-lg shadow-lg bottom-24 right-8 ${
-                    darkMode
-                      ? "bg-gray-700 text-gray-200"
-                      : "bg-white text-gray-800"
+                  className={`p-4 mb-4 rounded-lg shadow-lg ${
+                    darkMode ? "bg-gray-800" : "bg-white"
                   }`}
                 >
-                  <h3 className="mb-2 text-lg font-semibold">Export Options</h3>
                   <button
                     className={`block w-full p-2 mb-2 rounded-md ${
                       darkMode
@@ -243,7 +214,7 @@ const Dashboard = () => {
                     Export as PDF
                   </button>
                   <button
-                    className={`block w-full p-2 rounded-md ${
+                    className={`block w-full p-2 mb-2 rounded-md ${
                       darkMode
                         ? "bg-blue-500 hover:bg-blue-600 text-white"
                         : "bg-blue-600 hover:bg-blue-700 text-white"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   FaSearch, FaBell, FaUserCircle, FaCog, FaSignOutAlt, FaGlobe, FaMoon, FaSun, FaChevronDown, FaShareAlt
 } from 'react-icons/fa';
@@ -9,6 +9,8 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const profileMenuRef = useRef(null);
+  const languageMenuRef = useRef(null);
   const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
@@ -17,14 +19,28 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
 
   const toggleProfileMenu = () => setShowProfileMenu(prev => !prev);
   const toggleLanguageMenu = () => setShowLanguageMenu(prev => !prev);
+
   const handleProfileNavigation = (path) => {
     toggleProfileMenu();
     navigate(path);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+      if (languageMenuRef.current && !languageMenuRef.current.contains(event.target)) {
+        setShowLanguageMenu(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <header className={`flex items-center justify-between px-4 py-3 border-b ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}>
-      {/* Title and Search Toggle */}
       <div className="flex items-center flex-1">
         <h1 className="text-xl font-bold md:text-2xl">Dashboard</h1>
         <button
@@ -36,9 +52,10 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
         </button>
       </div>
 
-      {/* Search Bar */}
       <div className={`relative flex-1 ${showSearchBar || window.innerWidth >= 768 ? 'block' : 'hidden'}`}>
+        <label htmlFor="search-input" className="sr-only">Search</label>
         <input
+          id="search-input"
           type="text"
           value={searchQuery}
           onChange={handleSearchChange}
@@ -50,13 +67,12 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
         )}
       </div>
 
-      {/* Right Side Icons */}
       <div className="flex items-center ml-4 space-x-4">
         <button className="text-2xl hover:text-blue-500" aria-label="Notifications">
           <FaBell />
         </button>
 
-        <div className="relative">
+        <div className="relative" ref={profileMenuRef}>
           <button
             onClick={toggleProfileMenu}
             className="flex items-center space-x-2 text-2xl hover:text-blue-500"
@@ -87,7 +103,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
           )}
         </div>
 
-        <div className="relative">
+        <div className="relative" ref={languageMenuRef}>
           <button
             onClick={toggleLanguageMenu}
             className="text-2xl hover:text-blue-500"
