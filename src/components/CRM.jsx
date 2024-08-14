@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ClipLoader from 'react-spinners/ClipLoader';
@@ -329,7 +330,7 @@ const CRM = () => {
             </div>
 
             <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-2xl font-semibold">Skill Radar</h2>
+              <h2 className="mb-4 text-xl font-semibold">Skill Radar</h2>
               <Radar data={radarData} options={radarOptions} />
             </div>
 

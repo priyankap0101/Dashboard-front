@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { getData } from "../services/dataService";
 import FilterComponent from "./FilterComponent";
