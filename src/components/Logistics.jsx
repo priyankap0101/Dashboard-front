@@ -37,25 +37,28 @@ ChartJS.register(
 );
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
+    y: 0,
     transition: {
-      staggerChildren: 0.2
-    }
-  }
+      duration: 0.6,
+      ease: "easeInOut",
+      staggerChildren: 0.3,
+    },
+  },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
+  hidden: { opacity: 0, scale: 0.95 },
   visible: {
-    opacity: 1, 
+    opacity: 1,
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeInOut",
+    },
+  },
 };
 
 const buttonVariants = {
@@ -68,6 +71,16 @@ const buttonVariants = {
     transition: { duration: 0.3 }
   }
 };
+
+const ChartCard = ({ title, children }) => (
+  <motion.div
+    className="p-4 border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:shadow-lg"
+    variants={itemVariants}
+  >
+    <h2 className="mb-4 text-xl font-semibold dark:text-gray-200">{title}</h2>
+    {children}
+  </motion.div>
+);
 
 const Logistics = () => {
   const [data, setData] = useState([]);
@@ -112,7 +125,6 @@ const Logistics = () => {
     setShowModal(!showModal);
   };
 
-  // Dummy data for new charts
   const deliveryData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [{
@@ -128,14 +140,24 @@ const Logistics = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        labels: {
+          font: {
+            size: 14,
+          },
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Deliveries: ${context.raw}`
-        }
-      }
-    }
+          label: (context) => `Deliveries: ${context.raw}`,
+          title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
+        },
+      },
+    },
+    elements: {
+      line: {
+        borderWidth: 3,
+      },
+    },
   };
 
   const transportCostData = {
@@ -157,7 +179,8 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Costs: $${context.raw}`
+          label: (context) => `Costs: $${context.raw}`,
+          title: (tooltipItems) => `Quarter: ${tooltipItems[0].label}`,
         }
       }
     }
@@ -183,7 +206,8 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Time: ${context.raw} days`
+          label: (context) => `Time: ${context.raw} days`,
+          title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
         }
       }
     }
@@ -218,7 +242,8 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Expenses: $${context.raw}`
+          label: (context) => `Expenses: $${context.raw}`,
+          title: (tooltipItems) => `Region: ${tooltipItems[0].label}`,
         }
       }
     }
@@ -243,7 +268,8 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Efficiency: ${context.raw}%`
+          label: (context) => `Efficiency: ${context.raw}%`,
+          title: (tooltipItems) => `Vehicle: ${tooltipItems[0].label}`,
         }
       }
     }
@@ -251,7 +277,7 @@ const Logistics = () => {
 
   return (
     <motion.div
-      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}
+      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -259,69 +285,49 @@ const Logistics = () => {
       <Header toggleSidebar={() => {}} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <div className={`flex-1 p-6 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
-          <div className="mb-8">
-            <motion.h1
-              className={`text-4xl font-bold ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}
-              variants={itemVariants}
+        <div className={`flex-1 p-6 space-y-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-semibold dark:text-gray-100">Logistics Dashboard</h1>
+            <button
+              className="px-4 py-2 text-white bg-blue-600 rounded-lg dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-400"
+              onClick={toggleModal}
             >
-              Logistics Dashboard
-            </motion.h1>
+              Export Data
+            </button>
           </div>
-          {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <ClipLoader
-                color={darkMode ? "#ffffff" : "#000000"}
-                loading={loading}
-                size={50}
-              />
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ChartCard title="Deliveries Over Time">
+              <Line data={deliveryData} options={deliveryOptions} />
+            </ChartCard>
+            <ChartCard title="Transport Costs">
+              <Bar data={transportCostData} options={transportCostOptions} />
+            </ChartCard>
+            <ChartCard title="Average Delivery Time">
+              <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
+            </ChartCard>
+            <ChartCard title="Regional Expenses">
+              <Pie data={regionExpensesData} options={regionExpensesOptions} />
+            </ChartCard>
+            <ChartCard title="Fleet Efficiency">
+              <Bar data={fleetEfficiencyData} options={fleetEfficiencyOptions} />
+            </ChartCard>
+          </div>
+          {loading && (
+            <div className="flex items-center justify-center h-40">
+              <ClipLoader color={darkMode ? 'white' : 'black'} />
             </div>
-          ) : (
-            <motion.div
-              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-              variants={containerVariants}
-            >
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-              >
-                <h2 className="mb-4 text-xl font-semibold">Deliveries Over Time</h2>
-                <Line data={deliveryData} options={deliveryOptions} />
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-              >
-                <h2 className="mb-4 text-xl font-semibold">Transport Costs by Quarter</h2>
-                <Bar data={transportCostData} options={transportCostOptions} />
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-              >
-                <h2 className="mb-4 text-xl font-semibold">Average Delivery Time</h2>
-                <Line data={deliveryTimeData} options={deliveryTimeOptions} />
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-              >
-                <h2 className="mb-4 text-xl font-semibold">Regional Expenses</h2>
-                <Pie data={regionExpensesData} options={regionExpensesOptions} />
-              </motion.div>
-              <motion.div
-                className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800"
-                variants={itemVariants}
-              >
-                <h2 className="mb-4 text-xl font-semibold">Fleet Efficiency</h2>
-                <Radar data={fleetEfficiencyData} options={fleetEfficiencyOptions} />
-              </motion.div>
-            </motion.div>
           )}
+          <ToastContainer />
+          <Modal isOpen={showModal} onClose={toggleModal}>
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-semibold">Export Data</h3>
+              <CSVLink data={csvData} filename="logistics_data.csv" className="inline-block px-4 py-2 mt-4 text-white bg-green-600 rounded-lg hover:bg-green-700">
+                Download CSV
+              </CSVLink>
+            </div>
+          </Modal>
         </div>
       </div>
-      <ToastContainer />
-      <Modal showModal={showModal} toggleModal={toggleModal} />
     </motion.div>
   );
 };
