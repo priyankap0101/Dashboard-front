@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  FaChartBar, // Dashboard icon
-  FaChartLine, // Analytics icon
+  FaChartPie,
+  FaChartLine,
   FaUserFriends,
   FaShoppingCart,
   FaTruck,
@@ -11,14 +11,15 @@ import {
   FaSun,
   FaBars,
   FaTimes,
+  FaUserCircle,
 } from "react-icons/fa";
 
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const linkStyle = `flex items-center p-3 space-x-3 rounded-md transition-all duration-300`;
-  const linkActiveStyle = `bg-indigo-500 text-white shadow-lg`;
-  const linkHoverStyle = `hover:bg-indigo-400 hover:text-white`;
+  const linkStyle = `flex items-center p-3 space-x-3 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105`;
+  const linkActiveStyle = `bg-indigo-600 text-white shadow-lg`;
+  const linkHoverStyle = `hover:bg-indigo-500 hover:text-white`;
   const baseTextStyle = `text-base font-semibold`;
 
   const toggleSidebar = () => {
@@ -28,13 +29,11 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
   return (
     <div className="flex">
       <aside
-        className={`transition-all duration-300 ${
+        className={`transition-transform duration-300 ${
           isSidebarCollapsed ? "w-20" : "w-64"
         } min-h-screen p-6 ${
-          darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-        } border-r ${
-          darkMode ? "border-gray-700" : "border-gray-300"
-        }`}
+          darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+        } shadow-md`}
       >
         <button
           className="mb-4 text-2xl lg:hidden"
@@ -43,6 +42,29 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         >
           {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
         </button>
+
+        {/* Logo Section */}
+        {/* <div className={`flex items-center mb-6 ${isSidebarCollapsed ? "justify-center" : ""}`}>
+          {!isSidebarCollapsed && (
+            <img
+              src=""
+              alt="Logo"
+              className="w-12 h-12 rounded-full"
+            />
+          )}
+        </div> */}
+
+        {/* Profile Section */}
+        {!isSidebarCollapsed && (
+          <div className="flex items-center mb-6 space-x-3">
+            <FaUserCircle size={40} />
+            <div>
+              <p className="text-lg font-semibold">John Doe</p>
+              <p className="text-sm text-gray-600">Admin</p>
+            </div>
+          </div>
+        )}
+
         <nav className={`${isSidebarCollapsed ? "hidden" : "block"} lg:block`}>
           <ul className="space-y-4">
             <li>
@@ -53,8 +75,10 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="Dashboard"
+                aria-current="page"
               >
-                <FaChartBar size={20} />
+                <FaChartPie size={20} />
                 {!isSidebarCollapsed && <span>Dashboard</span>}
               </NavLink>
             </li>
@@ -66,6 +90,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="Analytics"
               >
                 <FaChartLine size={20} />
                 {!isSidebarCollapsed && <span>Analytics</span>}
@@ -79,6 +104,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="CRM"
               >
                 <FaUserFriends size={20} />
                 {!isSidebarCollapsed && <span>CRM</span>}
@@ -92,6 +118,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="E-commerce"
               >
                 <FaShoppingCart size={20} />
                 {!isSidebarCollapsed && <span>E-commerce</span>}
@@ -105,6 +132,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="Logistics"
               >
                 <FaTruck size={20} />
                 {!isSidebarCollapsed && <span>Logistics</span>}
@@ -118,6 +146,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="Resource Allocation"
               >
                 <FaSchool size={20} />
                 {!isSidebarCollapsed && <span>Resource Allocation</span>}
@@ -131,6 +160,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                     isActive ? linkActiveStyle : ""
                   }`
                 }
+                aria-label="Register"
               >
                 <FaSchool size={20} />
                 {!isSidebarCollapsed && <span>Register</span>}
@@ -148,11 +178,11 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           <button
             className={`w-full py-3 rounded-md flex items-center justify-center transition-all duration-300 ${
               darkMode
-                ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                ? "bg-indigo-600 text-white hover:bg-indigo-700"
                 : "bg-gray-300 text-gray-800 hover:bg-gray-400"
             } shadow-md`}
             onClick={toggleDarkMode}
-            aria-label="Toggle Dark Mode"
+            aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
             {darkMode ? (
               <>
