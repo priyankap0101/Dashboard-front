@@ -74,7 +74,6 @@ const IntensityGraphChart = ({ data = sampleData }) => {
             data={chartData}
             margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
           >
-            {/* Removed CartesianGrid */}
             <XAxis
               dataKey="name"
               tick={{ fill: "#555", fontSize: "10px" }}
@@ -133,7 +132,6 @@ const IntensityGraphChart = ({ data = sampleData }) => {
               </linearGradient>
             </defs>
             <Brush dataKey="name" height={20} stroke="#8884d8" />
-            {/* Removed ReferenceLine */}
           </LineChart>
         );
       case "bar":
@@ -142,7 +140,6 @@ const IntensityGraphChart = ({ data = sampleData }) => {
             data={chartData}
             margin={{ top: 10, right: 10, left: 10, bottom: 30 }}
           >
-            {/* Removed CartesianGrid */}
             <XAxis
               dataKey="name"
               tick={{ fill: "#555", fontSize: "10px" }}
@@ -207,7 +204,6 @@ const IntensityGraphChart = ({ data = sampleData }) => {
               width={100} // Adjust this value to reduce the width
               style={{ cursor: "pointer" }}
             />
-            {/* Removed ReferenceLine */}
           </BarChart>
         );
       default:
@@ -271,59 +267,46 @@ const IntensityGraphChart = ({ data = sampleData }) => {
   };
 
   return (
-    <div className="w-full chart-container">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <h3 className="mr-2 text-lg font-bold">Intensity Graph</h3>
-          <button
-            className="text-blue-500 transition-colors duration-200 hover:text-blue-600"
-            onClick={toggleChartType}
-          >
-            {chartType === "line" ? (
-              <FaChartBar className="w-5 h-5" />
-            ) : (
-              <FaChartLine className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-        <div className="flex space-x-2">
-          <button
-            className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
-            onClick={toggleFilter}
-          >
-            <FaFilter className="w-5 h-5" />
-          </button>
-          <button
-            className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
-            onClick={toggleShowAll}
-          >
-            {showAll ? (
-              <FaCompress className="w-5 h-5" />
-            ) : (
-              <FaExpand className="w-5 h-5" />
-            )}
-          </button>
-          <button
-            className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
-            onClick={downloadChartAsImage}
-          >
-            <FaDownload className="w-5 h-5" />
-          </button>
-          <button
-            className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
-            onClick={downloadChartAsPDF}
-          >
-            <FaDownload className="w-5 h-5" />
-          </button>
-          <button
-            className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
-            onClick={() => window.location.reload()}
-          >
-            <FaSyncAlt className="w-5 h-5" />
-          </button>
-        </div>
+    <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
+    <div className="flex flex-wrap gap-2 mb-4">
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-blue-500 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+        onClick={() => setShowAll((prev) => !prev)}
+      >
+        {showAll ? "Show Less" : "Show All"}
+      </button>
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-green-500 rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
+        onClick={toggleChartType}
+      >
+        {chartType === "line" ? <FaChartBar /> : <FaChartLine />}
+      </button>
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-yellow-500 rounded hover:bg-yellow-600 dark:bg-yellow-700 dark:hover:bg-yellow-800"
+        onClick={toggleFilter}
+      >
+        <FaFilter />
+      </button>
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-red-500 rounded hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
+        onClick={downloadChartAsImage}
+      >
+        <FaDownload />
+      </button>
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-purple-500 rounded hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800"
+        onClick={downloadChartAsPDF}
+      >
+        <FaDownload />
+      </button>
+      <button
+        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-gray-500 rounded hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-900"
+        onClick={() => window.location.reload()}
+      >
+        <FaSyncAlt />
+      </button>
       </div>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={400}>
         {renderChart()}
       </ResponsiveContainer>
     </div>

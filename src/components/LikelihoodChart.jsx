@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Line, Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { Doughnut, PolarArea, Bubble, Scatter } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, PointElement, LineElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { FaChartLine, FaChartBar, FaDownload } from 'react-icons/fa';
+import { FaDotCircle, FaChartArea, FaSnowflake, FaDownload } from 'react-icons/fa';
 
-ChartJS.register(LineElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+ChartJS.register(ArcElement, PointElement, LineElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const LikelihoodChart = ({ data, darkMode }) => {
   const [showAll, setShowAll] = useState(false);
-  const [chartType, setChartType] = useState('line');
+  const [chartType, setChartType] = useState('doughnut');
 
   const initialDataCount = 5;
 
@@ -30,21 +30,37 @@ const LikelihoodChart = ({ data, darkMode }) => {
   const displayedData = showAll ? likelihoodData : likelihoodData.slice(0, initialDataCount);
 
   const chartData = {
-    labels: displayedData.map(item => item.label),
+    labels: displayedData.map((item) => item.label),
     datasets: [
       {
         label: 'Likelihood Distribution',
-        data: displayedData.map(item => item.value),
-        borderColor: darkMode ? '#6EE7B7' : '#4B5563',
-        backgroundColor: darkMode ? 'rgba(110, 231, 183, 0.2)' : 'rgba(75, 85, 99, 0.2)',
+        data: displayedData.map((item) => item.value),
+        borderColor: darkMode ? '#60A5FA' : '#4B5563',
+        backgroundColor: darkMode
+          ? ['rgba(75, 85, 99, 0.8)', 'rgba(234, 88, 12, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(250, 204, 21, 0.8)', 'rgba(139, 92, 246, 0.8)']
+          : ['rgba(75, 85, 99, 0.6)', 'rgba(255, 159, 64, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 205, 86, 0.6)', 'rgba(201, 203, 207, 0.6)'],
         borderWidth: 2,
-        tension: 0.4,
-        pointBackgroundColor: darkMode ? '#6EE7B7' : '#4B5563',
-        pointBorderColor: darkMode ? '#333' : '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 5,
-        hoverBackgroundColor: darkMode ? '#34D399' : '#6366F1',
-        hoverBorderColor: darkMode ? '#34D399' : '#6366F1',
+        hoverBackgroundColor: darkMode ? '#60A5FA' : '#60A5FA',
+        hoverBorderColor: darkMode ? '#60A5FA' : '#60A5FA',
+        hoverBorderWidth: 3,
+      },
+    ],
+  };
+
+  const bubbleData = {
+    datasets: [
+      {
+        label: 'Bubble Dataset',
+        data: displayedData.map((item, index) => ({
+          x: index,
+          y: item.value,
+          r: item.value * 2, // Radius proportional to the value
+        })),
+        backgroundColor: darkMode ? 'rgba(75, 85, 99, 0.8)' : 'rgba(75, 85, 99, 0.6)',
+        borderColor: darkMode ? '#60A5FA' : '#4B5563',
+        borderWidth: 2,
+        hoverBackgroundColor: darkMode ? '#60A5FA' : '#60A5FA',
+        hoverBorderColor: darkMode ? '#60A5FA' : '#60A5FA',
         hoverBorderWidth: 3,
       },
     ],
@@ -57,9 +73,9 @@ const LikelihoodChart = ({ data, darkMode }) => {
           label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}`,
         },
         backgroundColor: darkMode ? '#1F2937' : '#F9FAFB',
-        titleColor: darkMode ? '#E5E7EB' : '#1F2937',
-        bodyColor: darkMode ? '#E5E7EB' : '#1F2937',
-        borderColor: darkMode ? '#6EE7B7' : '#4B5563',
+        titleColor: darkMode ? '#D1D5DB' : '#1F2937',
+        bodyColor: darkMode ? '#D1D5DB' : '#1F2937',
+        borderColor: darkMode ? '#4B5563' : '#4B5563',
         borderWidth: 1,
       },
       legend: {
@@ -75,12 +91,23 @@ const LikelihoodChart = ({ data, darkMode }) => {
     },
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: 0,
+    },
     scales: {
       x: {
         beginAtZero: true,
         grid: {
           display: false,
-          color: darkMode ? '#374151' : '#E5E7EB',
+        },
+        title: {
+          display: true,
+          text: 'Likelihood',
+          color: darkMode ? '#D1D5DB' : '#374151',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
         },
         ticks: {
           color: darkMode ? '#D1D5DB' : '#374151',
@@ -93,7 +120,16 @@ const LikelihoodChart = ({ data, darkMode }) => {
       y: {
         beginAtZero: true,
         grid: {
-          color: darkMode ? '#374151' : '#E5E7EB',
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Count',
+          color: darkMode ? '#D1D5DB' : '#374151',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
         },
         ticks: {
           color: darkMode ? '#D1D5DB' : '#374151',
@@ -104,16 +140,51 @@ const LikelihoodChart = ({ data, darkMode }) => {
         },
       },
     },
+    elements: {
+      arc: {
+        borderWidth: 2,
+      },
+    },
+    animation: {
+      duration: 1000,
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          color: darkMode ? '#D1D5DB' : '#374151',
+        },
+      },
+      tooltip: {
+        backgroundColor: darkMode ? '#1F2937' : '#F9FAFB',
+        titleColor: darkMode ? '#D1D5DB' : '#1F2937',
+        bodyColor: darkMode ? '#D1D5DB' : '#1F2937',
+      },
+    },
+    backgroundColor: darkMode ? '#1F2937' : '#FFFFFF',
   };
 
   const renderChart = () => {
-    return chartType === 'line' ? <Line data={chartData} options={options} /> : <Bar data={chartData} options={options} />;
+    switch (chartType) {
+      case 'doughnut':
+        return <Doughnut data={chartData} options={options} />;
+      case 'polarArea':
+        return <PolarArea data={chartData} options={options} />;
+      case 'bubble':
+        return <Bubble data={bubbleData} options={options} />;
+      case 'scatter':
+        return <Scatter data={chartData} options={options} />;
+      default:
+        return <Doughnut data={chartData} options={options} />;
+    }
   };
 
   const downloadChartAsImage = () => {
     const chartElement = document.querySelector('.chart-container');
     if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+      html2canvas(chartElement).then((canvas) => {
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/jpeg');
         link.download = 'chart.jpg';
@@ -125,12 +196,12 @@ const LikelihoodChart = ({ data, darkMode }) => {
   const downloadChartAsPDF = () => {
     const chartElement = document.querySelector('.chart-container');
     if (chartElement) {
-      html2canvas(chartElement).then(canvas => {
+      html2canvas(chartElement).then((canvas) => {
         const imgData = canvas.toDataURL('image/jpeg');
         const pdf = new jsPDF();
         const imgWidth = 210;
         const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
         let heightLeft = imgHeight;
         let position = 0;
 
@@ -150,49 +221,70 @@ const LikelihoodChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
-      <div className="flex mb-4 space-x-2">
+    <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} transition-all duration-300 ease-in-out`}>
+      <div className="flex flex-wrap mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
-          className={`px-2 py-1 text-xs font-semibold rounded-md shadow-sm transition-all duration-300 ease-in-out transform hover:scale-105
-            ${showAll ? 'bg-red-500 hover:bg-red-600 focus:ring-red-400' : 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-400'}
-            ${darkMode ? 'text-white' : 'text-white'}`}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
+            ${showAll ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-800'}
+            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
+          `}
         >
-          {showAll ? 'Show Less' : 'Show More'}
+          {showAll ? 'Show Less' : 'Show All'}
         </button>
         <button
-          onClick={() => setChartType(chartType === 'line' ? 'bar' : 'line')}
-          className="px-2 py-1 text-xs font-semibold text-white transition-all duration-300 ease-in-out transform bg-gray-600 rounded-md shadow-sm hover:scale-105 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300"
+          onClick={() => setChartType('doughnut')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
+            ${chartType === 'doughnut' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
+            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
+          `}
         >
-          {chartType === 'line' ? (
-            <>
-              <FaChartBar className="inline-block mr-1 text-sm" />
-              Bar Chart
-            </>
-          ) : (
-            <>
-              <FaChartLine className="inline-block mr-1 text-sm" />
-              Line Chart
-            </>
-          )}
+          <FaDotCircle className="inline mr-1" /> Doughnut
         </button>
+        <button
+          onClick={() => setChartType('polarArea')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
+            ${chartType === 'polarArea' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
+            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
+          `}
+        >
+          <FaChartArea className="inline mr-1" /> Polar Area
+        </button>
+        <button
+          onClick={() => setChartType('bubble')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
+            ${chartType === 'bubble' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
+            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
+          `}
+        >
+          <FaSnowflake className="inline mr-1" /> Bubble
+        </button>
+        <button
+          onClick={() => setChartType('scatter')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
+            ${chartType === 'scatter' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
+            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
+          `}
+        >
+          Scatter
+        </button>
+      </div>
+      <div className="mb-6 chart-container" style={{ position: 'relative', height: '400px', backgroundColor: darkMode ? '#1F2937' : '#FFFFFF' }}>
+        {renderChart()}
+      </div>
+      <div className="flex space-x-4">
         <button
           onClick={downloadChartAsImage}
-          className="px-2 py-1 text-xs font-semibold text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-sm hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
+          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out transform bg-green-600 rounded-lg shadow-md hover:bg-green-700 hover:scale-105"
         >
-          <FaDownload className="inline-block mr-1 text-sm" />
-          JPG
+          <FaDownload className="inline mr-1" /> Download as Image
         </button>
         <button
           onClick={downloadChartAsPDF}
-          className="px-2 py-1 text-xs font-semibold text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-sm hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
+          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out transform bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105"
         >
-          <FaDownload className="inline-block mr-1 text-sm" />
-          PDF
+          <FaDownload className="inline mr-1" /> Download as PDF
         </button>
-      </div>
-      <div className="chart-container" style={{ position: 'relative', height: '300px', width: '100%' }}>
-        {renderChart()}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, LabelList,
 } from 'recharts';
 import html2canvas from 'html2canvas';
@@ -110,7 +110,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'bar' ? (
             <BarChart data={displayedData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#444' : '#ddd'} />
+              {/* Removed the CartesianGrid component */}
               <XAxis
                 dataKey="year"
                 tick={{ fill: darkMode ? '#ddd' : '#555', fontSize: 12 }}
