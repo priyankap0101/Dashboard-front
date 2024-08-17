@@ -339,27 +339,29 @@ const Analytics = () => {
                 Export as CSV
               </CSVLink>
             </div>
-            <div className="mt-6">
-              <h2 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Feedback</h2>
+            {/* Feedback section */}
+            <motion.div variants={itemVariants} className={`p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+              <h2 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Submit Your Feedback</h2>
               <textarea
                 value={feedback}
                 onChange={handleFeedbackChange}
-                rows="4"
-                className="w-full p-2 mt-2 border rounded-md dark:bg-gray-700 dark:text-white"
-                placeholder="Provide your feedback here..."
-              ></textarea>
+                className={`w-full p-2 mt-2 text-sm rounded-md ${darkMode ? 'bg-gray-900 text-white border-gray-700' : 'bg-gray-100 text-gray-900 border-gray-300'}`}
+                placeholder="Enter your feedback here..."
+                rows={4}
+              />
               <button
                 onClick={handleFeedbackSubmit}
-                className="px-4 py-2 mt-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 mt-2 text-white bg-indigo-500 rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 Submit Feedback
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         </main>
       </div>
 
-      <ToastContainer />
+      {/* Toast notifications */}
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 };
