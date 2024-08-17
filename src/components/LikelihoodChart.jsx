@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Doughnut, PolarArea, Bubble, Scatter } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, PointElement, LineElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import html2canvas from 'html2canvas';
@@ -148,23 +148,15 @@ const LikelihoodChart = ({ data, darkMode }) => {
     animation: {
       duration: 1000,
     },
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-        labels: {
-          color: darkMode ? '#D1D5DB' : '#374151',
-        },
-      },
-      tooltip: {
-        backgroundColor: darkMode ? '#1F2937' : '#F9FAFB',
-        titleColor: darkMode ? '#D1D5DB' : '#1F2937',
-        bodyColor: darkMode ? '#D1D5DB' : '#1F2937',
-      },
-    },
-    backgroundColor: darkMode ? '#1F2937' : '#FFFFFF',
+    backgroundColor: 'transparent',
   };
+
+  useEffect(() => {
+    const canvasElements = document.querySelectorAll('canvas');
+    canvasElements.forEach((canvas) => {
+      canvas.style.backgroundColor = 'transparent';
+    });
+  }, [darkMode, chartType]);
 
   const renderChart = () => {
     switch (chartType) {
@@ -221,70 +213,58 @@ const LikelihoodChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} transition-all duration-300 ease-in-out`}>
+    <div className={`p-6 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
       <div className="flex flex-wrap mb-4 space-x-2">
         <button
           onClick={() => setShowAll(!showAll)}
           className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
-            ${showAll ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-800'}
-            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
-          `}
+            ${showAll ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-500 hover:scale-105'}`}
         >
           {showAll ? 'Show Less' : 'Show All'}
         </button>
         <button
           onClick={() => setChartType('doughnut')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
-            ${chartType === 'doughnut' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
-            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
-          `}
+            ${chartType === 'doughnut' ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-500 hover:scale-105'}`}
         >
-          <FaDotCircle className="inline mr-1" /> Doughnut
+          Doughnut <FaDotCircle className="inline-block ml-1" />
         </button>
         <button
           onClick={() => setChartType('polarArea')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
-            ${chartType === 'polarArea' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
-            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
-          `}
+            ${chartType === 'polarArea' ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-500 hover:scale-105'}`}
         >
-          <FaChartArea className="inline mr-1" /> Polar Area
+          Polar Area <FaChartArea className="inline-block ml-1" />
         </button>
         <button
           onClick={() => setChartType('bubble')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
-            ${chartType === 'bubble' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
-            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
-          `}
+            ${chartType === 'bubble' ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-500 hover:scale-105'}`}
         >
-          <FaSnowflake className="inline mr-1" /> Bubble
+          Bubble <FaSnowflake className="inline-block ml-1" />
         </button>
         <button
           onClick={() => setChartType('scatter')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out transform
-            ${chartType === 'scatter' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}
-            ${darkMode ? 'border border-gray-700' : 'border border-gray-300'}
-          `}
+            ${chartType === 'scatter' ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-500 hover:scale-105'}`}
         >
-          Scatter
+          Scatter <FaSnowflake className="inline-block ml-1" />
         </button>
-      </div>
-      <div className="mb-6 chart-container" style={{ position: 'relative', height: '400px', backgroundColor: darkMode ? '#1F2937' : '#FFFFFF' }}>
-        {renderChart()}
-      </div>
-      <div className="flex space-x-4">
         <button
           onClick={downloadChartAsImage}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out transform bg-green-600 rounded-lg shadow-md hover:bg-green-700 hover:scale-105"
+          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform bg-blue-600 rounded-lg shadow-md hover:bg-blue-500 hover:scale-105"
         >
-          <FaDownload className="inline mr-1" /> Download as Image
+          Download as Image <FaDownload className="inline-block ml-1" />
         </button>
         <button
           onClick={downloadChartAsPDF}
-          className="px-4 py-2 text-sm font-semibold text-white transition-transform duration-300 ease-in-out transform bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105"
+          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform bg-blue-600 rounded-lg shadow-md hover:bg-blue-500 hover:scale-105"
         >
-          <FaDownload className="inline mr-1" /> Download as PDF
+          Download as PDF <FaDownload className="inline-block ml-1" />
         </button>
+      </div>
+      <div className="chart-container" style={{ position: 'relative', height: '400px' }}>
+        {renderChart()}
       </div>
     </div>
   );
