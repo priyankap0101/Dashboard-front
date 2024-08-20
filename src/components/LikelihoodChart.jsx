@@ -163,40 +163,40 @@ const LikelihoodChart = ({ data, darkMode }) => {
 
   return (
     <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
-      <div className="flex flex-wrap mb-4 space-x-2">
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className={`px-4 py-2 text-sm font-semibold rounded-full shadow-lg transition-all duration-300 ease-in-out transform 
+     <div className="flex justify-center mb-4 space-x-2">
+  <button
+    onClick={() => setShowAll(!showAll)}
+    className={`w-20 h-7 text-xs font-semibold rounded-md shadow-lg transition-transform duration-300 transform hover:scale-105 
       ${
         showAll
           ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
-          : "bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:scale-105 hover:from-blue-500 hover:to-blue-700"
-      }`}
-        >
-          {showAll ? "Show Less" : "Show All"}
-        </button>
-        <button
-          onClick={() =>
-            setChartType(chartType === "doughnut" ? "polarArea" : "doughnut")
-          }
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform rounded-full shadow-lg bg-gradient-to-r from-indigo-400 to-indigo-600 hover:scale-105 hover:from-indigo-500 hover:to-indigo-700"
-        >
-          {chartType === "doughnut" ? "Polar Area" : "Doughnut"}{" "}
-          <FaSync className="inline-block ml-1" />
-        </button>
-        <button
-          onClick={downloadChartAsImage}
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform rounded-full shadow-lg bg-gradient-to-r from-purple-400 to-purple-600 hover:scale-105 hover:from-purple-500 hover:to-purple-700"
-        >
-          Image <FaDownload className="inline-block ml-1" />
-        </button>
-        <button
-          onClick={downloadChartAsPDF}
-          className="px-4 py-2 text-sm font-semibold text-white transition-all duration-300 ease-in-out transform rounded-full shadow-lg bg-gradient-to-r from-pink-400 to-pink-600 hover:scale-105 hover:from-pink-500 hover:to-pink-700"
-        >
-          PDF <FaDownload className="inline-block ml-1" />
-        </button>
-      </div>
+          : "bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:from-blue-500 hover:to-blue-700"
+      } flex items-center justify-center`}
+  >
+    {showAll ? "Show Less" : "Show All"}
+  </button>
+  <button
+    onClick={() =>
+      setChartType(chartType === "doughnut" ? "polarArea" : "doughnut")
+    }
+    className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+  >
+    {chartType === "doughnut" ? "Polar Area" : "Doughnut"}{" "}
+    <FaSync className="inline-block ml-1" />
+  </button>
+  <button
+    onClick={downloadChartAsImage}
+    className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
+  >
+    Image <FaDownload className="inline-block ml-1" />
+  </button>
+  <button
+    onClick={downloadChartAsPDF}
+    className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
+  >
+    PDF <FaDownload className="inline-block ml-1" />
+  </button>
+</div>
 
       <div className="chart-container h-96">{renderChart()}</div>
     </div>
