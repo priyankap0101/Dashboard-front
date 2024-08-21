@@ -1,164 +1,170 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, LabelList,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList, Legend,
 } from 'recharts';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { FaDownload, FaChartBar, FaChartPie } from 'react-icons/fa';
+import { FaDownload, FaChartBar, FaChartPie, FaSpinner } from 'react-icons/fa';
 
 const YearlyTrendsChart = ({ data = [], darkMode }) => {
-  const [showAll, setShowAll] = useState(false);
-  const [chartType, setChartType] = useState('bar'); // Default to BarChart
-  const chartRef = useRef(null); // Ref for chart container
+  const [currentData, setCurrentData] = useState(data.slice(0, 5).map((item, index) => ({ ...item, isNew: index === 4 })));
+  const [currentIndex, setCurrentIndex] = useState(5);
+  const [chartType, setChartType] = useState('bar');
+  const [loading, setLoading] = useState(false);
+  const chartRef = useRef(null);
 
-  const initialDataCount = 5;
-  const displayedData = showAll ? data : data.slice(0, initialDataCount);
-
-  const downloadChartAsImage = () => {
+  // Download chart as an image or PDF
+  const downloadChart = (format) => {
     if (chartRef.current) {
-      html2canvas(chartRef.current, {
-        useCORS: true, // Handle cross-origin images
-        backgroundColor: null, // Transparent background
-      }).then(canvas => {
+      html2canvas(chartRef.current, { useCORS: true }).then((canvas) => {
         const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/jpeg');
-        link.download = 'chart.jpg';
-        link.click();
-      });
+        if (format === 'pdf') {
+          const pdf = new jsPDF('landscape');
+          pdf.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+          pdf.save('chart.pdf');
+        } else {
+          link.href = canvas.toDataURL(`image/${format}`);
+          link.download = `chart.${format}`;
+          link.click();
+        }
+      }).catch((error) => console.error('Error downloading chart:', error));
     }
   };
 
-  const downloadChartAsPDF = () => {
-    if (chartRef.current) {
-      html2canvas(chartRef.current, {
-        useCORS: true,
-        backgroundColor: null,
-      }).then(canvas => {
-        const imgData = canvas.toDataURL('image/jpeg');
-        const pdf = new jsPDF();
-        const imgWidth = 210;
-        const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        let heightLeft = imgHeight;
-        let position = 0;
+  // Load more data and update chart
+  const loadMore = () => {
+    setLoading(true);
+    setTimeout(() => {
+      if (currentIndex < data.length) {
+        const newData = [
+          ...currentData.slice(1),
+          { ...data[currentIndex], isNew: true }
+        ].map((item, index) => ({ ...item, isNew: index === currentData.length - 1 }));
+        setCurrentData(newData);
+        setCurrentIndex(currentIndex + 1);
+      }
+      setLoading(false);
+    }, 1000);
+  };
 
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+  // Handle chart type toggle
+  const toggleChartType = () => setChartType(prevType => (prevType === 'bar' ? 'pie' : 'bar'));
 
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
+  // Define chart color based on dark mode and new data
+  const getChartColor = (isNew) => (isNew ? '#ff7300' : (darkMode ? '#8884d8' : '#82ca9d'));
 
-        pdf.save('chart.pdf');
-      });
+  // Render chart
+  const renderChart = () => {
+    if (chartType === 'bar') {
+      return (
+        <BarChart data={currentData} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+          <XAxis
+            dataKey="year"
+            tick={{ fill: darkMode ? '#ddd' : '#555' }}
+            axisLine={{ stroke: darkMode ? '#666' : '#ddd' }}
+            tickLine={{ stroke: darkMode ? '#666' : '#ddd' }}
+            label={{ value: 'Year', position: 'bottom', fill: darkMode ? '#ddd' : '#555' }}
+          />
+          <YAxis
+            tick={{ fill: darkMode ? '#ddd' : '#555' }}
+            axisLine={{ stroke: darkMode ? '#666' : '#ddd' }}
+            tickLine={{ stroke: darkMode ? '#666' : '#ddd' }}
+            label={{ value: 'Intensity', angle: -90, position: 'left', fill: darkMode ? '#ddd' : '#555' }}
+          />
+          <Tooltip contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: '1px solid #ddd' }} />
+          <Bar dataKey="intensity" fill={darkMode ? '#8884d8' : '#82ca9d'} animationDuration={500}>
+            {currentData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={getChartColor(entry.isNew)} />
+            ))}
+          </Bar>
+          <Legend
+            wrapperStyle={{ padding: 10 }}
+            iconType="circle"
+            iconSize={12}
+            formatter={(value, entry) => <span style={{ color: entry.color }}>{value}</span>}
+          />
+        </BarChart>
+      );
+    } else {
+      return (
+        <PieChart>
+          <Pie
+            data={currentData}
+            dataKey="intensity"
+            nameKey="year"
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill={darkMode ? '#8884d8' : '#82ca9d'}
+            animationDuration={500}
+            labelLine={false} // Disables label lines
+            label={({ name }) => <span style={{ fill: darkMode ? '#ddd' : '#555' }}>{name}</span>}
+          >
+            {currentData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={getChartColor(entry.isNew)} />
+            ))}
+          </Pie>
+          <Tooltip contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: '1px solid #ddd' }} />
+          <Legend
+            wrapperStyle={{ padding: 10 }}
+            iconType="circle"
+            iconSize={12}
+            formatter={(value, entry) => <span style={{ color: entry.color }}>{value}</span>}
+          />
+        </PieChart>
+      );
     }
   };
 
   return (
-    <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
-      <div className="flex justify-center mb-4 space-x-2">
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md shadow-md transition-all duration-300 ease-in-out 
-            ${showAll ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'}
-            ${darkMode ? 'text-white' : 'text-white'}`}
-        >
-          {showAll ? 'Show Less' : 'Show More'}
-        </button>
-        <button
-          onClick={() => setChartType(chartType === 'bar' ? 'pie' : 'bar')}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-purple-500 rounded-md shadow-md hover:scale-105 hover:bg-purple-600 focus:ring-4 focus:ring-purple-400"
-        >
-          {chartType === 'bar' ? (
-            <>
-              <FaChartPie className="inline-block mr-1 text-xs" />
-              Pie Chart
-            </>
-          ) : (
-            <>
-              <FaChartBar className="inline-block mr-1 text-xs" />
-              Bar Chart
-            </>
+    <div className={`p-4 rounded-lg shadow-lg transition-colors ${darkMode ? 'bg-dark-bg' : 'bg-light-bg'}`}>
+      {/* Controls Section */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={toggleChartType}
+            className={`flex items-center px-4 py-2 text-sm rounded-md font-semibold ${chartType === 'bar' ? 'bg-indigo-500' : 'bg-gray-500'} text-white transition-transform transform hover:scale-105`}
+            aria-label={`Switch to ${chartType === 'bar' ? 'Pie' : 'Bar'} Chart`}
+            title={`Switch to ${chartType === 'bar' ? 'Pie' : 'Bar'} Chart`}
+          >
+            {chartType === 'bar' ? <FaChartBar className="mr-2 text-lg" /> : <FaChartPie className="mr-2 text-lg" />}
+            {chartType === 'bar' ? 'Bar Chart' : 'Pie Chart'}
+          </button>
+      
+       
+          {currentIndex < data.length && (
+            <button
+              onClick={loadMore}
+              className="flex items-center px-3 py-1.5 text-sm text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
+              aria-label="Show More"
+            >
+              {loading ? <FaSpinner className="mr-2 text-base animate-spin" /> : 'Load More'}
+            </button>
           )}
-        </button>
-        <button
-          onClick={downloadChartAsImage}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-blue-500 rounded-md shadow-md hover:scale-105 hover:bg-blue-600 focus:ring-4 focus:ring-blue-400"
-        >
-          <FaDownload className="inline-block mr-1 text-xs" />
-          JPG
-        </button>
-        <button
-          onClick={downloadChartAsPDF}
-          className="px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 ease-in-out transform bg-green-500 rounded-md shadow-md hover:scale-105 hover:bg-green-600 focus:ring-4 focus:ring-green-400"
-        >
-          <FaDownload className="inline-block mr-1 text-xs" />
-          PDF
-        </button>
+          <button
+            onClick={() => downloadChart('jpeg')}
+            className="px-3 py-1.5 text-sm text-white transition-colors bg-purple-500 rounded-md hover:bg-purple-600"
+            aria-label="Download Chart as JPG"
+          >
+            <FaDownload className="inline-block mr-1 text-base" />
+            JPG
+          </button>
+          <button
+            onClick={() => downloadChart('pdf')}
+            className="px-3 py-1.5 text-sm text-white transition-colors bg-pink-500 rounded-md hover:bg-pink-600"
+            aria-label="Download Chart as PDF"
+          >
+            <FaDownload className="inline-block mr-1 text-base" />
+            PDF
+          </button>
+          </div>
+          
       </div>
-      <div
-        ref={chartRef} // Attach ref to chart container
-        className={`p-4 rounded-lg chart-container`} 
-        style={{ position: 'relative', height: '350px', width: '100%' }}
-      >
+
+      {/* Main Chart Section */}
+      <div ref={chartRef} className="relative h-96">
         <ResponsiveContainer width="100%" height="100%">
-          {chartType === 'bar' ? (
-            <BarChart data={displayedData} margin={{ top: 10, right: 20, left: 0, bottom: 30 }}>
-              {/* Removed the CartesianGrid component */}
-              <XAxis
-                dataKey="year"
-                tick={{ fill: darkMode ? '#ddd' : '#555', fontSize: 12 }}
-                axisLine={{ stroke: darkMode ? '#666' : '#ddd', strokeWidth: 1 }}
-                tickLine={{ stroke: darkMode ? '#666' : '#ddd' }}
-                label={{ value: 'Year', position: 'bottom', fill: darkMode ? '#ddd' : '#555', fontSize: 14 }}
-              />
-              <YAxis
-                tick={{ fill: darkMode ? '#ddd' : '#555', fontSize: 12 }}
-                axisLine={{ stroke: darkMode ? '#666' : '#ddd', strokeWidth: 1 }}
-                tickLine={{ stroke: darkMode ? '#666' : '#ddd' }}
-                label={{ value: 'Intensity', angle: -90, position: 'left', fill: darkMode ? '#ddd' : '#555', fontSize: 14 }}
-              />
-              <Tooltip
-                contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: `1px solid ${darkMode ? '#555' : '#ccc'}`, borderRadius: '8px' }}
-                labelStyle={{ color: darkMode ? '#fff' : '#000' }}
-                itemStyle={{ color: darkMode ? '#fff' : '#000' }}
-                cursor={false}
-              />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ color: darkMode ? '#ddd' : '#555' }} />
-              <Bar dataKey="intensity" fill={darkMode ? 'url(#gradient)' : '#8884d8'} animationDuration={1000}>
-                <LabelList dataKey="intensity" position="top" fill={darkMode ? '#ddd' : '#555'} fontSize={12} fontWeight="bold" />
-              </Bar>
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="5%" stopColor="#FF5722" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#FFC107" stopOpacity={0.8} />
-                </linearGradient>
-              </defs>
-            </BarChart>
-          ) : (
-            <PieChart>
-              <Tooltip
-                contentStyle={{ backgroundColor: darkMode ? '#333' : '#fff', border: `1px solid ${darkMode ? '#555' : '#ccc'}`, borderRadius: '8px' }}
-                labelStyle={{ color: darkMode ? '#fff' : '#000' }}
-                itemStyle={{ color: darkMode ? '#fff' : '#000' }}
-                cursor={false}
-              />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ color: darkMode ? '#ddd' : '#555' }} />
-              <Pie
-                data={displayedData}
-                dataKey="intensity"
-                fill={darkMode ? '#FFC107' : '#8884d8'}
-                label
-                animationDuration={1000}
-              />
-            </PieChart>
-          )}
+          {renderChart()}
         </ResponsiveContainer>
       </div>
     </div>

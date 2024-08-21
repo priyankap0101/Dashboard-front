@@ -268,43 +268,53 @@ const IntensityGraphChart = ({ data = sampleData }) => {
 
   return (
     <div className="p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg">
-    <div className="flex flex-wrap gap-2 mb-4">
-      <button
-        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-blue-500 rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
-        onClick={() => setShowAll((prev) => !prev)}
-      >
-        {showAll ? "Show Less" : "Show All"}
-      </button>
-      <button
-        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-green-500 rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
-        onClick={toggleChartType}
-      >
-        {chartType === "line" ? <FaChartBar /> : <FaChartLine />}
-      </button>
-      <button
-        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-yellow-500 rounded hover:bg-yellow-600 dark:bg-yellow-700 dark:hover:bg-yellow-800"
-        onClick={toggleFilter}
-      >
-        <FaFilter />
-      </button>
-      <button
-        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-red-500 rounded hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
-        onClick={downloadChartAsImage}
-      >
-        <FaDownload />
-      </button>
-      <button
-        className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-purple-500 rounded hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800"
-        onClick={downloadChartAsPDF}
-      >
-        <FaDownload />
-      </button>
-      <button
+      <div className="flex flex-wrap gap-2 mb-4">
+        <button
+           className={`w-20 h-7 text-xs font-semibold rounded-md shadow-lg transition-transform duration-300 transform hover:scale-105 
+            ${
+              showAll
+                ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
+                : "bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:from-blue-500 hover:to-blue-700"
+            } flex items-center justify-center`}
+          onClick={() => setShowAll((prev) => !prev)}
+        >
+          {showAll ? "Show Less" : "Show More"}
+        </button>
+        <button
+           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+          onClick={toggleChartType}
+        >
+          {chartType === "line" ? (
+            <>
+              <FaChartBar className="mr-1" />
+              Bar Chart
+            </>
+          ) : (
+            <>
+              <FaChartLine className="mr-1" />
+              Line Chart
+            </>
+          )}
+        </button>
+
+        <button
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
+          onClick={downloadChartAsImage}
+        >
+          JPG <FaDownload />
+        </button>
+        <button
+         className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
+          onClick={downloadChartAsPDF}
+        >
+          Download <FaDownload />
+        </button>
+        {/* <button
         className="inline-flex items-center px-2 py-1 text-sm font-medium text-center text-white bg-gray-500 rounded hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-900"
         onClick={() => window.location.reload()}
       >
         <FaSyncAlt />
-      </button>
+      </button> */}
       </div>
       <ResponsiveContainer width="100%" height={400}>
         {renderChart()}

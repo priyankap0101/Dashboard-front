@@ -38,74 +38,103 @@ const LikelihoodChart = ({ data, darkMode }) => {
     ? likelihoodData
     : likelihoodData.slice(0, initialDataCount);
 
-  const chartData = {
-    labels: displayedData.map((item) => item.label),
-    datasets: [
-      {
-        label: "Likelihood Distribution",
-        data: displayedData.map((item) => item.value),
-        borderColor: darkMode ? "#60A5FA" : "#4B5563",
-        backgroundColor: darkMode
-          ? [
-              "rgba(75, 85, 99, 0.8)",
-              "rgba(234, 88, 12, 0.8)",
-              "rgba(16, 185, 129, 0.8)",
-              "rgba(250, 204, 21, 0.8)",
-              "rgba(139, 92, 246, 0.8)",
-            ]
-          : [
-              "rgba(75, 85, 99, 0.6)",
-              "rgba(255, 159, 64, 0.6)",
-              "rgba(153, 102, 255, 0.6)",
-              "rgba(255, 205, 86, 0.6)",
-              "rgba(201, 203, 207, 0.6)",
-            ],
-        borderWidth: 2,
-        hoverBackgroundColor: darkMode ? "#60A5FA" : "#60A5FA",
-        hoverBorderColor: darkMode ? "#60A5FA" : "#60A5FA",
-        hoverBorderWidth: 3,
-      },
-    ],
-  };
-
-  const options = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}`,
+    const chartData = {
+      labels: displayedData.map((item) => item.label),
+      datasets: [
+        {
+          label: "Likelihood Distribution",
+          data: displayedData.map((item) => item.value),
+          borderColor: darkMode ? "#9CA3AF" : "#2D3748", // Subtle borders for better contrast
+          backgroundColor: darkMode
+            ? [
+                "rgba(96, 165, 250, 0.8)", // Soft blue
+                "rgba(234, 88, 12, 0.8)", // Soft orange
+                "rgba(16, 185, 129, 0.8)", // Soft green
+                "rgba(250, 204, 21, 0.8)", // Soft yellow
+                "rgba(139, 92, 246, 0.8)", // Soft purple
+              ]
+            : [
+                "rgba(75, 85, 99, 0.6)", // Soft grayish blue
+                "rgba(255, 159, 64, 0.6)", // Soft orange
+                "rgba(153, 102, 255, 0.6)", // Soft purple
+                "rgba(255, 205, 86, 0.6)", // Soft yellow
+                "rgba(201, 203, 207, 0.6)", // Soft gray
+              ],
+          borderWidth: 2,
+          hoverBackgroundColor: darkMode
+            ? "rgba(96, 165, 250, 0.9)" // Slightly brighter blue
+            : "rgba(96, 165, 250, 0.8)", // Slightly muted blue
+          hoverBorderColor: darkMode ? "#BFDBFE" : "#63B3ED", // Lighter shade on hover
+          hoverBorderWidth: 3,
+          hoverOffset: 8,
         },
-        backgroundColor: darkMode ? "#1F2937" : "#F9FAFB",
-        titleColor: darkMode ? "#D1D5DB" : "#1F2937",
-        bodyColor: darkMode ? "#D1D5DB" : "#1F2937",
-        borderColor: darkMode ? "#4B5563" : "#4B5563",
-        borderWidth: 1,
-      },
-      legend: {
-        position: "top",
-        labels: {
-          font: {
-            size: 14,
-            weight: "bold",
+      ],
+    };
+    
+    const options = {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}`,
           },
-          color: darkMode ? "#D1D5DB" : "#374151",
+          backgroundColor: darkMode
+            ? "rgba(31, 41, 55, 0.9)" // Darker background for tooltips
+            : "rgba(255, 255, 255, 0.9)", // Lighter background for tooltips
+          titleColor: darkMode ? "#E5E7EB" : "#2D3748", // Light text on dark background and dark text on light background
+          bodyColor: darkMode ? "#E5E7EB" : "#2D3748",
+          borderColor: darkMode ? "#4B5563" : "#E2E8F0", // Slightly lighter border
+          borderWidth: 1.5,
+          borderRadius: 6,
+          titleFont: {
+            size: 14,
+            weight: "600",
+          },
+          bodyFont: {
+            size: 12,
+          },
+        },
+        legend: {
+          position: "top",
+          labels: {
+            font: {
+              size: 15,
+              weight: "bold",
+            },
+            color: darkMode ? "#E5E7EB" : "#2D3748", // Light text on dark background and dark text on light background
+            padding: 16,
+          },
         },
       },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    layout: {
-      padding: 0,
-    },
-    elements: {
-      arc: {
-        borderWidth: 2,
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 20,
+          bottom: 20,
+        },
       },
-    },
-    animation: {
-      duration: 1000,
-    },
-    backgroundColor: "transparent",
-  };
+      elements: {
+        arc: {
+          borderWidth: 2,
+          hoverBorderWidth: 3,
+          hoverBackgroundColor: darkMode
+            ? "rgba(96, 165, 250, 0.9)" // Brighter blue on hover
+            : "rgba(96, 165, 250, 0.8)", // Muted blue on hover
+          shadowOffsetX: 2,
+          shadowOffsetY: 2,
+          shadowBlur: 6,
+          shadowColor: darkMode ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.1)", // Subtle shadow for light mode
+        },
+      },
+      animation: {
+        duration: 1200,
+        easing: "easeInOutQuad",
+      },
+      backgroundColor: "transparent",
+    };
+    
+
+    
 
   useEffect(() => {
     const canvasElements = document.querySelectorAll("canvas");
@@ -173,7 +202,7 @@ const LikelihoodChart = ({ data, darkMode }) => {
           : "bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:from-blue-500 hover:to-blue-700"
       } flex items-center justify-center`}
   >
-    {showAll ? "Show Less" : "Show All"}
+    {showAll ? "Show Less" : "Show More"}
   </button>
   <button
     onClick={() =>
@@ -188,7 +217,7 @@ const LikelihoodChart = ({ data, darkMode }) => {
     onClick={downloadChartAsImage}
     className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
   >
-    Image <FaDownload className="inline-block ml-1" />
+    JPG <FaDownload className="inline-block ml-1" />
   </button>
   <button
     onClick={downloadChartAsPDF}
