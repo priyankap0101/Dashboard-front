@@ -1,5 +1,3 @@
-/* eslint-disable no-case-declarations */
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { getData } from "../services/dataService";
 import IntensityChart from "./IntensityChart";
@@ -15,19 +13,20 @@ import JSZip from "jszip";
 import { exportToCSV, exportToPDF } from "../utils/exportUtils";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiXCircle } from "react-icons/fi";
 import { motion } from "framer-motion";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
+import Skeleton from "react-loading-skeleton"; // For modern loading
+import "react-loading-skeleton/dist/skeleton.css"; // Ensure you include skeleton CSS
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [sortOption, setSortOption] = useState("topic"); // New state for sorting
+  const [sortOption, setSortOption] = useState("topic");
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAllCharts, setShowAllCharts] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,14 +48,12 @@ const Dashboard = () => {
     const applyFiltersAndSort = () => {
       let filteredResult = data;
 
-      // Apply search filter
       if (searchTerm) {
         filteredResult = filteredResult.filter((item) =>
           item.topic.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
 
-      // Sort data
       if (sortOption) {
         filteredResult = filteredResult.sort((a, b) => {
           if (a[sortOption] < b[sortOption]) return -1;
@@ -120,20 +117,31 @@ const Dashboard = () => {
       />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex-1 p-4 lg:p-6">
+        <main className="flex-1 p-6">
           <header className="flex items-center justify-between mb-6">
-            <h1 className="text-4xl font-bold">Data Visualization Dashboard</h1>
-            <input
-              type="text"
-              className={`w-full md:w-80 p-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 ${
-                darkMode
-                  ? "bg-gray-800 text-gray-200 focus:ring-blue-500"
-                  : "bg-white text-gray-800 focus:ring-blue-500"
-              }`}
-              placeholder="Search by topic..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <h1 className="text-3xl font-bold">Data Visualization Dashboard</h1>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                className={`w-full md:w-80 p-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 ${
+                  darkMode
+                    ? "bg-gray-800 text-gray-200 focus:ring-blue-500"
+                    : "bg-white text-gray-800 focus:ring-blue-500"
+                }`}
+                placeholder="Search by topic..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="absolute text-gray-500 transform -translate-y-1/2 right-2 top-1/2 hover:text-gray-700"
+                  aria-label="Clear search"
+                >
+                  <FiXCircle size={20} />
+                </button>
+              )}
+            </div>
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
@@ -151,82 +159,84 @@ const Dashboard = () => {
 
           {loading ? (
             <div className="flex items-center justify-center h-64">
-              <ClipLoader color={"#4A90E2"} loading={loading} size={150} />
+              <ClipLoader color={darkMode ? "#ffffff" : "#000000"} loading={loading} size={50} />
             </div>
           ) : (
             <>
               <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-2">
-                {[
+                {(showAllCharts ? [
                   { component: IntensityChart, name: "Intensity Chart" },
                   { component: LikelihoodChart, name: "Likelihood Chart" },
                   { component: RelevanceChart, name: "Relevance Chart" },
-                  { component: YearlyTrendsChart, name: "Yearly Trends Chart" },
-                ].map(({ component: ChartComponent, name }, index) => (
+                  { component: YearlyTrendsChart, name: "Yearly Trends Chart" }
+                ] : [
+                  { component: IntensityChart, name: "Intensity Chart" },
+                  { component: LikelihoodChart, name: "Likelihood Chart" }
+                ]).map(({ component: ChartComponent, name }, index) => (
                   <motion.div
                     key={index}
+                    whileHover={{ scale: 1.05, boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}
                     className={`p-6 rounded-lg shadow-lg ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
+                    aria-label={name}
                   >
-                    <h2 className="mb-4 text-2xl font-semibold">{name}</h2>
+                    <h2 className="mb-4 text-xl font-semibold">{name}</h2>
                     <ChartComponent data={filteredData} />
                   </motion.div>
                 ))}
               </section>
 
-              <div className="flex justify-end mb-4">
-                <button
-                  className="flex items-center p-3 text-white bg-gray-800 rounded-md hover:bg-gray-700"
-                  onClick={() => setShowExportMenu(!showExportMenu)}
-                >
-                  <FiDownload className="inline-block mr-2" />
-                  Export
-                </button>
-              </div>
-
-              {showExportMenu && (
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={`p-4 mb-4 rounded-lg shadow-lg ${
-                    darkMode ? "bg-gray-800" : "bg-white"
-                  }`}
-                >
+              {!showAllCharts && (
+                <div className="flex justify-center mb-4">
                   <button
-                    className={`block w-full p-2 mb-2 rounded-md ${
-                      darkMode
-                        ? "bg-blue-500 hover:bg-blue-600 text-white"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                    }`}
-                    onClick={() => handleExport("csv")}
+                    className="p-3 text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
+                    onClick={() => setShowAllCharts(true)}
+                    aria-label="Show more charts"
                   >
-                    Export as CSV
+                    Show More
                   </button>
-                  <button
-                    className={`block w-full p-2 mb-2 rounded-md ${
-                      darkMode
-                        ? "bg-blue-500 hover:bg-blue-600 text-white"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                    }`}
-                    onClick={() => handleExport("pdf")}
-                  >
-                    Export as PDF
-                  </button>
-                  <button
-                    className={`block w-full p-2 mb-2 rounded-md ${
-                      darkMode
-                        ? "bg-blue-500 hover:bg-blue-600 text-white"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                    }`}
-                    onClick={() => handleExport("zip")}
-                  >
-                    Export as ZIP
-                  </button>
-                </motion.div>
+                </div>
               )}
             </>
           )}
+
+          <div className="fixed bottom-4 right-4">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="p-3 text-white transition-transform transform bg-blue-600 rounded-full hover:bg-blue-700 hover:scale-105"
+              aria-label="Export options"
+            >
+              <FiDownload size={24} />
+            </button>
+            {showExportMenu && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="absolute right-0 bg-white border border-gray-300 rounded-md shadow-lg bottom-14"
+              >
+                <button
+                  onClick={() => handleExport("csv")}
+                  className="w-full p-2 text-left hover:bg-gray-100"
+                >
+                  Export as CSV
+                </button>
+                <button
+                  onClick={() => handleExport("pdf")}
+                  className="w-full p-2 text-left hover:bg-gray-100"
+                >
+                  Export as PDF
+                </button>
+                <button
+                  onClick={() => handleExport("zip")}
+                  className="w-full p-2 text-left hover:bg-gray-100"
+                >
+                  Export as ZIP
+                </button>
+              </motion.div>
+            )}
+          </div>
         </main>
       </div>
       <ToastContainer />
