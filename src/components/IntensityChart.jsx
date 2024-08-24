@@ -1,350 +1,213 @@
-/* eslint-disable react/prop-types */
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
   BarChart,
   Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
   LabelList,
-  Brush,
 } from "recharts";
-import { FaChartLine, FaChartBar, FaDownload } from "react-icons/fa";
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { FixedSizeList as List } from "react-window";
+import { jsPDF } from "jspdf";
+import { FaDownload, FaExchangeAlt } from "react-icons/fa";
 
-const styles = {
-  container: {
-    padding: '20px',
-    fontFamily: 'Arial, sans-serif',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-  },
-  buttonContainer: {
-    display: 'flex',
-    gap: '10px',
-    marginBottom: '20px',
-    flexWrap: 'wrap',
-  },
-  button: {
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '500',
-    transition: 'background-color 0.3s, transform 0.2s',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  buttonHover: {
-    backgroundColor: '#0056b3',
-    transform: 'scale(1.05)',
-  },
-  listContainer: {
-    marginBottom: '20px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-    maxHeight: '300px', // Set max height for scroll
-    overflowY: 'auto',  // Enable vertical scroll
-  },
-  listItem: {
-    padding: '15px',
-    borderBottom: '1px solid #eee',
-    fontSize: '14px',
-    color: '#333',
-    backgroundColor: '#fafafa',
-    transition: 'background-color 0.3s',
-  },
-  listItemHover: {
-    backgroundColor: '#e0e0e0',
-  },
-  chartContainer: {
-    height: '500px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-  },
-};
+const IntensityGraphChart = ({ data, darkMode }) => {
+  const [chartType, setChartType] = useState("bar");
+  const [visibleData, setVisibleData] = useState(data.slice(0, 5));
+  const [loading, setLoading] = useState(false);
 
-const sampleData = [
-  { topic: "Topic 1", intensity: 4 },
-  { topic: "Topic 2", intensity: 7 },
-  { topic: "Topic 3", intensity: 6 },
-  { topic: "Topic 4", intensity: 8 },
-  { topic: "Topic 5", intensity: 5 },
-  { topic: "Topic 6", intensity: 9 },
-  { topic: "Topic 7", intensity: 6 },
-  // Add more data here for testing
-];
+  const styles = {
+    container: {
+      padding: "20px",
+      backgroundColor: darkMode ? "#1e1e1e" : "#ffffff", // Dark mode background
+      borderRadius: "8px",
+      boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
+      maxWidth: "1000px",
+      margin: "auto",
+    },
+    buttonContainer: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between", // Space buttons evenly
+      marginBottom: "20px",
+    },
+    button: {
+      padding: "4px 8px", // Reduced padding
+      backgroundColor: darkMode ? "#3a3a3a" : "#007bff", // Dark mode button color
+      color: darkMode ? "#ffffff" : "#ffffff", // Dark mode text color
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      fontSize: "10px", // Further reduced font size
+      display: "flex",
+      alignItems: "center",
+      transition: "background-color 0.3s ease, transform 0.2s ease",
+      width: "100px", // Further reduced width
+      textAlign: "center",
+      marginRight: "8px", // Margin between buttons
+    },
+    buttonHover: {
+      backgroundColor: darkMode ? "#4a4a4a" : "#0056b3", // Dark mode hover color
+    },
+    buttonActive: {
+      transform: "scale(0.98)",
+    },
+    loadMoreButton: {
+      padding: "4px 8px", // Reduced padding
+      backgroundColor: darkMode ? "#4caf50" : "#28a745", // Dark mode button color
+      color: "#ffffff",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      transition: "background-color 0.3s ease",
+      width: "100px", // Further reduced width
+      textAlign: "center",
+    },
+    loadingSpinner: {
+      border: "2px solid #f3f3f3",
+      borderRadius: "50%",
+      borderTop: `2px solid ${darkMode ? "#007bff" : "#007bff"}`, // Spinner color
+      width: "10px",
+      height: "10px",
+      animation: "spin 2s linear infinite",
+    },
+    chartContainer: {
+      height: "400px",
+      marginTop: "20px",
+    },
+    chart: {
+      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff", // Dark mode chart background
+      borderRadius: "8px",
+      boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
+    },
+    buttonIcon: {
+      marginRight: "2px", // Further reduced margin between icon and text
+    },
+  };
 
-const IntensityGraphChart = ({ data = sampleData }) => {
-  const [visibleDataCount, setVisibleDataCount] = useState(5);
-  const [chartType, setChartType] = useState("line");
-  const [filter, setFilter] = useState("all");
+  const handleLoadMore = () => {
+    if (loading || visibleData.length >= data.length) return;
 
-  const getFilteredData = useMemo(() => {
-    return filter === "all"
-      ? data
-      : data.filter((d) => d.intensity > 5);
-  }, [filter, data]);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisibleData((prevData) => {
+        const nextIndex = prevData.length;
+        const newData = [
+          ...prevData.slice(1),
+          { ...data[nextIndex], isNew: true },
+        ];
+        return newData;
+      });
+    }, 1000);
+  };
 
-  const filteredData = getFilteredData;
+  const toggleChartType = () => {
+    setChartType((prevType) => (prevType === "line" ? "bar" : "line"));
+  };
 
-  const handleLoadMore = useCallback(() => {
-    setVisibleDataCount((prevCount) => Math.min(prevCount + 1, filteredData.length));
-  }, [filteredData.length]);
+  const handleExportPDF = () => {
+    const input = document.getElementById("chart-container");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      pdf.addImage(imgData, "PNG", 10, 10, 190, 100);
+      pdf.save("chart.pdf");
+    });
+  };
 
-  const displayedData = filteredData.slice(-visibleDataCount);
+  const handleExportImage = () => {
+    const input = document.getElementById("chart-container");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "chart.png";
+      link.click();
+    });
+  };
 
-  const chartData = useMemo(() => {
-    return displayedData.map((item, index) => ({
-      name: item.topic || `Topic ${index + 1}`,
-      intensity: item.intensity || 0,
-    }));
-  }, [displayedData]);
-
-  const renderChart = (chartDataSubset) => {
+  const renderChart = (data) => {
     switch (chartType) {
-      case "line":
-        return (
-          <LineChart
-            data={chartDataSubset}
-            margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
-            style={styles.chartContainer}
-          >
-            <XAxis
-              dataKey="name"
-              tick={{ fill: "#333", fontSize: "12px" }}
-              axisLine={false}
-              tickLine={false}
-              label={{
-                value: "Topics",
-                position: "bottom",
-                fill: "#333",
-                fontSize: "14px",
-              }}
-            />
-            <YAxis
-              tick={{ fill: "#333", fontSize: "12px" }}
-              axisLine={false}
-              tickLine={false}
-              label={{
-                value: "Intensity",
-                angle: -90,
-                position: "left",
-                fill: "#333",
-                fontSize: "14px",
-              }}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#fff",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                fontSize: "12px",
-              }}
-              labelStyle={{ color: "#333", fontSize: "12px" }}
-              itemStyle={{ color: "#333", fontSize: "12px" }}
-              formatter={(value) => [`Intensity: ${value}`, ""]}
-            />
-            <Legend
-              wrapperStyle={{ bottom: 0, left: 0 }}
-              align="left"
-              verticalAlign="bottom"
-            />
-            <Line
-              type="monotone"
-              dataKey="intensity"
-              stroke="url(#lineGradient)"
-              strokeWidth={2}
-              dot={{ stroke: "#007bff", strokeWidth: 2, r: 4, fill: "#fff" }}
-              activeDot={{ r: 6, stroke: "#007bff", strokeWidth: 2 }}
-            >
-              <LabelList dataKey="intensity" position="top" fontSize={10} />
-            </Line>
-            <defs>
-              <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#007bff" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <Brush dataKey="name" height={20} stroke="#8884d8" />
-          </LineChart>
-        );
       case "bar":
         return (
-          <BarChart
-            data={chartDataSubset}
-            margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
-            style={styles.chartContainer}
-          >
-            <XAxis
-              dataKey="name"
-              tick={{ fill: "#333", fontSize: "12px" }}
-              axisLine={false}
-              tickLine={false}
-              label={{
-                value: "Topics",
-                position: "bottom",
-                fill: "#333",
-                fontSize: "14px",
-              }}
-            />
-            <YAxis
-              tick={{ fill: "#333", fontSize: "12px" }}
-              axisLine={false}
-              tickLine={false}
-              label={{
-                value: "Intensity",
-                angle: -90,
-                position: "left",
-                fill: "#333",
-                fontSize: "14px",
-              }}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#fff",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                fontSize: "12px",
-              }}
-              labelStyle={{ color: "#333", fontSize: "12px" }}
-              itemStyle={{ color: "#333", fontSize: "12px" }}
-              formatter={(value) => [`Intensity: ${value}`, ""]}
-            />
-            <Legend
-              wrapperStyle={{ bottom: 0, left: 0 }}
-              align="left"
-              verticalAlign="bottom"
-            />
-            <Bar
-              dataKey="intensity"
-              fill="url(#barGradient)"
-              barSize={20}
-              radius={[5, 5, 0, 0]}
-            >
-              <LabelList dataKey="intensity" position="top" fontSize={10} />
+          <BarChart data={data} style={styles.chart}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="intensity" fill="#ff7f0e">
+              <LabelList dataKey="intensity" position="top" />
             </Bar>
-            <defs>
-              <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#007bff" stopOpacity={0} />
-              </linearGradient>
-            </defs>
           </BarChart>
+        );
+      case "line":
+        return (
+          <LineChart data={data} style={styles.chart}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="intensity" stroke="#1f77b4" strokeWidth={2}>
+              <LabelList dataKey="intensity" position="top" />
+            </Line>
+          </LineChart>
         );
       default:
         return null;
     }
   };
 
-  const downloadChartAsImage = () => {
-    const chartElement = document.querySelector(".recharts-responsive-container");
-    if (chartElement) {
-      html2canvas(chartElement).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = imgData;
-        link.download = "chart.png";
-        link.click();
-      });
-    }
-  };
-
-  const downloadChartAsPDF = () => {
-    const chartElement = document.querySelector(".recharts-responsive-container");
-    if (chartElement) {
-      html2canvas(chartElement).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        const imgWidth = 210;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const pageHeight = 295;
-        let heightLeft = imgHeight;
-        let position = 0;
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-        pdf.save("chart.pdf");
-      });
-    }
-  };
-
-  const Row = ({ index, style }) => (
-    <div
-      style={{
-        ...styles.listItem,
-        ...style,
-        ':hover': styles.listItemHover,
-      }}
-    >
-      {displayedData[index].topic} - Intensity: {displayedData[index].intensity}
-    </div>
-  );
-
   return (
-    <div style={styles.container}>
+    <div style={styles.container} >
       <div style={styles.buttonContainer}>
         <button
-          onClick={downloadChartAsImage}
           style={styles.button}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
+          onClick={toggleChartType}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
+          onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaDownload style={{ marginRight: '8px' }} />Image
+          <FaExchangeAlt style={styles.buttonIcon} /> Switch
         </button>
         <button
-          onClick={downloadChartAsPDF}
           style={styles.button}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
+          onClick={handleExportImage}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
+          onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaDownload style={{ marginRight: '8px' }} />PDF
+          <FaDownload style={styles.buttonIcon} /> Image
         </button>
         <button
-          onClick={() => setFilter(filter === "all" ? "intensity" : "all")}
           style={styles.button}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
+          onClick={handleExportPDF}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
+          onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          Filter: {filter === "all" ? "High Intensity" : "All"}
+          <FaDownload style={styles.buttonIcon} /> PDF
         </button>
-        <button
-          onClick={handleLoadMore}
-          style={styles.button}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
-        >
-          Load More
-        </button>
+        {data.length > 5 && (
+          <button
+            style={styles.loadMoreButton}
+            onClick={handleLoadMore}
+            disabled={loading}
+          >
+            {loading ? <div style={styles.loadingSpinner}></div> : "Load More"}
+          </button>
+        )}
       </div>
-      <div style={styles.listContainer}>
-        <List height={300} itemCount={displayedData.length} itemSize={60} width={1000}>
-          {Row}
-        </List>
-      </div>
-      <div style={styles.chartContainer}>
-        <ResponsiveContainer width="100%" height="100%">
-          {renderChart(chartData)}
+      <div id="chart-container" style={styles.chartContainer}>
+        <ResponsiveContainer>
+          {renderChart(visibleData)}
         </ResponsiveContainer>
       </div>
     </div>

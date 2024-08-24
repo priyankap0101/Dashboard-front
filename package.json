@@ -46,6 +46,7 @@
     "react-loading-skeleton": "^3.4.0",
     "react-multi-select-component": "^4.3.4",
     "react-resizable": "^3.0.5",
+    "react-responsive": "^10.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
     "react-slick": "^0.30.2",
