@@ -23,7 +23,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   const styles = {
     container: {
       padding: "20px",
-      backgroundColor: darkMode ? "#1e1e1e" : "#ffffff", // Dark mode background
+      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff",
       borderRadius: "8px",
       boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
       maxWidth: "1000px",
@@ -32,45 +32,45 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     buttonContainer: {
       display: "flex",
       alignItems: "center",
-      justifyContent: "space-between", // Space buttons evenly
+      justifyContent: "space-between",
       marginBottom: "20px",
     },
     button: {
-      padding: "4px 8px", // Reduced padding
-      backgroundColor: darkMode ? "#3a3a3a" : "#007bff", // Dark mode button color
-      color: darkMode ? "#ffffff" : "#ffffff", // Dark mode text color
+      padding: "4px 8px",
+      backgroundColor: darkMode ? "#3a3a3a" : "#007bff",
+      color: "#ffffff",
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
-      fontSize: "10px", // Further reduced font size
+      fontSize: "10px",
       display: "flex",
       alignItems: "center",
       transition: "background-color 0.3s ease, transform 0.2s ease",
-      width: "100px", // Further reduced width
+      width: "100px",
       textAlign: "center",
-      marginRight: "8px", // Margin between buttons
+      marginRight: "8px",
     },
     buttonHover: {
-      backgroundColor: darkMode ? "#4a4a4a" : "#0056b3", // Dark mode hover color
+      backgroundColor: darkMode ? "#4a4a4a" : "#0056b3",
     },
     buttonActive: {
       transform: "scale(0.98)",
     },
     loadMoreButton: {
-      padding: "4px 8px", // Reduced padding
-      backgroundColor: darkMode ? "#4caf50" : "#28a745", // Dark mode button color
+      padding: "4px 8px",
+      backgroundColor: darkMode ? "#4caf50" : "#28a745",
       color: "#ffffff",
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
       transition: "background-color 0.3s ease",
-      width: "100px", // Further reduced width
+      width: "100px",
       textAlign: "center",
     },
     loadingSpinner: {
       border: "2px solid #f3f3f3",
       borderRadius: "50%",
-      borderTop: `2px solid ${darkMode ? "#007bff" : "#007bff"}`, // Spinner color
+      borderTop: `2px solid ${darkMode ? "#007bff" : "#007bff"}`,
       width: "10px",
       height: "10px",
       animation: "spin 2s linear infinite",
@@ -78,14 +78,13 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     chartContainer: {
       height: "400px",
       marginTop: "20px",
-    },
-    chart: {
-      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff", // Dark mode chart background
+      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff", // Updated background color based on darkMode
       borderRadius: "8px",
       boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
+      padding: "10px", // Add padding to avoid cutting off chart edges
     },
     buttonIcon: {
-      marginRight: "2px", // Further reduced margin between icon and text
+      marginRight: "2px",
     },
   };
 
@@ -135,25 +134,29 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     switch (chartType) {
       case "bar":
         return (
-          <BarChart data={data} style={styles.chart}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
+          <BarChart
+            data={data}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
+            <XAxis dataKey="name" stroke={darkMode ? "#ffffff" : "#000000"} />
+            <YAxis stroke={darkMode ? "#ffffff" : "#000000"} />
+            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#ffffff" : "#000000" }} />
             <Bar dataKey="intensity" fill="#ff7f0e">
-              <LabelList dataKey="intensity" position="top" />
+              <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} />
             </Bar>
           </BarChart>
         );
       case "line":
         return (
-          <LineChart data={data} style={styles.chart}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
+          <LineChart
+            data={data}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
+            <XAxis dataKey="name" stroke={darkMode ? "#ffffff" : "#000000"} />
+            <YAxis stroke={darkMode ? "#ffffff" : "#000000"} />
+            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#ffffff" : "#000000" }} />
             <Line type="monotone" dataKey="intensity" stroke="#1f77b4" strokeWidth={2}>
-              <LabelList dataKey="intensity" position="top" />
+              <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} />
             </Line>
           </LineChart>
         );
@@ -163,7 +166,8 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div style={styles.container} >
+    <div style={styles.container}>
+
       <div style={styles.buttonContainer}>
         <button
           style={styles.button}
@@ -195,18 +199,21 @@ const IntensityGraphChart = ({ data, darkMode }) => {
         >
           <FaDownload style={styles.buttonIcon} /> PDF
         </button>
-        {data.length > 5 && (
+        {visibleData.length < data.length && (
           <button
             style={styles.loadMoreButton}
             onClick={handleLoadMore}
-            disabled={loading}
           >
-            {loading ? <div style={styles.loadingSpinner}></div> : "Load More"}
+            {loading ? (
+              <span style={styles.loadingSpinner}></span>
+            ) : (
+              "Load More"
+            )}
           </button>
         )}
       </div>
       <div id="chart-container" style={styles.chartContainer}>
-        <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
           {renderChart(visibleData)}
         </ResponsiveContainer>
       </div>
