@@ -1,33 +1,34 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Sector
 } from 'recharts';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { FaDownload, FaChartPie, FaChartLine } from 'react-icons/fa';
+import { FaDownload, FaChartPie } from 'react-icons/fa';
+import { MdRadar } from 'react-icons/md';
 
-// Define colors for light and dark modes
 const LIGHT_MODE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4D4F'];
 const DARK_MODE_COLORS = ['#4B77BE', '#5B8C5A', '#F1C40F', '#E67E22', '#C0392B'];
-const LIGHT_CHART_BACKGROUND_COLOR = '#ffffff'; // Light background for charts
-const DARK_CHART_BACKGROUND_COLOR = '#2D2D2D'; // Dark background for charts
+const LIGHT_CHART_BACKGROUND_COLOR = '#E5E7EB'; // Light mode background color
+const DARK_CHART_BACKGROUND_COLOR = '#2D3748'; // Dark mode background color
 
 const RelevanceChart = ({ data = [], darkMode }) => {
-  const [displayedData, setDisplayedData] = useState(data.slice(0, 5));
+  const [displayedData, setDisplayedData] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [chartType, setChartType] = useState('pie');
   const chartRef = useRef(null);
 
+  useEffect(() => {
+    loadMoreData();
+  }, [data]);
+
   const loadMoreData = () => {
-    setDisplayedData((prevData) => {
-      if (startIndex + prevData.length >= data.length) return prevData;
+    if (startIndex + 5 > data.length) return;
 
-      const newData = data.slice(startIndex + 1, startIndex + 6);
-      setStartIndex((prevStartIndex) => prevStartIndex + 1);
-
-      return newData;
-    });
+    const newData = data.slice(startIndex, startIndex + 5);
+    setDisplayedData(newData);
+    setStartIndex((prevStartIndex) => prevStartIndex + 5);
   };
 
   const downloadChartAsImage = () => {
@@ -73,108 +74,187 @@ const RelevanceChart = ({ data = [], darkMode }) => {
     }
   };
 
-  return (
-    <div className={`p-6 rounded-lg shadow-lg ${darkMode ? 'bg-dark-bg' : 'bg-light-bg'}`}>
-      <div className="flex justify-center mb-4 space-x-2">
-        <button
-          onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
-          className="flex items-center justify-center text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg w-28 h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+  const renderActiveShape = (props) => {
+    const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload } = props;
+    const RADIAN = Math.PI / 180;
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius + 15) * cos;
+    const sy = cy + (outerRadius + 15) * sin;
+    const ex = cx + (outerRadius + 25) * cos;
+    const ey = cy + (outerRadius + 25) * sin;
+    const textAnchor = cos >= 0 ? 'start' : 'end';
+
+    return (
+      <g>
+        <text
+          x={ex}
+          y={ey}
+          dy={8}
+          textAnchor={textAnchor}
+          fill={fill}
+          fontSize={12}
+          fontWeight="bold"
         >
-          {chartType === 'pie' ? (
-            <>
-              <FaChartPie className="inline-block mr-1 text-sm" />
-              Radar Chart
-            </>
-          ) : (
-            <>
-              <FaChartLine className="inline-block mr-1 text-sm" />
-              Pie Chart
-            </>
-          )}
-        </button>
-        <button
-          onClick={downloadChartAsImage}
-          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
-        >
-          <FaDownload className="inline-block mr-1 text-sm" />
-          JPG
-        </button>
-        <button
-          onClick={downloadChartAsPDF}
-          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
-        >
-          <FaDownload className="inline-block mr-1 text-sm" />
-          PDF
-        </button>
-      </div>
-      <div ref={chartRef} className="chart-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
-        <ResponsiveContainer width="100%" height="100%">
-          {chartType === 'pie' ? (
-            <PieChart>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: darkMode ? '#444' : '#fff',
-                  border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
-                  borderRadius: '8px',
-                }}
-                formatter={(value, name) => [`${value}`, `${name}: ${value} (${(value / data.reduce((acc, item) => acc + item.relevance, 0) * 100).toFixed(1)}%)`]}
-                labelFormatter={(label) => `Topic: ${label}`}
-              />
-              <Pie
-                data={displayedData}
-                dataKey="relevance"
-                nameKey="topic"
-                outerRadius={120}
-                fill={darkMode ? '#FFC107' : '#FF7F0E'}
-                label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(1)}%)`}
-              >
-                {displayedData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={darkMode ? DARK_MODE_COLORS[index % DARK_MODE_COLORS.length] : LIGHT_MODE_COLORS[index % LIGHT_MODE_COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                wrapperStyle={{ color: darkMode ? '#ccc' : '#000' }}
-                formatter={(value) => `Topic: ${value}`}
-              />
-            </PieChart>
-          ) : (
-            <RadarChart outerRadius={150} width={500} height={500} data={displayedData}>
-              <PolarGrid stroke={darkMode ? '#555' : '#ddd'} />
-              <PolarAngleAxis dataKey="topic" stroke={darkMode ? '#ccc' : '#000'} />
-              <PolarRadiusAxis angle={30} stroke={darkMode ? '#ccc' : '#000'} />
-              <Radar
-                name="Relevance"
-                dataKey="relevance"
-                stroke={darkMode ? '#FFC107' : '#FF7F0E'}
-                fill={darkMode ? '#FFC107' : '#FF7F0E'}
-                fillOpacity={0.6}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: darkMode ? '#444' : '#fff',
-                  border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
-                  borderRadius: '8px',
-                }}
-                formatter={(value, name) => [`${value}`, `Relevance: ${value}`]}
-                labelFormatter={(label) => `Topic: ${label}`}
-              />
-            </RadarChart>
-          )}
+          {payload.name}
+        </text>
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius + 15}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={fill}
+        />
+        <Sector
+          cx={cx}
+          cy={cy}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
+          fill={fill}
+          opacity={0.5}
+        />
+      </g>
+    );
+  };
+
+  const renderChart = () => {
+    if (!displayedData || displayedData.length === 0) {
+      return <p className="text-center text-gray-600 dark:text-gray-300">No data available</p>;
+    }
+
+    if (chartType === 'pie') {
+      return (
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? '#333' : '#fff',
+                border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
+                borderRadius: '8px',
+                padding: '10px',
+                fontSize: '12px',
+                color: darkMode ? "#E5E7EB" : "#2D3748",
+              }}
+              formatter={(value, name) => [`${value}`, `${name}: ${value} (${(value / data.reduce((acc, item) => acc + item.relevance, 0) * 100).toFixed(1)}%)`]}
+              labelFormatter={(label) => `Topic: ${label}`}
+            />
+            <Pie
+              data={displayedData}
+              dataKey="relevance"
+              nameKey="topic"
+              outerRadius={80}
+              fill={"#FF0000"}
+              labelLine={false}
+              label={({ cx, cy, midAngle, innerRadius, outerRadius, value, name }) => {
+                const RADIAN = Math.PI / 180;
+                const sin = Math.sin(-RADIAN * midAngle);
+                const cos = Math.cos(-RADIAN * midAngle);
+                const x = cx + (outerRadius + 20) * cos;
+                const y = cy + (outerRadius + 20) * sin;
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    fill="#FF7F0E"
+                    textAnchor={cos >= 0 ? 'start' : 'end'}
+                    dominantBaseline="middle"
+                    fontSize="10px"
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '80px' }}
+                  >
+                    {name.length > 12 ? `${name.slice(0, 12)}...` : name}
+                  </text>
+                );
+              }}
+              activeShape={renderActiveShape}
+            >
+              {displayedData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={darkMode ? DARK_MODE_COLORS[index % DARK_MODE_COLORS.length] : LIGHT_MODE_COLORS[index % LIGHT_MODE_COLORS.length]} />
+              ))}
+            </Pie>
+          </PieChart>
         </ResponsiveContainer>
-      </div>
-      {data.length > displayedData.length && (
-        <div className="flex justify-center mt-4">
+      );
+    } else {
+      return (
+        <ResponsiveContainer width="100%" height={300}>
+          <RadarChart data={displayedData}>
+            <PolarGrid stroke={darkMode ? '#555' : '#ddd'} />
+            <PolarAngleAxis
+              dataKey="topic"
+              stroke={darkMode ? "#E5E7EB" : "#2D3748"}
+              tick={{ fill: '#FF7F0E' }}
+              tickFormatter={(tick) => tick.length > 12 ? `${tick.slice(0, 12)}...` : tick}
+            />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} />
+            <Radar
+              name="Relevance"
+              dataKey="relevance"
+              stroke={darkMode ? '#FFC107' : '#FF7F0E'}
+              fill={darkMode ? '#FFC107' : '#FF7F0E'}
+              fillOpacity={0.6}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? '#333' : '#fff',
+                border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
+                borderRadius: '8px',
+                padding: '10px',
+                fontSize: '12px',
+                color: darkMode ? "#E5E7EB" : "#2D3748",
+              }}
+              formatter={(value, name) => [`${value}`, `${name}: ${value}`]}
+              labelFormatter={(label) => `Topic: ${label}`}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      );
+    }
+  };
+
+  return (
+    <div className={`p-6 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} ref={chartRef}>
+      <div className="flex flex-col items-center justify-between mb-6 md:flex-row">
+        <div className="flex mb-4 space-x-2 md:mb-0">
           <button
+            className={`px-4 py-2 rounded-md ${chartType === 'pie' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'} hover:bg-blue-600 text-sm transition duration-300 ease-in-out`}
+            onClick={() => setChartType('pie')}
+          >
+            <FaChartPie className="inline-block mr-2" /> Pie
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md ${chartType === 'radar' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-700'} hover:bg-green-600 text-sm transition duration-300 ease-in-out`}
+            onClick={() => setChartType('radar')}
+          >
+            <MdRadar className="inline-block mr-2" /> Radar
+          </button>
+        </div>
+        <div className="flex space-x-2">
+          <button
+            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
             onClick={loadMoreData}
-            className="w-32 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-teal-400 to-teal-600"
           >
             Load More
           </button>
+          <button
+            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+            onClick={downloadChartAsImage}
+          >
+            <FaDownload className="inline-block mr-2" /> Image
+          </button>
+          <button
+            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+            onClick={downloadChartAsPDF}
+          >
+            <FaDownload className="inline-block mr-2" /> PDF
+          </button>
         </div>
-      )}
+      </div>
+      {renderChart()}
     </div>
   );
 };
