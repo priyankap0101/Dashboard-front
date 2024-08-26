@@ -23,7 +23,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   const styles = {
     container: {
       padding: "20px",
-      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff",
+      backgroundColor: darkMode ? "#000000" : "#f7f7f7",
       borderRadius: "8px",
       boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
       maxWidth: "1000px",
@@ -37,7 +37,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     },
     button: {
       padding: "4px 8px",
-      backgroundColor: darkMode ? "#3a3a3a" : "#007bff",
+      backgroundColor: darkMode ? "#FFFFFF" : "#2D3748",
       color: "#ffffff",
       border: "none",
       borderRadius: "4px",
@@ -78,7 +78,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     chartContainer: {
       height: "400px",
       marginTop: "20px",
-      backgroundColor: darkMode ? "#2a2a2a" : "#ffffff", // Updated background color based on darkMode
+      // backgroundColor: darkMode ? "#000000" : "#f7f7f7", // Updated background color based on darkMode
       borderRadius: "8px",
       boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
       padding: "10px", // Add padding to avoid cutting off chart edges
@@ -134,31 +134,55 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     switch (chartType) {
       case "bar":
         return (
-          <BarChart
-            data={data}
+          <BarChart data={data}>
+          <XAxis 
+            dataKey="name" 
+            stroke={darkMode ? "#ffffff" : "#000000"} 
+            tick={{ fontSize: 12, fontWeight: 500 }}
+            // label={{ value: 'Categories', offset: 0, position: 'insideBottomRight', fill: darkMode ? "#ffffff" : "#000000" }}
+          />
+          <YAxis 
+            stroke={darkMode ? "#FFFFFF" : "#2D3748"} 
+            tick={{ fontSize: 12, fontWeight: 500 }}
+            // label={{ value: 'Intensity', angle: -90, position: 'insideLeft', fill: darkMode ? "#ffffff" : "#000000" }}
+          />
+          <Tooltip 
+            contentStyle={{ 
+              backgroundColor: darkMode ? "#333" : "#ffffff", 
+              color: darkMode ? "#ffffff" : "#000000", 
+              borderRadius: 8, 
+              border: '1px solid', 
+              borderColor: darkMode ? "#444" : "#ccc", 
+              padding: '8px 12px' 
+            }} 
+          />
+          <Bar 
+            dataKey="intensity" 
+            fill={darkMode ? "#ff7f0e" : "#1f77b4"} 
+            barSize={30}
+           
           >
-            <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
-            <XAxis dataKey="name" stroke={darkMode ? "#ffffff" : "#000000"} />
-            <YAxis stroke={darkMode ? "#ffffff" : "#000000"} />
-            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#ffffff" : "#000000" }} />
-            <Bar dataKey="intensity" fill="#ff7f0e">
-              <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} />
-            </Bar>
-          </BarChart>
+            {/* <LabelList 
+              dataKey="intensity" 
+              position="top" 
+             
+            
+              fontSize={14}
+            /> */}
+          </Bar>
+        </BarChart>
+        
         );
       case "line":
         return (
-          <LineChart
-            data={data}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#444" : "#ccc"} />
-            <XAxis dataKey="name" stroke={darkMode ? "#ffffff" : "#000000"} />
-            <YAxis stroke={darkMode ? "#ffffff" : "#000000"} />
-            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#ffffff" : "#000000" }} />
-            <Line type="monotone" dataKey="intensity" stroke="#1f77b4" strokeWidth={2}>
-              <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} />
-            </Line>
-          </LineChart>
+          <LineChart data={data}>
+          <XAxis dataKey="name" stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
+          <YAxis stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
+          <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#f7dc6f " : "#000000" }} />
+          <Line type="monotone" dataKey="intensity" stroke= "#d35400 " strokeWidth={1}>
+            {/* <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} /> */}
+          </Line>
+        </LineChart>
         );
       default:
         return null;
@@ -166,31 +190,31 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
 
-      <div style={styles.buttonContainer}>
+      <div className="flex justify-center mb-4 space-x-2">
         <button
-          style={styles.button}
+            className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={toggleChartType}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
           onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
           onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaExchangeAlt style={styles.buttonIcon} /> Switch
+          <FaExchangeAlt  /> Switch
         </button>
         <button
-          style={styles.button}
+         className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
           onClick={handleExportImage}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
           onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
           onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaDownload style={styles.buttonIcon} /> Image
+          <FaDownload style={styles.buttonIcon} />JPG
         </button>
         <button
-          style={styles.button}
+           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
           onClick={handleExportPDF}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
@@ -201,14 +225,10 @@ const IntensityGraphChart = ({ data, darkMode }) => {
         </button>
         {visibleData.length < data.length && (
           <button
-            style={styles.loadMoreButton}
+              className="flex items-center px-3 py-1.5 text-sm text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
             onClick={handleLoadMore}
-          >
-            {loading ? (
-              <span style={styles.loadingSpinner}></span>
-            ) : (
-              "Load More"
-            )}
+          >Load More
+         
           </button>
         )}
       </div>

@@ -17,6 +17,7 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   const [displayedData, setDisplayedData] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [chartType, setChartType] = useState('pie');
+  const [showAll, setShowAll] = useState(false); // Moved inside the component function
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -217,44 +218,45 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   };
 
   return (
-    <div className={`p-6 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} ref={chartRef}>
-      <div className="flex flex-col items-center justify-between mb-6 md:flex-row">
-        <div className="flex mb-4 space-x-2 md:mb-0">
+    <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
+      <div className="flex justify-center mb-4 space-x-2">
+        
+      <button
+          onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
+         className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+        >
+          {chartType === 'pie' ? <MdRadar /> : <FaChartPie  />}
+          {chartType === 'pie' ? 'Radar Chart' : 'Pie Chart'}
+        </button>
+        
+        
           <button
-            className={`px-4 py-2 rounded-md ${chartType === 'pie' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'} hover:bg-blue-600 text-sm transition duration-300 ease-in-out`}
-            onClick={() => setChartType('pie')}
-          >
-            <FaChartPie className="inline-block mr-2" /> Pie
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md ${chartType === 'radar' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-700'} hover:bg-green-600 text-sm transition duration-300 ease-in-out`}
-            onClick={() => setChartType('radar')}
-          >
-            <MdRadar className="inline-block mr-2" /> Radar
-          </button>
-        </div>
-        <div className="flex space-x-2">
-          <button
-            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-            onClick={loadMoreData}
-          >
-            Load More
-          </button>
-          <button
-            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
             onClick={downloadChartAsImage}
           >
-            <FaDownload className="inline-block mr-2" /> Image
+            <FaDownload className="inline-block" /> Image
           </button>
           <button
-            className="px-4 py-2 text-sm text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
             onClick={downloadChartAsPDF}
           >
-            <FaDownload className="inline-block mr-2" /> PDF
+            <FaDownload className="inline-block" /> PDF
           </button>
-        </div>
+
+          {!showAll && startIndex < data.length && (
+        <button
+         className="flex items-center px-3 py-1.5 text-sm text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
+          onClick={loadMoreData}
+        >
+          Load More
+        </button>
+      )}
+       
       </div>
-      {renderChart()}
+      <div ref={chartRef}>
+        {renderChart()}
+      </div>
+      
     </div>
   );
 };
