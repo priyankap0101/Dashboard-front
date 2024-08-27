@@ -9,14 +9,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LabelList,
 } from "recharts";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { FaDownload, FaExchangeAlt } from "react-icons/fa";
+import { FaDownload, FaChartLine, FaChartBar } from "react-icons/fa";
 
 const IntensityGraphChart = ({ data, darkMode }) => {
-  const [chartType, setChartType] = useState("bar");
+  const [chartType, setChartType] = useState("bar"); // Default chart type
   const [visibleData, setVisibleData] = useState(data.slice(0, 5));
   const [loading, setLoading] = useState(false);
 
@@ -78,7 +77,6 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     chartContainer: {
       height: "400px",
       marginTop: "20px",
-      // backgroundColor: darkMode ? "#000000" : "#f7f7f7", // Updated background color based on darkMode
       borderRadius: "8px",
       boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
       padding: "10px", // Add padding to avoid cutting off chart edges
@@ -86,6 +84,10 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     buttonIcon: {
       marginRight: "2px",
     },
+  };
+
+  const handleChartTypeToggle = () => {
+    setChartType((prevType) => (prevType === "bar" ? "line" : "bar"));
   };
 
   const handleLoadMore = () => {
@@ -105,29 +107,29 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     }, 1000);
   };
 
-  const toggleChartType = () => {
-    setChartType((prevType) => (prevType === "line" ? "bar" : "line"));
-  };
-
   const handleExportPDF = () => {
     const input = document.getElementById("chart-container");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 100);
-      pdf.save("chart.pdf");
-    });
+    if (input) {
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.addImage(imgData, "PNG", 10, 10, 190, 100);
+        pdf.save("chart.pdf");
+      });
+    }
   };
 
   const handleExportImage = () => {
     const input = document.getElementById("chart-container");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = imgData;
-      link.download = "chart.png";
-      link.click();
-    });
+    if (input) {
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = "chart.png";
+        link.click();
+      });
+    }
   };
 
   const renderChart = (data) => {
@@ -135,54 +137,40 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       case "bar":
         return (
           <BarChart data={data}>
-          <XAxis 
-            dataKey="name" 
-            stroke={darkMode ? "#ffffff" : "#000000"} 
-            tick={{ fontSize: 12, fontWeight: 500 }}
-            // label={{ value: 'Categories', offset: 0, position: 'insideBottomRight', fill: darkMode ? "#ffffff" : "#000000" }}
-          />
-          <YAxis 
-            stroke={darkMode ? "#FFFFFF" : "#2D3748"} 
-            tick={{ fontSize: 12, fontWeight: 500 }}
-            // label={{ value: 'Intensity', angle: -90, position: 'insideLeft', fill: darkMode ? "#ffffff" : "#000000" }}
-          />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: darkMode ? "#333" : "#ffffff", 
-              color: darkMode ? "#ffffff" : "#000000", 
-              borderRadius: 8, 
-              border: '1px solid', 
-              borderColor: darkMode ? "#444" : "#ccc", 
-              padding: '8px 12px' 
-            }} 
-          />
-          <Bar 
-            dataKey="intensity" 
-            fill={darkMode ? "#ff7f0e" : "#1f77b4"} 
-            barSize={30}
-           
-          >
-            {/* <LabelList 
+            <XAxis 
+              dataKey="name" 
+              stroke={darkMode ? "#ffffff" : "#000000"} 
+              tick={{ fontSize: 12, fontWeight: 500 }}
+            />
+            <YAxis 
+              stroke={darkMode ? "#FFFFFF" : "#2D3748"} 
+              tick={{ fontSize: 12, fontWeight: 500 }}
+            />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: darkMode ? "#333" : "#ffffff", 
+                color: darkMode ? "#ffffff" : "#000000", 
+                borderRadius: 8, 
+                border: '1px solid', 
+                borderColor: darkMode ? "#444" : "#ccc", 
+                padding: '8px 12px' 
+              }} 
+            />
+            <Bar 
               dataKey="intensity" 
-              position="top" 
-             
-            
-              fontSize={14}
-            /> */}
-          </Bar>
-        </BarChart>
-        
+              fill={darkMode ? "#ff7f0e" : "#1f77b4"} 
+              barSize={30}
+            />
+          </BarChart>
         );
       case "line":
         return (
           <LineChart data={data}>
-          <XAxis dataKey="name" stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
-          <YAxis stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
-          <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#f7dc6f " : "#000000" }} />
-          <Line type="monotone" dataKey="intensity" stroke= "#d35400 " strokeWidth={1}>
-            {/* <LabelList dataKey="intensity" position="top" fill={darkMode ? "#ffffff" : "#000000"} /> */}
-          </Line>
-        </LineChart>
+            <XAxis dataKey="name" stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
+            <YAxis stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
+            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#f7dc6f " : "#000000" }} />
+            <Line type="monotone" dataKey="intensity" stroke= "#d35400 " strokeWidth={1} />
+          </LineChart>
         );
       default:
         return null;
@@ -190,53 +178,63 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
-
+    <div id="chart-container" >
       <div className="flex justify-center mb-4 space-x-2">
         <button
-            className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
-          onClick={toggleChartType}
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+          onClick={handleChartTypeToggle}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
           onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
           onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaExchangeAlt  /> Switch
+          {chartType === "bar" ? (
+            <>
+              <FaChartLine className="mr-2" /> Line
+            </>
+          ) : (
+            <>
+              <FaChartBar className="mr-2" /> Bar
+            </>
+          )}
         </button>
         <button
-         className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
-          onClick={handleExportImage}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
-          onMouseUp={(e) => e.currentTarget.style.transform = ""}
-        >
-          <FaDownload style={styles.buttonIcon} />JPG
-        </button>
-        <button
-           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleExportPDF}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
           onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
           onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaDownload style={styles.buttonIcon} /> PDF
+          <FaDownload className="mr-2" /> PDF
         </button>
-        {visibleData.length < data.length && (
-          <button
-              className="flex items-center px-3 py-1.5 text-sm text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
-            onClick={handleLoadMore}
-          >Load More
-         
-          </button>
-        )}
+        <button
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+          onClick={handleExportImage}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
+          onMouseUp={(e) => e.currentTarget.style.transform = ""}
+        >
+          <FaDownload className="mr-2" /> Image
+        </button>
       </div>
-      <div id="chart-container" style={styles.chartContainer}>
-        <ResponsiveContainer width="100%" height="100%">
-          {renderChart(visibleData)}
-        </ResponsiveContainer>
-      </div>
+      <ResponsiveContainer width="100%" height={400}>
+        {renderChart(visibleData)}
+      </ResponsiveContainer>
+      {visibleData.length < data.length && (
+        <button
+          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
+          onClick={handleLoadMore}
+          disabled={loading}
+        >
+          {loading ? (
+            <div style={styles.loadingSpinner}></div>
+          ) : (
+            "Load More"
+          )}
+        </button>
+      )}
     </div>
   );
 };
