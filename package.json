@@ -17,7 +17,7 @@
     "@react-three/fiber": "^8.16.8",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
-    "chart.js": "^4.4.3",
+    "chart.js": "^4.4.4",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "clean-css": "^5.3.3",
