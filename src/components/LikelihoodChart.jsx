@@ -12,6 +12,8 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { FaSync, FaDownload } from "react-icons/fa";
 
+import { MdSwapHoriz } from "react-icons/md";
+
 ChartJS.register(ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const LikelihoodChart = ({ data, darkMode }) => {
@@ -191,40 +193,40 @@ const LikelihoodChart = ({ data, darkMode }) => {
     <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
       <div className="flex justify-center mb-4 space-x-2">
         <button
-          onClick={() => setShowAll(!showAll)}
-          className={`w-20 h-7 text-xs font-semibold rounded-md shadow-lg transition-transform duration-300 transform hover:scale-105 
-      ${
-        showAll
-          ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
-          : "bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:from-blue-500 hover:to-blue-700"
-      } flex items-center justify-center`}
-        >
-          {showAll ? "Show Less" : "Show More"}
-        </button>
-        <button
           onClick={() =>
             setChartType(chartType === "doughnut" ? "polarArea" : "doughnut")
           }
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
         >
           {chartType === "doughnut" ? "Polar Area" : "Doughnut"}{" "}
-          <FaSync className="inline-block ml-1" />
+          <MdSwapHoriz className="inline-block ml-1" />
         </button>
-        <button
-          onClick={downloadChartAsImage}
-          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700"
-        >
-          JPG <FaDownload className="inline-block ml-1" />
-        </button>
+
         <button
           onClick={downloadChartAsPDF}
-          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700"
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
         >
           PDF <FaDownload className="inline-block ml-1" />
         </button>
+
+        <button
+          onClick={downloadChartAsImage}
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+        >
+          JPG <FaDownload className="inline-block ml-1" />
+        </button>
       </div>
 
-      <div className="chart-container h-96">{renderChart()}</div>
+      <div className=" chart-container h-96">{renderChart()}</div>
+
+      <div className="flex justify-start">
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
+        >
+          {showAll ? "Load Less" : "Load More"}
+        </button>
+      </div>
     </div>
   );
 };

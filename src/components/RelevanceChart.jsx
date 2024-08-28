@@ -51,7 +51,6 @@ const RelevanceChart = ({ data = [], darkMode }) => {
     return tick.length > MAX_LABEL_LENGTH ? `${tick.slice(0, MAX_LABEL_LENGTH)}...` : tick;
   };
 
-  
   const downloadChartAsPDF = () => {
     if (chartRef.current) {
       html2canvas(chartRef.current, {
@@ -142,7 +141,6 @@ const RelevanceChart = ({ data = [], darkMode }) => {
           <PieChart>
             <Tooltip
               contentStyle={{
-                // backgroundColor: darkMode ? '#333' : '#fff',
                 border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
                 borderRadius: '8px',
                 padding: '10px',
@@ -202,25 +200,20 @@ const RelevanceChart = ({ data = [], darkMode }) => {
               <PolarAngleAxis
                 dataKey="topic"
                 stroke={darkMode ? '#E5E7EB' : '#2D3748'}
-                // tickFormatter={formatTick}
-              tickMargin={15} // Increased margin for better label visibility
-                tick={{ fill: darkMode ? '#FFC107' : '#FF7F0E', fontSize:9 }}
-                tickFormatter={(tick) => (tick.length >3 ? `${tick.slice(0, 15)}...` : tick)}
+                tickMargin={15} // Increased margin for better label visibility
+                tick={{ fill: darkMode ? '#FFC107' : '#FF7F0E', fontSize: 9 }}
+                tickFormatter={(tick) => (tick.length > 3 ? `${tick.slice(0, 15)}...` : tick)}
               />
               <PolarRadiusAxis angle={50} domain={[0, 100]} />
               <Radar
                 name="Relevance"
                 dataKey="relevance"
                 stroke={darkMode ? '#FFC107' : '#FF7F0E'}
-                // fill={darkMode ? '#FFC107' : '#FF7F0E'}
-                // fillOpacity={0.6}
               />
               <Tooltip
                 contentStyle={{
-                  // backgroundColor: darkMode ? '#333' : '#fff',
                   border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
                   borderRadius: '8px',
-                  // padding: '10px',
                   fontSize: '12px',
                   color: darkMode ? '#E5E7EB' : '#2D3748',
                 }}
@@ -236,39 +229,52 @@ const RelevanceChart = ({ data = [], darkMode }) => {
 
   return (
     <div
-      className={`shadow-lg p-6 rounded-xl transition-all duration-300`}
-      ref={chartRef}
+      className={`bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md transition-colors duration-500 ${
+        darkMode ? 'text-gray-100' : 'text-gray-800'
+      }`}
     >
+      {/* Button Group Above the Chart */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">{chartType === 'pie' ? 'Pie Chart' : 'Radar Chart'}</h2>
-        <div className="flex gap-3">
+        <div className="flex justify-center mb-4 space-x-2">
           <button
-            className={`bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-700 transform hover:scale-105 transition-all`}
-            onClick={loadMoreData}
+            onClick={downloadChartAsImage}
+            className="px-4 py-1 font-bold text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-600"
           >
-            Load More
+            <FaDownload className="inline mr-1" />
+            JPG
           </button>
           <button
+            onClick={downloadChartAsPDF}
+            className="px-4 py-1 font-bold text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          >
+            <FaDownload className="inline mr-1" />
+            PDF
+          </button>
+        </div>
+        <div className="flex space-x-2">
+        <button
             className={`px-4 py-2 rounded-md shadow-lg ${chartType === 'pie' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'} hover:opacity-90 transform hover:scale-105 transition-all`}
             onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
           >
             {chartType === 'pie' ? <MdRadar className="text-2xl" /> : <FaChartPie className="text-2xl" />}
           </button>
-          <button
-            className="px-4 py-2 text-white transition-all transform bg-green-600 rounded-md shadow-lg hover:bg-green-700 hover:scale-105"
-            onClick={downloadChartAsImage}
-          >
-            <FaDownload className="text-2xl" />
-          </button>
-          <button
-            className="px-4 py-2 text-white transition-all transform bg-red-500 rounded-md shadow-lg hover:bg-red-600 hover:scale-105"
-            onClick={downloadChartAsPDF}
-          >
-            <FaDownload className="text-2xl" />
-          </button>
         </div>
       </div>
-      {renderChart()}
+
+      {/* Chart */}
+      <div ref={chartRef} className="mb-4">
+        {renderChart()}
+      </div>
+
+      {/* Load More Button Below the Chart */}
+      <div className="flex justify-start mt-4">
+        <button
+          className="px-4 py-2 font-bold text-gray-800 transition duration-300 bg-gray-300 rounded-md hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+          onClick={loadMoreData}
+        >
+          Load More
+        </button>
+      </div>
     </div>
   );
 };

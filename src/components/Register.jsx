@@ -20,6 +20,7 @@ const Register = () => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [darkMode, setDarkMode] = useState(false); // State for dark mode
+  const [loading, setLoading] = useState(false); // State for loading
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +32,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8080/api/profile/register",
@@ -65,6 +67,8 @@ const Register = () => {
         setMessage("Error registering. Please try again.");
         setMessageType("error");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,12 +80,10 @@ const Register = () => {
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex flex-1">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex items-center justify-center flex-1 p-4">
-          <div className={`w-full max-w-4xl overflow-hidden ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} shadow-lg rounded-xl`}>
+        <main className="flex items-center justify-center flex-1 p-6 sm:p-8">
+          <div className={`w-full max-w-4xl ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-800'} shadow-lg rounded-2xl overflow-hidden`}>
             <div className="p-8">
-              <h2 className="mb-6 text-3xl font-semibold">
-                Register
-              </h2>
+              <h2 className="mb-6 text-3xl font-semibold">Register</h2>
               {message && (
                 <div
                   className={`p-4 mb-6 rounded-md ${
@@ -93,10 +95,7 @@ const Register = () => {
                   {message}
                 </div>
               )}
-              <form
-                onSubmit={handleRegister}
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2"
-              >
+              <form onSubmit={handleRegister} className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {[
                   { label: "First Name", name: "firstName", type: "text" },
                   { label: "Last Name", name: "lastName", type: "text" },
@@ -122,23 +121,71 @@ const Register = () => {
                       value={formData[name]}
                       onChange={handleChange}
                       required
-                      className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 ${
+                      className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
                         errors[name] ? "border-red-600" : (darkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300")
                       }`}
                     />
                     {errors[name] && (
-                      <p className="text-sm font-semibold text-red-600">
+                      <p className="mt-1 text-sm font-semibold text-red-600">
                         {errors[name]}
                       </p>
                     )}
                   </div>
                 ))}
-                <div className="col-span-2">
+                <div className="flex justify-center col-span-2">
                   <button
                     type="submit"
-                    className="w-full px-4 py-2 font-medium text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700"
+                    className={`relative px-8 py-3 font-semibold rounded-lg shadow-lg transition-transform duration-300 transform ${
+                      darkMode
+                        ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500"
+                        : "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 focus:ring-2 focus:ring-blue-400"
+                    } focus:outline-none focus:ring-2 ring-opacity-50 ${
+                      loading ? "cursor-wait" : "cursor-pointer"
+                    }`}
+                    style={{ maxWidth: '250px' }} // Control the width of the button
                   >
-                    Register
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <svg
+                          className="w-6 h-6 text-white animate-spin"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
+                        </svg>
+                      </div>
+                    ) : (
+                      <span className="flex items-center">
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        Register
+                      </span>
+                    )}
                   </button>
                 </div>
               </form>

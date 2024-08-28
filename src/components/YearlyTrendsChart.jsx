@@ -123,11 +123,10 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
         <div className="flex items-center space-x-2">
           <button
             onClick={toggleChartType}
-            className={`flex items-center px-4 py-2 text-sm rounded-md font-semibold ${chartType === 'bar' ? 'bg-indigo-500' : 'bg-gray-500'} text-white transition-transform transform hover:scale-105`}
-            aria-label={`Switch to ${chartType === 'bar' ? 'Pie' : 'Bar'} Chart`}
+             className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
             title={`Switch to ${chartType === 'bar' ? 'Pie' : 'Bar'} Chart`}
           >
-            {chartType === 'bar' ? <FaChartBar className="mr-2 text-lg" /> : <FaChartPie className="mr-2 text-lg" />}
+            {chartType === 'bar' ? <FaChartBar className="inline-block ml-1" /> : <FaChartPie className="inline-block ml-1" />}
             {chartType === 'bar' ? 'Bar Chart' : 'Pie Chart'}
           </button>
       
@@ -135,7 +134,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           {currentIndex < data.length && (
             <button
               onClick={loadMore}
-              className="flex items-center px-3 py-1.5 text-sm text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
+              className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
               aria-label="Show More"
             >
               {loading ? <FaSpinner className="mr-2 text-base animate-spin" /> : 'Load More'}
@@ -143,7 +142,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           )}
           <button
             onClick={() => downloadChart('jpeg')}
-            className="px-3 py-1.5 text-sm text-white transition-colors bg-purple-500 rounded-md hover:bg-purple-600"
+             className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
             aria-label="Download Chart as JPG"
           >
             <FaDownload className="inline-block mr-1 text-base" />
@@ -151,7 +150,7 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           </button>
           <button
             onClick={() => downloadChart('pdf')}
-            className="px-3 py-1.5 text-sm text-white transition-colors bg-pink-500 rounded-md hover:bg-pink-600"
+              className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
             aria-label="Download Chart as PDF"
           >
             <FaDownload className="inline-block mr-1 text-base" />
