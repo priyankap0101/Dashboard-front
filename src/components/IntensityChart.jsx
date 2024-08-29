@@ -216,7 +216,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
           onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
           onMouseUp={(e) => e.currentTarget.style.transform = ""}
         >
-          <FaDownload className="mr-2" /> Image
+          <FaDownload className="mr-2" />JPG
         </button>
       </div>
       <ResponsiveContainer width="100%" height={400}>

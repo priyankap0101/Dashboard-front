@@ -22,6 +22,7 @@ import {
   RadialLinearScale
 } from 'chart.js';
 import { Line, Pie, Radar, Bar, Doughnut } from 'react-chartjs-2';
+import AnimatedIcon from './AnimatedIcon';
 
 ChartJS.register(
   CategoryScale,
@@ -67,6 +68,7 @@ const CRM = () => {
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [recentActivities, setRecentActivities] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -75,6 +77,11 @@ const CRM = () => {
         { client: 'Tech Innovators Inc.', project: 'AI-Driven Chatbot', status: 'Completed' },
         { client: 'EcoGreen Solutions', project: 'Sustainable Energy Web App', status: 'In Progress' },
         { client: 'HealthFirst Clinic', project: 'Patient Management System', status: 'Pending' }
+      ]);
+      setRecentActivities([
+        { activity: 'Added new project for EcoGreen Solutions', time: '2024-08-28 14:00' },
+        { activity: 'Completed the report for HealthFirst Clinic', time: '2024-08-27 11:30' },
+        { activity: 'Updated project status for Tech Innovators Inc.', time: '2024-08-26 09:45' }
       ]);
       setLoading(false);
     }, 1000);
@@ -339,6 +346,10 @@ const CRM = () => {
               <Pie data={doughnutData} options={doughnutOptions} />
             </div>
           </div>
+
+          <div className="mt-6">
+            <RecentActivities activities={recentActivities} darkMode={darkMode} />
+          </div>
         </motion.main>
       </div>
 
@@ -351,5 +362,29 @@ const CRM = () => {
     </motion.div>
   );
 };
+
+// Recent Activities Component
+const RecentActivities = ({ activities, darkMode }) => (
+  <div className={`p-6 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-900'} transition-all duration-300 ease-in-out`}>
+  <h2 className="text-2xl font-bold mb-6 border-b-2 pb-2 border-gray-300 dark:border-gray-700">
+    Recent Activities
+  </h2>
+  <ul className="space-y-4">
+    {activities.map((activity, index) => (
+      <li key={index} className="flex items-start space-x-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 ease-in-out border border-gray-200 dark:border-gray-700">
+        <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 dark:bg-blue-600 text-white shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105">
+          <AnimatedIcon />
+        </div>
+        <div className="flex-1">
+          <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{activity.time}</p>
+          <p className="text-sm text-gray-700 dark:text-gray-300">{activity.activity}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+
+);
 
 export default CRM;

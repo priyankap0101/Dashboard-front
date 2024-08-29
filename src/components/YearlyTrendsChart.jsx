@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LabelList, Legend,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -117,47 +117,37 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
   };
 
   return (
-    <div className={`p-4 rounded-lg shadow-lg transition-colors ${darkMode ? 'bg-dark-bg' : 'bg-light-bg'}`}>
+    <div >
       {/* Controls Section */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex justify-center mb-4 space-x-2">
         <div className="flex items-center space-x-2">
           <button
             onClick={toggleChartType}
-             className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+            className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
             title={`Switch to ${chartType === 'bar' ? 'Pie' : 'Bar'} Chart`}
           >
             {chartType === 'bar' ? <FaChartBar className="inline-block ml-1" /> : <FaChartPie className="inline-block ml-1" />}
-            {chartType === 'bar' ? 'Bar Chart' : 'Pie Chart'}
+            {chartType === ' bar' ? 'Bar' : ' Pie'}
           </button>
-      
-       
-          {currentIndex < data.length && (
-            <button
-              onClick={loadMore}
-              className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
-              aria-label="Show More"
-            >
-              {loading ? <FaSpinner className="mr-2 text-base animate-spin" /> : 'Load More'}
-            </button>
-          )}
-          <button
-            onClick={() => downloadChart('jpeg')}
-             className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
-            aria-label="Download Chart as JPG"
-          >
-            <FaDownload className="inline-block mr-1 text-base" />
-            JPG
-          </button>
+        
           <button
             onClick={() => downloadChart('pdf')}
-              className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+            className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
             aria-label="Download Chart as PDF"
           >
             <FaDownload className="inline-block mr-1 text-base" />
             PDF
           </button>
-          </div>
-          
+
+          <button
+            onClick={() => downloadChart('jpeg')}
+            className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+            aria-label="Download Chart as JPG"
+          >
+            <FaDownload className="inline-block mr-1 text-base" />
+            JPG
+          </button>
+        </div>
       </div>
 
       {/* Main Chart Section */}
@@ -166,6 +156,19 @@ const YearlyTrendsChart = ({ data = [], darkMode }) => {
           {renderChart()}
         </ResponsiveContainer>
       </div>
+
+      {/* Load More Button */}
+      {currentIndex < data.length && (
+        <div className="flex justify-start mt-4">
+          <button
+            onClick={loadMore}
+            className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
+            aria-label="Show More"
+          >
+            {loading ? <FaSpinner className="mr-2 text-base animate-spin" /> : 'Load More'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
