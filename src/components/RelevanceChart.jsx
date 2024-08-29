@@ -144,7 +144,7 @@ const RelevanceChart = ({ data = [], darkMode }) => {
                 border: `1px solid ${darkMode ? '#666' : '#ddd'}`,
                 borderRadius: '8px',
                 padding: '10px',
-                fontSize: '14px',
+                fontSize: '1rem',
                 color: darkMode ? '#E5E7EB' : '#2D3748',
               }}
               formatter={(value, name) => [`${value}`, `${name}: ${value} (${(value / data.reduce((acc, item) => acc + item.relevance, 0) * 100).toFixed(1)}%)`]}
@@ -228,54 +228,70 @@ const RelevanceChart = ({ data = [], darkMode }) => {
   };
 
   return (
-    <div
-      className={`bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md transition-colors duration-500 ${
-        darkMode ? 'text-gray-100' : 'text-gray-800'
-      }`}
-    >
-      {/* Button Group Above the Chart */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex justify-center mb-4 space-x-2">
-          <button
-            onClick={downloadChartAsImage}
-            className="px-4 py-1 font-bold text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-600"
-          >
-            <FaDownload className="inline mr-1" />
-            JPG
-          </button>
-          <button
-            onClick={downloadChartAsPDF}
-            className="px-4 py-1 font-bold text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-600"
-          >
-            <FaDownload className="inline mr-1" />
-            PDF
-          </button>
-        </div>
-        <div className="flex space-x-2">
-        <button
-            className={`px-4 py-2 rounded-md shadow-lg ${chartType === 'pie' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'} hover:opacity-90 transform hover:scale-105 transition-all`}
-            onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
-          >
-            {chartType === 'pie' ? <MdRadar className="text-2xl" /> : <FaChartPie className="text-2xl" />}
-          </button>
-        </div>
-      </div>
+  
+   <div>
+     {/* Centered Button Group Above the Chart */}
+     <div className="flex items-center justify-center mb-4 space-x-2">
+     
+      
+      {/* Chart Type Toggle Button */}
+      <button
+   className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+  onClick={() => setChartType(chartType === 'pie' ? 'radar' : 'pie')}
+>
+  {chartType === 'pie' ? (
+    <>
+      <MdRadar className="mr-1 text-2xl" />
+      Radar
+    </>
+  ) : (
+    <>
+      <FaChartPie className="mr-1 text-2xl" />
+      Pie
+    </>
+  )}
+</button>
 
-      {/* Chart */}
-      <div ref={chartRef} className="mb-4">
-        {renderChart()}
-      </div>
 
-      {/* Load More Button Below the Chart */}
-      <div className="flex justify-start mt-4">
-        <button
-          className="px-4 py-2 font-bold text-gray-800 transition duration-300 bg-gray-300 rounded-md hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
-          onClick={loadMoreData}
-        >
-          Load More
-        </button>
-      </div>
+
+      <button
+        onClick={downloadChartAsPDF}
+          className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+      >
+        <FaDownload className="inline mr-1" />
+        PDF
+      </button>
+
+
+      <button
+        onClick={downloadChartAsImage}
+        className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
+      >
+        <FaDownload className="inline mr-1" />
+        JPG
+      </button>
     </div>
+  
+    {/* Chart */}
+    <div ref={chartRef} className="mb-4">
+      {renderChart()}
+    </div>
+  
+    {/* Load More Button Below the Chart */}
+    <div className="flex justify-start mt-4">
+      <button
+        className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
+        onClick={loadMoreData}
+      >
+        Load More
+      </button>
+    </div>
+  
+  
+
+
+    
+   </div>
   );
 };
 

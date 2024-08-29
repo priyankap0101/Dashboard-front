@@ -190,7 +190,7 @@ const LikelihoodChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div className={`p-4 rounded-lg shadow-lg bg-light-bg dark:bg-dark-bg`}>
+    <div >
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() =>
