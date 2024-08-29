@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import ClipLoader from 'react-spinners/ClipLoader';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import Modal from './Modal';
-import { CSVLink } from 'react-csv';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import ClipLoader from "react-spinners/ClipLoader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import Modal from "./Modal";
+import { CSVLink } from "react-csv";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,10 +19,10 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-  RadialLinearScale
-} from 'chart.js';
-import { Line, Pie, Radar, Bar, Doughnut } from 'react-chartjs-2';
-import AnimatedIcon from './AnimatedIcon';
+  RadialLinearScale,
+} from "chart.js";
+import { Line, Pie, Radar, Bar, Doughnut } from "react-chartjs-2";
+import AnimatedIcon from "./AnimatedIcon";
 
 ChartJS.register(
   CategoryScale,
@@ -44,23 +44,23 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      type: 'spring',
-      stiffness: 100
-    }
-  }
+      type: "spring",
+      stiffness: 100,
+    },
+  },
 };
 
 const buttonVariants = {
   hover: {
     scale: 1.05,
-    backgroundColor: '#4B4B9D',
-    color: '#fff',
-    transition: { duration: 0.3 }
+    backgroundColor: "#4B4B9D",
+    color: "#fff",
+    transition: { duration: 0.3 },
   },
   tap: {
     scale: 0.95,
-    transition: { duration: 0.3 }
-  }
+    transition: { duration: 0.3 },
+  },
 };
 
 const CRM = () => {
@@ -74,34 +74,55 @@ const CRM = () => {
     setLoading(true);
     setTimeout(() => {
       setData([
-        { client: 'Tech Innovators Inc.', project: 'AI-Driven Chatbot', status: 'Completed' },
-        { client: 'EcoGreen Solutions', project: 'Sustainable Energy Web App', status: 'In Progress' },
-        { client: 'HealthFirst Clinic', project: 'Patient Management System', status: 'Pending' }
+        {
+          client: "Tech Innovators Inc.",
+          project: "AI-Driven Chatbot",
+          status: "Completed",
+        },
+        {
+          client: "EcoGreen Solutions",
+          project: "Sustainable Energy Web App",
+          status: "In Progress",
+        },
+        {
+          client: "HealthFirst Clinic",
+          project: "Patient Management System",
+          status: "Pending",
+        },
       ]);
       setRecentActivities([
-        { activity: 'Added new project for EcoGreen Solutions', time: '2024-08-28 14:00' },
-        { activity: 'Completed the report for HealthFirst Clinic', time: '2024-08-27 11:30' },
-        { activity: 'Updated project status for Tech Innovators Inc.', time: '2024-08-26 09:45' }
+        {
+          activity: "Added new project for EcoGreen Solutions",
+          time: "2024-08-28 14:00",
+        },
+        {
+          activity: "Completed the report for HealthFirst Clinic",
+          time: "2024-08-27 11:30",
+        },
+        {
+          activity: "Updated project status for Tech Innovators Inc.",
+          time: "2024-08-26 09:45",
+        },
       ]);
       setLoading(false);
     }, 1000);
   }, []);
 
   useEffect(() => {
-    const savedDarkMode = JSON.parse(localStorage.getItem('darkMode')) || false;
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
     setDarkMode(savedDarkMode);
   }, []);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+    localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
-  const csvData = data.map(item => ({
+  const csvData = data.map((item) => ({
     client: item.client,
     project: item.project,
-    status: item.status
+    status: item.status,
   }));
 
   const toggleModal = () => {
@@ -109,158 +130,198 @@ const CRM = () => {
   };
 
   const clientData = {
-    labels: ['Tech Innovators Inc.', 'EcoGreen Solutions', 'HealthFirst Clinic', 'Bright Future Ltd.'],
-    datasets: [{
-      label: 'Clients',
-      data: [20, 35, 25, 15],
-      backgroundColor: 'rgba(75, 192, 192, 0.4)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 2
-    }]
+    labels: [
+      "Tech Innovators Inc.",
+      "EcoGreen Solutions",
+      "HealthFirst Clinic",
+      "Bright Future Ltd.",
+    ],
+    datasets: [
+      {
+        label: "Clients",
+        data: [20, 35, 25, 15],
+        backgroundColor: "rgba(75, 192, 192, 0.4)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 2,
+      },
+    ],
   };
 
   const clientOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Clients: ${context.raw}`
-        }
-      }
-    }
+          label: (context) => `Clients: ${context.raw}`,
+        },
+      },
+    },
   };
 
   const projectData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Projects',
-      data: [2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 2, 3],
-      backgroundColor: 'rgba(54, 162, 235, 0.4)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 2
-    }]
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    datasets: [
+      {
+        label: "Projects",
+        data: [2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 2, 3],
+        backgroundColor: "rgba(54, 162, 235, 0.4)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 2,
+      },
+    ],
   };
 
   const projectOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Projects: ${context.raw}`
-        }
-      }
-    }
+          label: (context) => `Projects: ${context.raw}`,
+        },
+      },
+    },
   };
 
   const statusData = {
-    labels: ['Completed', 'In Progress', 'Pending'],
-    datasets: [{
-      label: 'Project Status',
-      data: [15, 10, 5],
-      backgroundColor: [
-        'rgba(75, 192, 192, 0.4)',
-        'rgba(153, 102, 255, 0.4)',
-        'rgba(255, 99, 132, 0.4)'
-      ],
-      borderColor: [
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 99, 132, 1)'
-      ],
-      borderWidth: 2
-    }]
+    labels: ["Completed", "In Progress", "Pending"],
+    datasets: [
+      {
+        label: "Project Status",
+        data: [15, 10, 5],
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.4)",
+          "rgba(153, 102, 255, 0.4)",
+          "rgba(255, 99, 132, 0.4)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 99, 132, 1)",
+        ],
+        borderWidth: 2,
+      },
+    ],
   };
 
   const statusOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Status: ${context.raw}`
-        }
-      }
-    }
+          label: (context) => `Status: ${context.raw}`,
+        },
+      },
+    },
   };
 
   const radarData = {
-    labels: ['Communication', 'Technical Skills', 'Project Management', 'Client Handling', 'Problem Solving'],
-    datasets: [{
-      label: 'Skill Levels (%)',
-      data: [90, 80, 70, 85, 75],
-      backgroundColor: 'rgba(255, 99, 132, 0.4)',
-      borderColor: 'rgba(255, 99, 132, 1)',
-      borderWidth: 2
-    }]
+    labels: [
+      "Communication",
+      "Technical Skills",
+      "Project Management",
+      "Client Handling",
+      "Problem Solving",
+    ],
+    datasets: [
+      {
+        label: "Skill Levels (%)",
+        data: [90, 80, 70, 85, 75],
+        backgroundColor: "rgba(255, 99, 132, 0.4)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 2,
+      },
+    ],
   };
 
   const radarOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Skill Level: ${context.raw}%`
-        }
-      }
-    }
+          label: (context) => `Skill Level: ${context.raw}%`,
+        },
+      },
+    },
   };
 
   const doughnutData = {
-    labels: ['Direct', 'Referral', 'Social Media', 'Email', 'Other'],
-    datasets: [{
-      label: 'Traffic Sources',
-      data: [500, 120, 150, 80, 90],
-      backgroundColor: [
-        'rgba(255, 206, 86, 0.4)',
-        'rgba(54, 162, 235, 0.4)',
-        'rgba(75, 192, 192, 0.4)',
-        'rgba(153, 102, 255, 0.4)',
-        'rgba(255, 99, 132, 0.4)'
-      ],
-      borderColor: [
-        'rgba(255, 206, 86, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 99, 132, 1)'
-      ],
-      borderWidth: 2
-    }]
+    labels: ["Direct", "Referral", "Social Media", "Email", "Other"],
+    datasets: [
+      {
+        label: "Traffic Sources",
+        data: [500, 120, 150, 80, 90],
+        backgroundColor: [
+          "rgba(255, 206, 86, 0.4)",
+          "rgba(54, 162, 235, 0.4)",
+          "rgba(75, 192, 192, 0.4)",
+          "rgba(153, 102, 255, 0.4)",
+          "rgba(255, 99, 132, 0.4)",
+        ],
+        borderColor: [
+          "rgba(255, 206, 86, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 99, 132, 1)",
+        ],
+        borderWidth: 2,
+      },
+    ],
   };
 
   const doughnutOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
         callbacks: {
-          label: (context) => `Traffic: ${context.raw}`
-        }
-      }
-    }
+          label: (context) => `Traffic: ${context.raw}`,
+        },
+      },
+    },
   };
 
   return (
     <motion.div
-      className={`min-h-screen ${darkMode ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-900'} transition-colors duration-300 ease-in-out`}
+      className={`min-h-screen ${
+        darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
+      } transition-colors duration-300 ease-in-out`}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <Header toggleSidebar={() => {}} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <Header
+        toggleSidebar={() => {}}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
       <div className="flex">
         <Sidebar darkMode={darkMode} />
         <motion.main
@@ -275,116 +336,123 @@ const CRM = () => {
             variants={containerVariants}
             className="mb-6"
           >
-            <h1 className={`text-4xl font-extrabold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 ease-in-out`}>
-              Client Relationship Management
+            <h1
+              className={`text-4xl font-extrabold mb-6 ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              CRM Dashboard
             </h1>
+            <div className="mb-4">
+              <CSVLink
+                data={csvData}
+                filename="client_data.csv"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+              >
+                Export Data
+              </CSVLink>
+              <motion.button
+                className="ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={toggleModal}
+              >
+                Show Modal
+              </motion.button>
+            </div>
             {loading ? (
-              <div className="flex items-center justify-center h-full">
-                <ClipLoader color={darkMode ? "#ffffff" : "#000000"} loading={loading} size={150} />
+              <div className="flex justify-center items-center h-64">
+                <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {data.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className={`border rounded-lg p-4 shadow-lg ${darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-900'} transition-all duration-300 ease-in-out`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <h2 className="mb-3 text-2xl font-semibold">{item.client}</h2>
-                    <p className="mb-2">Project: <span className="font-medium">{item.project}</span></p>
-                    <p>Status: <span className={`font-medium ${item.status === 'Completed' ? 'text-green-500' : item.status === 'In Progress' ? 'text-yellow-500' : 'text-red-500'}`}>{item.status}</span></p>
-                  </motion.div>
-                ))}
+                <div className="p-4 border rounded-lg shadow-lg">
+                  <h2 className="mb-4 text-2xl font-semibold">Client Data</h2>
+                  <Line data={clientData} options={clientOptions} />
+                </div>
+
+                <div className="p-4 border rounded-lg shadow-lg">
+                  <h2 className="mb-4 text-2xl font-semibold">Project Data</h2>
+                  <Bar data={projectData} options={projectOptions} />
+                </div>
+
+                <div className="p-4 border rounded-lg shadow-lg">
+                  <h2 className="mb-4 text-2xl font-semibold">Status Data</h2>
+                  <Doughnut data={statusData} options={statusOptions} />
+                </div>
+
+                <div className="p-4 border rounded-lg shadow-lg">
+                  <h2 className="mb-4 text-xl font-semibold">Skill Radar</h2>
+                  <Radar data={radarData} options={radarOptions} />
+                </div>
+
+                <div className="p-4 border rounded-lg shadow-lg">
+                  <h2 className="mb-4 text-2xl font-semibold">
+                    Traffic Sources
+                  </h2>
+                  <Pie data={doughnutData} options={doughnutOptions} />
+                </div>
+
+                <div className="p-4  border border-gray-200 dark:border-gray-700 rounded-lg shadow-md col-span-1 md:col-span-2 lg:col-span-1 transition-all duration-300 ease-in-out">
+                  <h2 className="text-2xl font-semibold mb-4">
+                    Recent Activities
+                  </h2>
+                  {recentActivities.length > 0 ? (
+                    <ul className="space-y-3">
+                      {recentActivities.map((activity, index) => (
+                        <li
+                          key={index}
+                          className="flex items-start p-3  border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out relative"
+                        >
+                          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 dark:from-blue-600 dark:to-indigo-700  shadow-sm mr-3">
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3"
+                              />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium ">
+                              {activity.activity}
+                            </p>
+                            <p className="text-xs  mt-0.5">
+                              {activity.time}
+                            </p>
+                          </div>
+                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent opacity-20 group-hover:opacity-10 transition-opacity duration-300 ease-in-out"></div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                      No recent activities.
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </motion.div>
-
-          <div className="flex gap-4 mb-6">
-            <motion.button
-              className={`bg-blue-600 text-white px-6 py-3 font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out hover:bg-blue-700 active:bg-blue-800`}
-              onClick={toggleModal}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-            >
-              Add Client
-            </motion.button>
-
-            <CSVLink
-              data={csvData}
-              filename="clients_data.csv"
-              className={`bg-green-600 text-white px-6 py-3 font-semibold rounded-lg shadow-md transition-transform duration-300 ease-in-out hover:bg-green-700 active:bg-green-800`}
-            >
-              Export to CSV
-            </CSVLink>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-2xl font-semibold">Client Data</h2>
-              <Line data={clientData} options={clientOptions} />
-            </div>
-
-            <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-2xl font-semibold">Project Data</h2>
-              <Bar data={projectData} options={projectOptions} />
-            </div>
-
-            <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-2xl font-semibold">Status Data</h2>
-              <Doughnut data={statusData} options={statusOptions} />
-            </div>
-
-            <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-xl font-semibold">Skill Radar</h2>
-              <Radar data={radarData} options={radarOptions} />
-            </div>
-
-            <div className="p-4 border rounded-lg shadow-lg">
-              <h2 className="mb-4 text-2xl font-semibold">Traffic Sources</h2>
-              <Pie data={doughnutData} options={doughnutOptions} />
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <RecentActivities activities={recentActivities} darkMode={darkMode} />
-          </div>
         </motion.main>
       </div>
-
-      <Modal showModal={showModal} toggleModal={toggleModal} darkMode={darkMode} className={`transition-transform ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Add New Client</h2>
-        {/* Modal content */}
-      </Modal>
-
+      {showModal && (
+        <Modal toggleModal={toggleModal}>
+          <h2 className="text-xl font-semibold">Modal Title</h2>
+          <p>Here is some content for the modal.</p>
+        </Modal>
+      )}
       <ToastContainer />
     </motion.div>
   );
 };
-
-// Recent Activities Component
-const RecentActivities = ({ activities, darkMode }) => (
-  <div className={`p-6 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-900'} transition-all duration-300 ease-in-out`}>
-  <h2 className="text-2xl font-bold mb-6 border-b-2 pb-2 border-gray-300 dark:border-gray-700">
-    Recent Activities
-  </h2>
-  <ul className="space-y-4">
-    {activities.map((activity, index) => (
-      <li key={index} className="flex items-start space-x-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 ease-in-out border border-gray-200 dark:border-gray-700">
-        <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 dark:bg-blue-600 text-white shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105">
-          <AnimatedIcon />
-        </div>
-        <div className="flex-1">
-          <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{activity.time}</p>
-          <p className="text-sm text-gray-700 dark:text-gray-300">{activity.activity}</p>
-        </div>
-      </li>
-    ))}
-  </ul>
-</div>
-
-
-);
 
 export default CRM;
