@@ -6,6 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Modal from "./Modal";
+
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
 import { CSVLink } from "react-csv";
 import {
   Chart as ChartJS,
@@ -63,6 +67,17 @@ const buttonVariants = {
     transition: { duration: 0.3 },
   },
 };
+
+const customIcon = new L.Icon({
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png", // Example icon URL
+  iconSize: [25, 41], // Size of the icon
+  iconAnchor: [12, 41], // Anchor point of the icon
+  popupAnchor: [1, -34], // Anchor point of the popup
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png", // Example shadow URL
+  shadowSize: [41, 41], // Size of the shadow
+});
 
 const Ecommerce = () => {
   const [data, setData] = useState([]);
@@ -337,6 +352,14 @@ const Ecommerce = () => {
     },
   };
 
+  const funnelData = [
+    { name: "Stage 1", value: 100 },
+    { name: "Stage 2", value: 80 },
+    { name: "Stage 3", value: 60 },
+    { name: "Stage 4", value: 40 },
+    { name: "Stage 5", value: 20 },
+  ];
+
   return (
     <motion.div
       className={`min-h-screen ${
@@ -353,6 +376,7 @@ const Ecommerce = () => {
 
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+
         <motion.main
           className={`p-8 ${darkMode ? "text-gray-200" : "text-gray-900"}`}
           variants={containerVariants}
@@ -366,22 +390,179 @@ const Ecommerce = () => {
             animate="visible"
           >
             {loading ? (
-              <div className="flex justify-center items-center h-screen">
+              <div className="flex items-center justify-center h-screen">
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
-              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
+              {/* Special card at the start */}
+              <motion.div
+                className={`flex p-8 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform ${
+                  darkMode
+                    ? "bg-gray-800 border border-transparent hover:border-blue-500"
+                    : "bg-white border border-transparent hover:border-blue-500"
+                }`}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 20px 30px rgba(0, 0, 0, 0.15)",
+                }}
+                whileTap={{ scale: 0.97 }}
+                style={{ gridColumn: "span 2", width: "100%", height: "auto" }} // Adjusted for better fit
+              >
+                {/* Content Section */}
+                <div className="flex flex-col justify-between flex-1 pr-8">
+                  <div>
+                    <h2
+                      className={`text-3xl font-extrabold mb-4 ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Congratulations John! 🎉
+                    </h2>
+                    <p
+                      className={`text-sm leading-relaxed ${
+                        darkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
+                      Best seller of the month! This card celebrates John's achievement
+                      with a special mention.
+                    </p>
+                  </div>
+            
+                  <div className="flex mt-6">
+                    <motion.button
+                      className={`py-2 px-6 rounded-full font-semibold transition-all duration-300 ease-in-out transform ${
+                        darkMode
+                          ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white border border-purple-600"
+                          : "bg-gradient-to-r from-blue-400 to-green-500 text-white border border-blue-400"
+                      } shadow-lg hover:shadow-2xl hover:scale-105`}
+                      whileHover={{ scale: 1.08, y: -2 }} // Slight lift effect on hover
+                      whileTap={{ scale: 0.95, y: 0 }} // Slightly shrink on tap
+                      onClick={() => alert("Button Clicked!")} // Replace with your button action
+                    >
+                      View Details
+                    </motion.button>
+                  </div>
+                </div>
+            
+                {/* Image Section */}
+                <div className="flex-shrink-0 ml-8">
+                  <img
+                    src="https://img.freepik.com/free-photo/3d-rendering-cartoon-like-person-showing-thumbs-up_23-2150797540.jpg?t=st=1725023635~exp=1725027235~hmac=6eea2cb7d811c4839f4b503f0842c7c475524dff36296b2e3dee7d8fde03c77d&w=740"
+                    alt="John's Achievement"
+                    className="object-cover w-full h-full rounded-lg shadow-lg"
+                    style={{ width: "100px", height: "160px" }} // Image size to fit the layout
+                  />
+                </div>
+              </motion.div>
+            
+              {/* Monthly Statistics Card */}
+              <div
+                className={`flex flex-col p-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out ${
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+                }`}
+                style={{ maxWidth: "100%", height: "auto" }} // Ensure responsiveness
+              >
+                <h2 className="mb-4 text-2xl font-extrabold text-center">
+                  Monthly Statistics
+                </h2>
+                <div className="flex justify-around gap-6">
+                  {/* Stat Item 1 */}
+                  <div className="flex flex-col items-center w-1/3">
+                    <div
+                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                        darkMode ? "bg-blue-600" : "bg-blue-500"
+                      } text-white mb-2`}
+                    >
+                      {/* Example Icon */}
+                      <svg
+                        className="w-8 h-8"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M11 17l-4-4m0 0l4-4m-4 4h12"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-lg font-semibold">Sales</p>
+                    <p className="text-xl font-bold">$24,000</p>
+                  </div>
+                  {/* Stat Item 2 */}
+                  <div className="flex flex-col items-center w-1/3">
+                    <div
+                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                        darkMode ? "bg-green-600" : "bg-green-500"
+                      } text-white mb-2`}
+                    >
+                      {/* Example Icon */}
+                      <svg
+                        className="w-8 h-8"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M3 12l2-2 4 4L21 4"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-lg font-semibold">New Orders</p>
+                    <p className="text-xl font-bold">150</p>
+                  </div>
+                  {/* Stat Item 3 */}
+                  <div className="flex flex-col items-center w-1/3">
+                    <div
+                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                        darkMode ? "bg-red-600" : "bg-red-500"
+                      } text-white mb-2`}
+                    >
+                      {/* Example Icon */}
+                      <svg
+                        className="w-8 h-8"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 16h-1v-4h-1m4 4h.01M4 6h16M4 10h16M4 14h16M4 18h16"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-lg font-semibold">Returns</p>
+                    <p className="text-xl font-bold">30</p>
+                  </div>
+                  </div>
+                </div>
+
+                {/* Data-driven cards */}
                 {data.map((item, index) => (
                   <motion.div
                     key={index}
-                    className={`p-4 border rounded-lg shadow-md ${
+                    className={`p-6 border rounded-lg shadow-md transition-all duration-300 ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{
+                      scale: 1.04,
+                      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+                    }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <h2
-                      className={`text-lg font-semibold ${
+                      className={`text-xl font-semibold ${
                         darkMode ? "text-gray-200" : "text-gray-900"
                       }`}
                     >
@@ -412,10 +593,10 @@ const Ecommerce = () => {
                 ))}
               </div>
             )}
-            <div className="mt-8 flex items-center">
+            <div className="flex items-center mt-8">
               <CSVLink data={csvData} filename="ecommerce-data.csv">
                 <motion.button
-                  className="mr-4 py-2 px-4 bg-blue-500 text-white rounded-md shadow-md"
+                  className="px-4 py-2 mr-4 text-white bg-blue-500 rounded-md shadow-md"
                   variants={buttonVariants}
                   whileHover="hover"
                   whileTap="tap"
@@ -423,7 +604,7 @@ const Ecommerce = () => {
                   Export CSV
                 </motion.button>
               </CSVLink>
-              <motion.button
+              {/* <motion.button
                 className={`py-2 px-4 ${
                   darkMode ? "bg-blue-600 text-white" : "bg-blue-500 text-white"
                 } rounded-md shadow-md`}
@@ -433,11 +614,11 @@ const Ecommerce = () => {
                 onClick={toggleModal}
               >
                 Add Product
-              </motion.button>
+              </motion.button> */}
             </div>
-            {showModal && (
+            {/* {showModal && (
               <Modal onClose={toggleModal}>
-                <h2 className="text-lg font-semibold mb-4">Add New Product</h2>
+                <h2 className="mb-4 text-lg font-semibold">Add New Product</h2>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -445,7 +626,7 @@ const Ecommerce = () => {
                   }}
                 >
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
+                    <label className="block mb-2 text-sm font-medium">
                       Product Name
                     </label>
                     <input
@@ -458,7 +639,7 @@ const Ecommerce = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
+                    <label className="block mb-2 text-sm font-medium">
                       Category
                     </label>
                     <input
@@ -471,7 +652,7 @@ const Ecommerce = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
+                    <label className="block mb-2 text-sm font-medium">
                       Price
                     </label>
                     <input
@@ -484,7 +665,7 @@ const Ecommerce = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
+                    <label className="block mb-2 text-sm font-medium">
                       Stock
                     </label>
                     <input
@@ -498,7 +679,7 @@ const Ecommerce = () => {
                   </div>
                   <div className="flex justify-end">
                     <motion.button
-                      className="mr-4 py-2 px-4 bg-blue-500 text-white rounded-md shadow-md"
+                      className="px-4 py-2 mr-4 text-white bg-blue-500 rounded-md shadow-md"
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
@@ -508,7 +689,7 @@ const Ecommerce = () => {
                     </motion.button>
                     <motion.button
                       type="submit"
-                      className="py-2 px-4 bg-green-500 text-white rounded-md shadow-md"
+                      className="px-4 py-2 text-white bg-green-500 rounded-md shadow-md"
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
@@ -518,31 +699,30 @@ const Ecommerce = () => {
                   </div>
                 </form>
               </Modal>
-            )}
-            <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <div className="border rounded-lg p-4 shadow-lg col-span-2 lg:col-span-1">
-                <h2 className="text-lg font-semibold mb-4">Sales Overview</h2>
+            )} */}
+
+            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+                <h2 className="mb-4 text-lg font-semibold">Sales Overview</h2>
                 <Line data={salesData} options={salesOptions} />
               </div>
-              <div className="border rounded-lg p-4 shadow-lg col-span-2 lg:col-span-1">
-                <h2 className="text-lg font-semibold mb-4">
-                  Product Categories
-                </h2>
-                <Pie data={categoryData} options={categoryOptions} />
-              </div>
-              <div className="border rounded-lg p-4 shadow-lg col-span-2 lg:col-span-1">
-                <h2 className="text-lg font-semibold mb-4">Stock Levels</h2>
-                <Doughnut data={stockData} options={stockOptions} />
-              </div>
-              <div className="border rounded-lg p-4 shadow-lg col-span-2 lg:col-span-1">
-                <h2 className="text-lg font-semibold mb-4">
+
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+                <h2 className="mb-4 text-lg font-semibold">
                   Customer Feedback
                 </h2>
                 <Radar data={feedbackData} options={feedbackOptions} />
               </div>
 
-              <div className="border rounded-lg p-6 shadow-lg overflow-x-auto col-span-2 lg:col-span-2 xl:col-span-3 ">
-                <h2 className="text-2xl font-semibold mb-6">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+                <h2 className="mb-4 text-lg font-semibold">
+                  Product Categories
+                </h2>
+                <Pie data={categoryData} options={categoryOptions} />
+              </div>
+
+              <div className="col-span-2 p-6 overflow-x-auto border rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 ">
+                <h2 className="mb-6 text-2xl font-semibold">
                   Product Data Table
                 </h2>
                 <div className="relative overflow-x-auto">
@@ -551,8 +731,8 @@ const Ecommerce = () => {
                       <p className="text-lg">No data available</p>
                     </div>
                   ) : (
-                    <table className="min-w-full divide-y  ">
-                      <thead className="   uppercase text-xs font-medium">
+                    <table className="min-w-full divide-y ">
+                      <thead className="text-xs font-medium uppercase ">
                         <tr>
                           <th className="px-6 py-3 text-left">Product</th>
                           <th className="px-6 py-3 text-left">Category</th>
@@ -575,7 +755,7 @@ const Ecommerce = () => {
                               aria-labelledby={`row-${index}`}
                             >
                               <td
-                                className="px-6 py-4 text-sm font-medium  "
+                                className="px-6 py-4 text-sm font-medium "
                                 id={`row-${index}-product`}
                               >
                                 {item.product}
@@ -607,153 +787,164 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-             
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:shadow-2xl ">
+                <h2 className="flex items-center mb-4 text-xl font-bold ">
+                  <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
+                  Event Timeline
+                </h2>
+                {/* Custom Event Timeline */}
+                <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      March 12, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 fas fa-briefcase"></i> Company Annual
+                      Meeting: A comprehensive overview of the past year's
+                      achievements and the roadmap for the next year was
+                      discussed.
+                    </p>
+                  </div>
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      April 5, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
+                      Product Launch: The new product line was launched,
+                      featuring innovative designs and cutting-edge technology.
+                    </p>
+                  </div>
+                  {/* Add more timeline events as needed */}
+                </div>
+              </div>
 
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+                <h2 className="mb-4 text-lg font-semibold">Stock Levels</h2>
+                <Doughnut data={stockData} options={stockOptions} />
+              </div>
 
+              <div className="col-span-2 p-6 transition-transform transform border rounded-lg h-h-75 lg:col-span-1 hover:scale-105 hover:border-blue-500">
+                <h2 className="flex items-center mb-6 text-2xl font-semibold">
+                  <i className="mr-3 text-blue-500 fas fa-chart-line dark:text-blue-300"></i>{" "}
+                  Sales Progress
+                </h2>
 
+                <div className="space-y-6 ">
+                  <div className="relative group">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm font-semibold ">Achieved</span>
+                      <span className="text-sm font-semibold text-green-600">
+                        60%
+                      </span>
+                    </div>
+                    <div className="relative w-full h-2 overflow-hidden rounded">
+                      <div
+                        style={{ width: "60%" }}
+                        className="h-2 transition-all duration-500 ease-in-out rounded bg-gradient-to-r from-green-400 to-green-600 group-hover:shadow-md"
+                      >
+                        <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold transition-all duration-300 transform translate-x-1/2 group-hover:translate-x-0">
+                          {/* 60% */}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Tooltip on Hover */}
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                      Reached 60% of the target
+                    </div>
+                  </div>
 
+                  {/* In Progress Progress Bar */}
+                  <div className="relative group">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm font-semibold ">
+                        In Progress
+                      </span>
+                      <span className="text-sm font-semibold text-blue-600">
+                        30%
+                      </span>
+                    </div>
+                    <div className="relative w-full h-2 overflow-hidden rounded">
+                      <div
+                        style={{ width: "30%" }}
+                        className="h-2 transition-all duration-500 ease-in-out rounded bg-gradient-to-r from-blue-400 to-blue-600 group-hover:shadow-md"
+                      >
+                        <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold transition-all duration-300 transform translate-x-1/2 group-hover:translate-x-0">
+                          {/* 30% */}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Tooltip on Hover */}
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                      Currently at 30% progress
+                    </div>
+                  </div>
 
+                  {/* Pending Progress Bar */}
+                  <div className="relative group">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm font-semibold ">Pending</span>
+                      <span className="text-sm font-semibold text-red-600">
+                        10%
+                      </span>
+                    </div>
+                    <div className="relative w-full h-2 overflow-hidden rounded">
+                      <div
+                        style={{ width: "10%" }}
+                        className="h-2 transition-all duration-500 ease-in-out rounded bg-gradient-to-r from-red-400 to-red-600 group-hover:shadow-md"
+                      >
+                        <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold transition-all duration-300 transform translate-x-1/2 group-hover:translate-x-0">
+                          {/* 10% */}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Tooltip on Hover */}
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                      Only 10% completed
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-<div className="border rounded-lg p-6  col-span-2 lg:col-span-1 transition-transform transform hover:scale-105 hover:border-blue-500">
-  <h2 className="text-2xl font-semibold mb-6  flex items-center">
-    <i className="fas fa-chart-line text-blue-500 dark:text-blue-300 mr-3"></i> Sales Progress
-  </h2>
-  
- 
-  <div className="space-y-6">
-    
-    <div className="relative group">
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-sm font-semibold ">
-          Achieved
-        </span>
-        <span className="text-sm font-semibold text-green-600">
-          60%
-        </span>
-      </div>
-      <div className="relative w-full h-2 rounded  overflow-hidden">
-        <div
-          style={{ width: '60%' }}
-          className="h-2 bg-gradient-to-r from-green-400 to-green-600 rounded transition-all duration-500 ease-in-out group-hover:shadow-md"
-        >
-          <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold  transform translate-x-1/2 group-hover:translate-x-0 transition-all duration-300">
-            {/* 60% */}
-          </span>
-        </div>
-      </div>
-      {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
-        Reached 60% of the target
-      </div>
-    </div>
+              <div className="col-span-2 p-6 transition-transform duration-300 transform border border-gray-200 rounded-lg shadow-lg h-75 dark:border-gray-700 hover:scale-105 hover:shadow-2xl lg:col-span-1">
+                {/* Title Section */}
+                <h2 className="mb-4 text-xl font-semibold text-center ">
+                  Visit US
+                </h2>
 
-    {/* In Progress Progress Bar */}
-    <div className="relative group">
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-sm font-semibold ">
-          In Progress
-        </span>
-        <span className="text-sm font-semibold text-blue-600">
-          30%
-        </span>
-      </div>
-      <div className="relative w-full h-2 rounded  overflow-hidden">
-        <div
-          style={{ width: '30%' }}
-          className="h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded transition-all duration-500 ease-in-out group-hover:shadow-md"
-        >
-          <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold  transform translate-x-1/2 group-hover:translate-x-0 transition-all duration-300">
-            {/* 30% */}
-          </span>
-        </div>
-      </div>
-      {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
-        Currently at 30% progress
-      </div>
-    </div>
+                {/* Map Container */}
+                <div className="relative overflow-hidden border border-gray-300 rounded-lg h-52 dark:border-gray-600">
+                  <MapContainer
+                    center={[19.076, 72.8777]} // Coordinates for Mumbai
+                    zoom={13} // Zoom level for a closer view of Mumbai
+                    style={{ height: "500px", width: "100%" }}
+                    className="rounded-lg"
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <Marker position={[19.076, 72.8777]} icon={customIcon}>
+                      <Popup>
+                        <strong>Mumbai</strong>
+                        <br />
+                        {/* This is a marker centered on Mumbai. */}
+                      </Popup>
+                    </Marker>
+                  </MapContainer>
 
-    {/* Pending Progress Bar */}
-    <div className="relative group">
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-sm font-semibold ">
-          Pending
-        </span>
-        <span className="text-sm font-semibold text-red-600">
-          10%
-        </span>
-      </div>
-      <div className="relative w-full h-2 rounded  overflow-hidden">
-        <div
-          style={{ width: '10%' }}
-          className="h-2 bg-gradient-to-r from-red-400 to-red-600 rounded transition-all duration-500 ease-in-out group-hover:shadow-md"
-        >
-          <span className="absolute inset-y-0 right-0 pr-2 text-xs font-bold  transform translate-x-1/2 group-hover:translate-x-0 transition-all duration-300">
-            {/* 10% */}
-          </span>
-        </div>
-      </div>
-      {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
-        Only 10% completed
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-lg col-span-2 lg:col-span-1 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl  ">
-  <h2 className="text-xl font-bold mb-4 flex items-center ">
-    <i className="fas fa-calendar-alt text-indigo-500 mr-2"></i> Event Timeline
-  </h2>
-  {/* Custom Event Timeline */}
-  <div className="relative border-l-4 border-indigo-500 dark:border-indigo-400 ml-4 pl-4">
-    <div className="mb-8 group">
-      <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
-      <p className="text-sm font-semibold   transition-colors">
-        March 12, 2024
-      </p>
-      <p className="text-base leading-snug   transition-colors">
-        <i className="fas fa-briefcase  mr-2"></i> Company Annual Meeting: A comprehensive overview of the past year's achievements and the roadmap for the next year was discussed.
-      </p>
-    </div>
-    <div className="mb-8 group">
-      <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
-      <p className="text-sm font-semibold  transition-colors">
-        April 5, 2024
-      </p>
-      <p className="text-base leading-snug    transition-colors">
-        <i className="fas fa-rocket text-indigo-500 mr-2"></i> Product Launch: The new product line was launched, featuring innovative designs and cutting-edge technology.
-      </p>
-    </div>
-    {/* Add more timeline events as needed */}
-  </div>
-</div>
-
-
-
-
-
-
-
+                  {/* Footer with map data attribution */}
+                  <div className="absolute bottom-0 left-0 w-full p-4">
+                    Map data &copy;{" "}
+                    <a
+                      href="https://www.openstreetmap.org/copyright"
+                      className="text-indigo-500 hover:underline"
+                    ></a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </motion.main>
