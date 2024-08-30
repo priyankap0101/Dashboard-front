@@ -28,6 +28,7 @@ import { Line, Pie, Radar, Bar, Doughnut } from "react-chartjs-2";
 import { Table } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Timeline } from "react-twitter-widgets";
+import { FaThumbsUp } from "react-icons/fa";
 
 ChartJS.register(
   CategoryScale,
@@ -395,156 +396,165 @@ const Ecommerce = () => {
               </div>
             ) : (
               <div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
-              {/* Special card at the start */}
-              <motion.div
-                className={`flex p-8 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform ${
-                  darkMode
-                    ? "bg-gray-800 border border-transparent hover:border-blue-500"
-                    : "bg-white border border-transparent hover:border-blue-500"
-                }`}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 30px rgba(0, 0, 0, 0.15)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                style={{ gridColumn: "span 2", width: "100%", height: "auto" }} // Adjusted for better fit
-              >
-                {/* Content Section */}
-                <div className="flex flex-col justify-between flex-1 pr-8">
-                  <div>
+                {/* Special card at the start */}
+                <motion.div
+                  className={`flex flex-col items-center p-6 rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform ${
+                    darkMode
+                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
+                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-200 hover:via-gray-100 hover:to-white"
+                  }`}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    gridColumn: "span 1",
+                    maxWidth: "380px",
+                    minWidth: "240px",
+                  }} // Slightly adjusted width for better balance
+                >
+                  {/* Image */}
+                  <div className="flex justify-center mb-4">
+                    <img
+                      src="https://img.freepik.com/free-photo/view-3d-man-holding-coffee-cup-showing-thumbs-up_23-2150709926.jpg?t=st=1725036525~exp=1725040125~hmac=aa76cfb4e7ddf29b404545e6527b3b9e6e8f73f06593160a63fdaac6c2805740&w=740"
+                      alt="Boy Showing Thumbs Up"
+                      className="rounded-full shadow-md"
+                      style={{ width: "80px", height: "80px" }} // Uniform size for image
+                    />
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="px-4 mb-4 text-center">
                     <h2
-                      className={`text-3xl font-extrabold mb-4 ${
+                      className={`text-xl font-extrabold mb-2 ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
-                      Congratulations John! 🎉
+                      Congratulations, John! 🎉
                     </h2>
                     <p
-                      className={`text-sm leading-relaxed ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
+                      className={`text-sm ${
+                        darkMode ? "text-gray-400" : "text-gray-600"
+                      } mb-1`}
+                    >
+                      Best seller of the month!
+                    </p>
+                    <p
+                      className={`text-lg font-semibold mt-1 ${
+                        darkMode ? "text-yellow-400" : "text-yellow-500"
                       }`}
                     >
-                      Best seller of the month! This card celebrates John's achievement
-                      with a special mention.
+                      $24,000
                     </p>
                   </div>
-            
-                  <div className="flex mt-6">
-                    <motion.button
-                      className={`py-2 px-6 rounded-full font-semibold transition-all duration-300 ease-in-out transform ${
-                        darkMode
-                          ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white border border-purple-600"
-                          : "bg-gradient-to-r from-blue-400 to-green-500 text-white border border-blue-400"
-                      } shadow-lg hover:shadow-2xl hover:scale-105`}
-                      whileHover={{ scale: 1.08, y: -2 }} // Slight lift effect on hover
-                      whileTap={{ scale: 0.95, y: 0 }} // Slightly shrink on tap
-                      onClick={() => alert("Button Clicked!")} // Replace with your button action
-                    >
-                      View Details
-                    </motion.button>
-                  </div>
-                </div>
-            
-                {/* Image Section */}
-                <div className="flex-shrink-0 ml-8">
-                  <img
-                    src="https://img.freepik.com/free-photo/3d-rendering-cartoon-like-person-showing-thumbs-up_23-2150797540.jpg?t=st=1725023635~exp=1725027235~hmac=6eea2cb7d811c4839f4b503f0842c7c475524dff36296b2e3dee7d8fde03c77d&w=740"
-                    alt="John's Achievement"
-                    className="object-cover w-full h-full rounded-lg shadow-lg"
-                    style={{ width: "100px", height: "160px" }} // Image size to fit the layout
-                  />
-                </div>
-              </motion.div>
-            
-              {/* Monthly Statistics Card */}
-              <div
-                className={`flex flex-col p-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out ${
-                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-                }`}
-                style={{ maxWidth: "100%", height: "auto" }} // Ensure responsiveness
-              >
-                <h2 className="mb-4 text-2xl font-extrabold text-center">
-                  Monthly Statistics
-                </h2>
-                <div className="flex justify-around gap-6">
-                  {/* Stat Item 1 */}
-                  <div className="flex flex-col items-center w-1/3">
-                    <div
-                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                        darkMode ? "bg-blue-600" : "bg-blue-500"
-                      } text-white mb-2`}
-                    >
-                      {/* Example Icon */}
-                      <svg
-                        className="w-8 h-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+
+                  {/* Button */}
+                  <motion.button
+                    className={`mt-4 py-2 px-8 rounded-full font-medium transition-transform duration-300 ease-in-out ${
+                      darkMode
+                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-indigo-600 hover:to-purple-600"
+                        : "bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-500 hover:to-blue-500"
+                    } shadow-md hover:shadow-lg`}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95, y: 0 }}
+                    onClick={() => alert("Button Clicked!")}
+                  >
+                    View Details
+                  </motion.button>
+                </motion.div>
+
+                {/* Monthly Statistics Card */}
+                <div
+                  className={`flex flex-col p-6 rounded-xl shadow-md transition-all duration-300 ease-in-out ${
+                    darkMode
+                      ? "bg-gray-800 text-white"
+                      : "bg-white text-gray-800"
+                  }`}
+                  style={{ gridColumn: "span 2" }} // Monthly statistics card spans 2 columns
+                >
+                  <h2 className="mb-4 text-2xl font-extrabold text-center">
+                    Monthly Statistics
+                  </h2>
+                  <div className="flex flex-wrap justify-between gap-4">
+                    {/* Stat Item 1 */}
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                          darkMode ? "bg-blue-600" : "bg-blue-500"
+                        } text-white mb-2`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M11 17l-4-4m0 0l4-4m-4 4h12"
-                        />
-                      </svg>
+                        {/* Example Icon */}
+                        <svg
+                          className="w-8 h-8"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M11 17l-4-4m0 0l4-4m-4 4h12"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-lg font-semibold">Sales</p>
+                      <p className="text-xl font-bold">$24,000</p>
                     </div>
-                    <p className="text-lg font-semibold">Sales</p>
-                    <p className="text-xl font-bold">$24,000</p>
-                  </div>
-                  {/* Stat Item 2 */}
-                  <div className="flex flex-col items-center w-1/3">
-                    <div
-                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                        darkMode ? "bg-green-600" : "bg-green-500"
-                      } text-white mb-2`}
-                    >
-                      {/* Example Icon */}
-                      <svg
-                        className="w-8 h-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+                    {/* Stat Item 2 */}
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                          darkMode ? "bg-green-600" : "bg-green-500"
+                        } text-white mb-2`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M3 12l2-2 4 4L21 4"
-                        />
-                      </svg>
+                        {/* Example Icon */}
+                        <svg
+                          className="w-8 h-8"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 12l2-2 4 4L21 4"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-lg font-semibold">New Orders</p>
+                      <p className="text-xl font-bold">150</p>
                     </div>
-                    <p className="text-lg font-semibold">New Orders</p>
-                    <p className="text-xl font-bold">150</p>
-                  </div>
-                  {/* Stat Item 3 */}
-                  <div className="flex flex-col items-center w-1/3">
-                    <div
-                      className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                        darkMode ? "bg-red-600" : "bg-red-500"
-                      } text-white mb-2`}
-                    >
-                      {/* Example Icon */}
-                      <svg
-                        className="w-8 h-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+                    {/* Stat Item 3 */}
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
+                          darkMode ? "bg-red-600" : "bg-red-500"
+                        } text-white mb-2`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 16h-1v-4h-1m4 4h.01M4 6h16M4 10h16M4 14h16M4 18h16"
-                        />
-                      </svg>
+                        {/* Example Icon */}
+                        <svg
+                          className="w-8 h-8"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m4 4h.01M4 6h16M4 10h16M4 14h16M4 18h16"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-lg font-semibold">Returns</p>
+                      <p className="text-xl font-bold">30</p>
                     </div>
-                    <p className="text-lg font-semibold">Returns</p>
-                    <p className="text-xl font-bold">30</p>
-                  </div>
                   </div>
                 </div>
 
