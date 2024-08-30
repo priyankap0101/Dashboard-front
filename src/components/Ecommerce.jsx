@@ -642,7 +642,7 @@ const Ecommerce = () => {
         </div>
       </div>
       {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs  rounded-md py-1 px-2 -mt-8 ml-20">
+      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
         Reached 60% of the target
       </div>
     </div>
@@ -668,7 +668,7 @@ const Ecommerce = () => {
         </div>
       </div>
       {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs  rounded-md py-1 px-2 -mt-8 ml-20">
+      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
         Currently at 30% progress
       </div>
     </div>
@@ -694,7 +694,7 @@ const Ecommerce = () => {
         </div>
       </div>
       {/* Tooltip on Hover */}
-      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs  rounded-md py-1 px-2 -mt-8 ml-20">
+      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 rounded-md py-1 px-2 shadow-lg -mt-12 ml-32 transform -translate-x-1/2 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
         Only 10% completed
       </div>
     </div>
@@ -704,34 +704,51 @@ const Ecommerce = () => {
 
 
 
-<div className="border rounded-lg p-6 shadow-lg  col-span-2 lg:col-span-1 transition transform hover:scale-105 hover:shadow-2xl hover:border-indigo-500">
-  <h2 className="text-lg font-semibold mb-4  flex items-center">
-    <i className="fas fa-calendar-alt text-indigo-500  mr-2"></i> Event Timeline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-lg col-span-2 lg:col-span-1 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl  ">
+  <h2 className="text-xl font-bold mb-4 flex items-center ">
+    <i className="fas fa-calendar-alt text-indigo-500 mr-2"></i> Event Timeline
   </h2>
   {/* Custom Event Timeline */}
-  <div className="relative border-l-2 border-indigo-500">
-    <div className="mb-8 ml-4">
-      <div className="absolute w-3 h-3 bg-indigo-500 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-      <p className="text-sm font-semibold text-indigo-500 ">
+  <div className="relative border-l-4 border-indigo-500 dark:border-indigo-400 ml-4 pl-4">
+    <div className="mb-8 group">
+      <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
+      <p className="text-sm font-semibold   transition-colors">
         March 12, 2024
       </p>
-      <p className="text-base leading-snug  ">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-        scelerisque diam non nisi semper.
+      <p className="text-base leading-snug   transition-colors">
+        <i className="fas fa-briefcase  mr-2"></i> Company Annual Meeting: A comprehensive overview of the past year's achievements and the roadmap for the next year was discussed.
       </p>
     </div>
-    <div className="mb-8 ml-4">
-      <div className="absolute w-3 h-3 bg-indigo-500 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-      <p className="text-sm font-semibold text-indigo-500 ">
+    <div className="mb-8 group">
+      <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
+      <p className="text-sm font-semibold  transition-colors">
         April 5, 2024
       </p>
-      <p className="text-base leading-snug ">
-        Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.
+      <p className="text-base leading-snug    transition-colors">
+        <i className="fas fa-rocket text-indigo-500 mr-2"></i> Product Launch: The new product line was launched, featuring innovative designs and cutting-edge technology.
       </p>
     </div>
     {/* Add more timeline events as needed */}
   </div>
 </div>
+
+
 
 
 
