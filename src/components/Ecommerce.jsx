@@ -395,10 +395,9 @@ const Ecommerce = () => {
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
-              <div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
-                {/* Special card at the start */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                 <motion.div
-                  className={`flex flex-col items-center p-6 rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform ${
+                  className={`flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform ${
                     darkMode
                       ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
                       : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-200 hover:via-gray-100 hover:to-white"
@@ -409,10 +408,10 @@ const Ecommerce = () => {
                   }}
                   whileTap={{ scale: 0.98 }}
                   style={{
-                    gridColumn: "span 1",
-                    maxWidth: "380px",
-                    minWidth: "240px",
-                  }} // Slightly adjusted width for better balance
+                    maxWidth: "90%", // Maximum width adjusted for responsiveness
+                    width: "100%", // Full width to adapt to screen sizes
+                    maxWidth: "400px", // Fixed maximum width for larger screens
+                  }}
                 >
                   {/* Image */}
                   <div className="flex justify-center mb-4">
@@ -420,28 +419,28 @@ const Ecommerce = () => {
                       src="https://img.freepik.com/free-photo/view-3d-man-holding-coffee-cup-showing-thumbs-up_23-2150709926.jpg?t=st=1725036525~exp=1725040125~hmac=aa76cfb4e7ddf29b404545e6527b3b9e6e8f73f06593160a63fdaac6c2805740&w=740"
                       alt="Boy Showing Thumbs Up"
                       className="rounded-full shadow-md"
-                      style={{ width: "80px", height: "80px" }} // Uniform size for image
+                      style={{ width: "60px", height: "60px" }} // Adjusted for better scaling
                     />
                   </div>
 
                   {/* Text Content */}
                   <div className="px-4 mb-4 text-center">
                     <h2
-                      className={`text-xl font-extrabold mb-2 ${
+                      className={`text-lg sm:text-xl md:text-2xl font-extrabold mb-2 ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
                       Congratulations, John! 🎉
                     </h2>
                     <p
-                      className={`text-sm ${
+                      className={`text-xs sm:text-sm md:text-base ${
                         darkMode ? "text-gray-400" : "text-gray-600"
                       } mb-1`}
                     >
                       Best seller of the month!
                     </p>
                     <p
-                      className={`text-lg font-semibold mt-1 ${
+                      className={`text-base sm:text-lg md:text-xl font-semibold mt-1 ${
                         darkMode ? "text-yellow-400" : "text-yellow-500"
                       }`}
                     >
@@ -451,7 +450,7 @@ const Ecommerce = () => {
 
                   {/* Button */}
                   <motion.button
-                    className={`mt-4 py-2 px-8 rounded-full font-medium transition-transform duration-300 ease-in-out ${
+                    className={`mt-4 py-2 px-6 rounded-full font-medium transition-transform duration-300 ease-in-out ${
                       darkMode
                         ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-indigo-600 hover:to-purple-600"
                         : "bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-500 hover:to-blue-500"
