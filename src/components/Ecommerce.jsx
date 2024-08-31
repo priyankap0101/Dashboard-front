@@ -466,94 +466,191 @@ const Ecommerce = () => {
 
                 {/* Monthly Statistics Card */}
                 <div
-                  className={`flex flex-col p-6 rounded-xl shadow-md transition-all duration-300 ease-in-out ${
+                  className={`flex flex-col p-4 rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
                     darkMode
-                      ? "bg-gray-800 text-white"
-                      : "bg-white text-gray-800"
+                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
+                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-50 hover:via-gray-100 hover:to-white"
                   }`}
-                  style={{ gridColumn: "span 2" }} // Monthly statistics card spans 2 columns
+                  style={{
+                    gridColumn: "span 2",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <h2 className="mb-4 text-2xl font-extrabold text-center">
-                    Monthly Statistics
-                  </h2>
-                  <div className="flex flex-wrap justify-between gap-4">
-                    {/* Stat Item 1 */}
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                          darkMode ? "bg-blue-600" : "bg-blue-500"
-                        } text-white mb-2`}
-                      >
-                        {/* Example Icon */}
-                        <svg
-                          className="w-8 h-8"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+                  <div className="flex flex-col items-center w-full">
+                    <h2 className="mb-4 text-lg font-semibold text-center">
+                      Monthly Statistics
+                    </h2>
+                    <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                      {/* Stat Item 1: Sales */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-blue-600" : "bg-blue-500"
+                          } text-white mb-2`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 17l-4-4m0 0l4-4m-4 4h12"
-                          />
-                        </svg>
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          Sales
+                        </p>
+                        <p className="text-lg font-semibold text-center">
+                          $24,000
+                        </p>
                       </div>
-                      <p className="text-lg font-semibold">Sales</p>
-                      <p className="text-xl font-bold">$24,000</p>
-                    </div>
-                    {/* Stat Item 2 */}
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                          darkMode ? "bg-green-600" : "bg-green-500"
-                        } text-white mb-2`}
-                      >
-                        {/* Example Icon */}
-                        <svg
-                          className="w-8 h-8"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+                      {/* Stat Item 2: New Orders */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-green-600" : "bg-green-500"
+                          } text-white mb-2`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M3 12l2-2 4 4L21 4"
-                          />
-                        </svg>
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M7 10l5 5 5-5H7z"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          New Orders
+                        </p>
+                        <p className="text-lg font-semibold text-center">150</p>
                       </div>
-                      <p className="text-lg font-semibold">New Orders</p>
-                      <p className="text-xl font-bold">150</p>
-                    </div>
-                    {/* Stat Item 3 */}
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-16 h-16 flex items-center justify-center rounded-full ${
-                          darkMode ? "bg-red-600" : "bg-red-500"
-                        } text-white mb-2`}
-                      >
-                        {/* Example Icon */}
-                        <svg
-                          className="w-8 h-8"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+                      {/* Stat Item 3: Returns */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-red-600" : "bg-red-500"
+                          } text-white mb-2`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 16h-1v-4h-1m4 4h.01M4 6h16M4 10h16M4 14h16M4 18h16"
-                          />
-                        </svg>
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M9 13l3 3 3-3m-3 3V4"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          Returns
+                        </p>
+                        <p className="text-lg font-semibold text-center">30</p>
                       </div>
-                      <p className="text-lg font-semibold">Returns</p>
-                      <p className="text-xl font-bold">30</p>
+                      {/* Stat Item 4: Customers */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-teal-600" : "bg-teal-500"
+                          } text-white mb-2`}
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M14 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8M8 4v16M4 6l4-2m0 0l4 2"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          Customers
+                        </p>
+                        <p className="text-lg font-semibold text-center">
+                          1,200
+                        </p>
+                      </div>
+                      {/* Stat Item 5: Revenue */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-purple-600" : "bg-purple-500"
+                          } text-white mb-2`}
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M5 12l5 5L20 7"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          Revenue
+                        </p>
+                        <p className="text-lg font-semibold text-center">
+                          $45,000
+                        </p>
+                      </div>
+                      {/* Stat Item 6: Products */}
+                      <div className="flex flex-col items-center p-3 transition-transform duration-300 ease-in-out rounded-lg shadow-md hover:shadow-2xl hover:bg-opacity-80">
+                        <div
+                          className={`w-12 h-12 flex items-center justify-center rounded-full ${
+                            darkMode ? "bg-orange-600" : "bg-orange-500"
+                          } text-white mb-2`}
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M4 6h16v12H4z"
+                            />
+                          </svg>
+                        </div>
+                        <p className="mb-1 text-xs font-medium text-center">
+                          Products
+                        </p>
+                        <p className="text-lg font-semibold text-center">300</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -731,26 +828,39 @@ const Ecommerce = () => {
                 <Pie data={categoryData} options={categoryOptions} />
               </div>
 
-              <div className="col-span-2 p-6 overflow-x-auto border rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 ">
+              <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3">
                 <h2 className="mb-6 text-2xl font-semibold">
                   Product Data Table
                 </h2>
-                <div className="relative overflow-x-auto">
-                  {data.length === 0 ? (
-                    <div className="flex items-center justify-center h-48">
-                      <p className="text-lg">No data available</p>
-                    </div>
-                  ) : (
-                    <table className="min-w-full divide-y ">
-                      <thead className="text-xs font-medium uppercase ">
+
+                {loading ? (
+                  <div className="flex items-center justify-center h-48">
+                    <div className="w-10 h-10 border-4 border-blue-500 rounded-full loader"></div>
+                  </div>
+                ) : data.length === 0 ? (
+                  <div className="flex items-center justify-center h-48 rounded-lg">
+                    <p className="text-lg">No data available</p>
+                  </div>
+                ) : (
+                  <div className="relative overflow-x-auto rounded-lg shadow-md">
+                    <table className="w-full divide-y divide-gray-200 table-auto dark:divide-gray-700">
+                      <thead className="text-gray-900 bg-gradient-to-r from-blue-300 to-blue-200">
                         <tr>
-                          <th className="px-6 py-3 text-left">Product</th>
-                          <th className="px-6 py-3 text-left">Category</th>
-                          <th className="px-6 py-3 text-left">Price</th>
-                          <th className="px-6 py-3 text-left">Stock</th>
+                          <th className="px-6 py-3 text-sm font-semibold text-left uppercase">
+                            Product
+                          </th>
+                          <th className="px-6 py-3 text-sm font-semibold text-left uppercase">
+                            Category
+                          </th>
+                          <th className="px-6 py-3 text-sm font-semibold text-left uppercase">
+                            Price
+                          </th>
+                          <th className="px-6 py-3 text-sm font-semibold text-left uppercase">
+                            Stock
+                          </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      <tbody className="divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                         {data.map((item, index) => {
                           const price = parseFloat(item.price);
                           const formattedPrice = isNaN(price)
@@ -760,41 +870,49 @@ const Ecommerce = () => {
                           return (
                             <tr
                               key={index}
-                              className="transition-transform duration-300 hover:scale-105 focus-within:ring-2 focus-within:ring-blue-500"
+                              className="transition-all duration-300 transform dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 hover:scale-105"
                               role="row"
                               aria-labelledby={`row-${index}`}
+                              tabIndex={0}
                             >
-                              <td
-                                className="px-6 py-4 text-sm font-medium "
-                                id={`row-${index}-product`}
-                              >
+                              <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
                                 {item.product}
                               </td>
-                              <td
-                                className="px-6 py-4 text-sm "
-                                id={`row-${index}-category`}
-                              >
+                              <td className="px-6 py-4 text-sm whitespace-nowrap">
                                 {item.category}
                               </td>
-                              <td
-                                className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300"
-                                id={`row-${index}-price`}
-                              >
+                              <td className="px-6 py-4 text-sm whitespace-nowrap">
                                 {formattedPrice}
                               </td>
-                              <td
-                                className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300"
-                                id={`row-${index}-stock`}
-                              >
-                                {item.stock}
+                              <td className="px-6 py-4 text-sm whitespace-nowrap">
+                                {item.stock > 0 ? (
+                                  <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-800 dark:text-green-100">
+                                    In Stock
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full dark:bg-red-800 dark:text-red-100">
+                                    Out of Stock
+                                  </span>
+                                )}
                               </td>
                             </tr>
                           );
                         })}
                       </tbody>
                     </table>
-                  )}
-                </div>
+
+                    {/* Consistent Pagination Controls */}
+                    <div className="flex items-center justify-between p-4 dark:bg-gray-700">
+                      <button className="px-4 py-2 text-sm font-medium text-gray-600 border rounded-lg shadow-sm dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Previous
+                      </button>
+                      <span className="text-sm text-gray-600">Page 1 of 1</span>
+                      <button className="px-4 py-2 text-sm font-medium text-gray-600 border rounded-lg shadow-sm dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:shadow-2xl ">
