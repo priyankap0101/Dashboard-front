@@ -335,7 +335,7 @@ const Analytics = () => {
                 variants={itemVariants}
               >
                 <div
-                  className={`p-4  shadow-md rounded-lg w-full h-60 md:h-72 lg:h-96 }`}
+                  // className={`p-4  shadow-md rounded-lg w-full h-60 md:h-72 lg:h-96 }`}
                 >
                   <MySlider />
                 </div>
