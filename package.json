@@ -11,7 +11,10 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.1.2",
+    "@mui/material": "^6.0.2",
     "@react-pdf/renderer": "^3.4.4",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",

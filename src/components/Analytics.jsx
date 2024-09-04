@@ -28,6 +28,7 @@ import {
 } from "chart.js";
 import { Line, Pie, Radar, Bar } from "react-chartjs-2";
 import MySlider from "./slider";
+import EarningsReport from "./EarningsReport";
 
 ChartJS.register(
   CategoryScale,
@@ -246,6 +247,10 @@ const Analytics = () => {
     ],
   };
 
+  const earnings = 468; // Example earnings data
+  const percentageChange = 4.2; // Example percentage change data
+
+  
   const departmentExpenseData = {
     labels: ["HR", "Engineering", "Sales", "Marketing"],
     datasets: [
@@ -339,6 +344,8 @@ const Analytics = () => {
                 >
                   <MySlider />
                 </div>
+
+                <EarningsReport earnings={earnings} percentageChange={percentageChange} />
 
                 {/* Line Chart */}
                 <div
