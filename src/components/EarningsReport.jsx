@@ -176,7 +176,7 @@ const EarningsReport = ({
           <p className={`mt-2 text-sm ${colors.text}`}>Compared to last week</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-3">
+      <div className="grid justify-center grid-cols-1 gap-2 mb-2 md:grid-cols-3">
         {[
           {
             icon: FaDollarSign,
@@ -199,7 +199,7 @@ const EarningsReport = ({
         ].map(({ icon: Icon, label, value, color }, index) => (
           <div
             key={index}
-            className={`flex items-center p-2 rounded-md shadow-md transition-transform transform hover:scale-105 ${colors.background}`}
+            className={`flex items-center p-2 rounded-md shadow-md transition-transform transform hover:scale-95 ${colors.background} w-auto max-w-xs mx-auto`}
             style={{ border: `1px solid ${colors.border}` }}
           >
             <div
@@ -209,7 +209,7 @@ const EarningsReport = ({
               <Icon size={14} className="text-white" />
             </div>
             <div className="ml-3">
-              <p className={`text-sm font-semibold ${colors.text}`}>{label}</p>
+              <p className={`font-semibold ${colors.text}`}>{label}</p>
               <p className={`font-bold ${colors.text}`}>${value}</p>
             </div>
           </div>
