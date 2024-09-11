@@ -250,7 +250,6 @@ const Analytics = () => {
   const earnings = 468; // Example earnings data
   const percentageChange = 4.2; // Example percentage change data
 
-  
   const departmentExpenseData = {
     labels: ["HR", "Engineering", "Sales", "Marketing"],
     datasets: [
@@ -336,39 +335,64 @@ const Analytics = () => {
               </div>
             ) : (
               <motion.div
-                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2"
+                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
                 variants={itemVariants}
               >
+                {/* Slider */}
                 <div
-                  // className={`p-4  shadow-md rounded-lg w-full h-60 md:h-72 lg:h-96 }`}
+                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  }`}
                 >
                   <MySlider />
                 </div>
-
-                <EarningsReport earnings={earnings} percentageChange={percentageChange} />
-
                 {/* Line Chart */}
                 <div
-                  className={`p-4  shadow-md rounded-lg w-full h-64 md:h-80 lg:h-96 ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
+                  // style={{ height: '300px' }}  // Adjust the height as needed
                 >
-                  <Line options={chartOptions()} data={monthlySalesData} />
+                  <div className="w-full h-full">
+                    <Line options={chartOptions()} data={monthlySalesData} />
+                  </div>
                 </div>
 
                 {/* Bar Chart */}
                 <div
-                  className={`p-4  shadow-md rounded-lg w-full h-72 md:h-96 lg:h-64 ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 shadow-md rounded-lg w-full  border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   <Bar options={chartOptions()} data={quarterlyRevenueData} />
                 </div>
 
+                {/* Earnings Report */}
+                <div
+                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  }`}
+                >
+                  <EarningsReport
+                    earnings={earnings}
+                    percentageChange={percentageChange}
+                  />
+                </div>
+
                 {/* Radar Chart */}
                 <div
-                  className={`p-4 rounded-lg shadow-md ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   <Radar options={chartOptions(true)} data={skillData} />
@@ -376,8 +400,10 @@ const Analytics = () => {
 
                 {/* Pie Chart */}
                 <div
-                  className={`p-4 shadow-md rounded-lg w-full h-80 md:h-72 lg:h-80 ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 shadow-md rounded-lg w-full h-80 md:h-72 lg:h-80 border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   <Pie options={chartOptions()} data={departmentExpenseData} />
@@ -385,8 +411,10 @@ const Analytics = () => {
 
                 {/* Line Chart for Expenses */}
                 <div
-                  className={`p-4 rounded-lg shadow-md ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   <Line options={chartOptions()} data={expenseData} />
@@ -394,8 +422,10 @@ const Analytics = () => {
 
                 {/* Bar Chart for Project Timeline */}
                 <div
-                  className={`p-4 rounded-lg shadow-md ${
-                    darkMode ? "bg-gray-800" : "bg-white"
+                  className={`p-4 rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   <Bar options={chartOptions()} data={projectTimelineData} />
