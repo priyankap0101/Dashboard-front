@@ -191,6 +191,21 @@ const Analytics = () => {
     },
   });
 
+  const salesOverviewData = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        label: "Sales",
+        data: [3000, 2500, 4000, 3500, 4200, 4800],
+        borderColor: darkMode ? "#f9fafb" : "#111827", // Line color
+        backgroundColor: darkMode
+          ? "rgba(249, 250, 251, 0.5)"
+          : "rgba(17, 24, 39, 0.5)",
+        fill: false,
+      },
+    ],
+  };
+
   const monthlySalesData = {
     labels: [
       "Jan",
@@ -338,7 +353,7 @@ const Analytics = () => {
                 className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
                 variants={itemVariants}
               >
-                {/* Slider */}
+                {/* Slider Section (Takes 2 columns on larger screens) */}
                 <div
                   className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
                     darkMode
@@ -348,32 +363,68 @@ const Analytics = () => {
                 >
                   <MySlider />
                 </div>
-                {/* Line Chart */}
+
+                {/* Average Daily Sales (1-column) */}
                 <div
                   className={`p-4 rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   }`}
-                  // style={{ height: '300px' }}  // Adjust the height as needed
                 >
-                  <div className="w-full h-full">
-                    <Line options={chartOptions()} data={monthlySalesData} />
+                  <div className="flex flex-col justify-between">
+                    <h4 className="text-lg font-semibold">
+                      Average Daily Sales
+                    </h4>
+                    <p className="text-3xl font-bold">$28,450</p>
                   </div>
+                  <Line options={chartOptions()} data={monthlySalesData} />
                 </div>
 
-                {/* Bar Chart */}
+                {/* Sales Overview (1-column) */}
                 <div
-                  className={`p-4 shadow-md rounded-lg w-full  border ${
+                  className={`p-4 rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   }`}
                 >
-                  <Bar options={chartOptions()} data={quarterlyRevenueData} />
+                  {/* Sales Overview Text */}
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-lg font-semibold">Sales Overview</h4>
+                    <p className="text-2xl font-bold">$42.5k</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p>Order: 62.2% | Visits: 25.5%</p>
+                  </div>
+
+                  {/* Line Chart for Sales Overview */}
+                  <div className="mt-4">
+                    <Line
+                      data={salesOverviewData} // Replace with your actual chart data
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: { display: false },
+                          tooltip: { enabled: true },
+                        },
+                        scales: {
+                          x: {
+                            grid: { display: false },
+                            ticks: { color: darkMode ? "#f9fafb" : "#111827" }, // Adjust colors for dark mode
+                          },
+                          y: {
+                            grid: { display: false },
+                            ticks: { color: darkMode ? "#f9fafb" : "#111827" },
+                          },
+                        },
+                      }}
+                    />
+                  </div>
                 </div>
 
-                {/* Earnings Report */}
+                {/* Earning Reports (Takes 2 columns on larger screens) */}
                 <div
                   className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
                     darkMode
@@ -387,7 +438,7 @@ const Analytics = () => {
                   />
                 </div>
 
-                {/* Radar Chart */}
+                {/* Radar Chart for Skill Analysis */}
                 <div
                   className={`p-4 rounded-lg shadow-md border ${
                     darkMode
