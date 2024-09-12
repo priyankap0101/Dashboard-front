@@ -389,38 +389,63 @@ const Analytics = () => {
                       : "bg-white border-gray-300"
                   }`}
                 >
-                  {/* Sales Overview Text */}
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-semibold">Sales Overview</h4>
-                    <p className="text-2xl font-bold">$42.5k</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p>Order: 62.2% | Visits: 25.5%</p>
-                  </div>
-
-                  {/* Line Chart for Sales Overview */}
-                  <div className="mt-4">
-                    <Line
-                      data={salesOverviewData} // Replace with your actual chart data
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: { display: false },
-                          tooltip: { enabled: true },
-                        },
-                        scales: {
-                          x: {
-                            grid: { display: false },
-                            ticks: { color: darkMode ? "#f9fafb" : "#111827" }, // Adjust colors for dark mode
-                          },
-                          y: {
-                            grid: { display: false },
-                            ticks: { color: darkMode ? "#f9fafb" : "#111827" },
-                          },
-                        },
-                      }}
-                    />
+                  {/* Sales Overview Section */}
+                  <div className="flex flex-col">
+                    {/* Sales Overview Text */}
+                    <div className="flex items-center justify-between mb-4">
+                      <h4
+                        className={`text-lg font-semibold ${
+                          darkMode ? "text-gray-300" : "text-gray-800"
+                        }`}
+                      >
+                        Sales Overview
+                      </h4>
+                      <p
+                        className={`text-2xl font-bold ${
+                          darkMode ? "text-gray-200" : "text-gray-900"
+                        }`}
+                      >
+                        $42.5k
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between mb-4">
+                      <p  className={` font-bold ${
+                          darkMode ? "text-gray-200" : "text-gray-900"
+                        }`} >Order: 62.2% | Visits: 25.5%</p>
+                    </div>
+                    {/* Chart Containers */}
+                    <div className="grid grid-cols-1 gap-4">
+                      {/* First Line Chart */}
+                      <div className="h-64">
+                        {" "}
+                        {/* Adjust height as needed */}
+                        <Line
+                          data={salesOverviewData} // Replace with your actual chart data
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: { enabled: true },
+                            },
+                            scales: {
+                              x: {
+                                grid: { display: false },
+                                ticks: {
+                                  color: darkMode ? "#f9fafb" : "#111827",
+                                },
+                              },
+                              y: {
+                                grid: { display: false },
+                                ticks: {
+                                  color: darkMode ? "#f9fafb" : "#111827",
+                                },
+                              },
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
