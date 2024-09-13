@@ -355,11 +355,7 @@ const Analytics = () => {
               >
                 {/* Slider Section (Takes 2 columns on larger screens) */}
                 <div
-                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
-                    darkMode
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
+                  className={`p-4  col-span-1 md:col-span-2 lg:col-span-2 `}
                 >
                   <MySlider />
                 </div>
