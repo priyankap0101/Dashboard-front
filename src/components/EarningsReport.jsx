@@ -127,7 +127,7 @@ const EarningsReport = ({
 
   return (
     <div
-      className={`w-full max-w-4xl mx-auto rounded-lg shadow-lg ${colors.background} ${colors.text}`}
+      className={`w-full max-w-4xl mx-auto rounded-lg h-96 ${colors.background} ${colors.text}`}
     >
       <div className="flex items-center justify-between p-4">
         <div className="text-center">
@@ -204,7 +204,7 @@ const EarningsReport = ({
           >
             <div
               className="flex items-center justify-center p-2 rounded-full"
-              style={{ backgroundColor: color, width: "35px", height: "35px" }}
+              style={{ backgroundColor: color, width: "35px", height: "45px" }}
             >
               <Icon size={14} className="text-white" />
             </div>

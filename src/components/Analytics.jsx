@@ -373,12 +373,26 @@ const Analytics = () => {
                   }`}
                 >
                   <div className="flex flex-col justify-between">
-                    <h4 className="text-lg font-semibold">
+                    <h4
+                      className={`text-lg font-semibold ${
+                        darkMode ? "text-gray-300" : "text-gray-800"
+                      }`}
+                    >
                       Average Daily Sales
                     </h4>
-                    <p className="text-3xl font-bold">$28,450</p>
+                    <p
+                       className={`text-2xl font-bold ${
+                        darkMode ? "text-gray-200" : "text-gray-900"
+                      }`}
+                    >
+                      $28,450
+                    </p>
                   </div>
-                  <Line options={chartOptions()} data={monthlySalesData} />
+                  <Line
+                    options={chartOptions()} // Ensure maintainAspectRatio is false in options
+                    data={monthlySalesData}
+                    className="h-96" // Adjust height as needed
+                  />
                 </div>
 
                 {/* Sales Overview (1-column) */}
@@ -409,9 +423,13 @@ const Analytics = () => {
                       </p>
                     </div>
                     <div className="flex items-center justify-between mb-4">
-                      <p  className={` font-bold ${
+                      <p
+                        className={` font-bold ${
                           darkMode ? "text-gray-200" : "text-gray-900"
-                        }`} >Order: 62.2% | Visits: 25.5%</p>
+                        }`}
+                      >
+                        Order: 62.2% | Visits: 25.5%
+                      </p>
                     </div>
                     {/* Chart Containers */}
                     <div className="grid grid-cols-1 gap-4">
@@ -451,11 +469,7 @@ const Analytics = () => {
 
                 {/* Earning Reports (Takes 2 columns on larger screens) */}
                 <div
-                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 ${
-                    darkMode
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
+                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 `}
                 >
                   <EarningsReport
                     earnings={earnings}
