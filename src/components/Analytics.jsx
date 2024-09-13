@@ -465,7 +465,7 @@ const Analytics = () => {
 
                 {/* Earning Reports (Takes 2 columns on larger screens) */}
                 <div
-                  className={`p-4 shadow-md rounded-lg col-span-1 md:col-span-2 lg:col-span-2 `}
+                  className={`p-3 m-1  col-span-1 md:col-span-2 lg:col-span-2 `}
                 >
                   <EarningsReport
                     earnings={earnings}
