@@ -225,8 +225,8 @@ const Analytics = () => {
       {
         label: "Monthly Sales ($)",
         data: [
-          1200, 1500, 1800, 2200, 2500, 2800, 3000, 3200, 3300, 3100, 2900,
-          2700,
+          1200, 8500, 1800, 2200, 25000, 2800, 3000, 3200, 3300, 3100, 2900,
+          2700, 6000,
         ],
         backgroundColor: colors.chartBackground,
         borderColor: colors.line,
@@ -354,41 +354,101 @@ const Analytics = () => {
                 variants={itemVariants}
               >
                 {/* Slider Section (Takes 2 columns on larger screens) */}
-                <div
-                  className={`p-4  col-span-1 md:col-span-2 lg:col-span-2 `}
-                >
+                <div className={`p-4  col-span-1 md:col-span-2 lg:col-span-2 `}>
                   <MySlider />
                 </div>
 
                 {/* Average Daily Sales (1-column) */}
                 <div
-                  className={`p-4 rounded-lg shadow-md border ${
+                  className={`p-6 rounded-3xl shadow-xl border transition-transform duration-300 ease-in-out hover:scale-100 hover:shadow-2xl ${
                     darkMode
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
+                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 border-gray-600"
+                      : "bg-gradient-to-br from-white via-gray-100 to-gray-300 border-gray-200"
+                  } h-96 flex flex-col justify-center relative overflow-hidden`}
                 >
-                  <div className="flex flex-col justify-between">
+                  {/* Decorative Elements */}
+                  {/* <div
+                    className={`absolute top-4 right-4 w-8 h-20 rounded-full ${
+                      darkMode
+                        ? "bg-purple-900 opacity-30"
+                        : "bg-blue-300 opacity-30"
+                    } animate-pulse`}
+                  ></div>
+                  <div
+                    className={`absolute bottom-4 left-4 w-16 h-16 rounded-full ${
+                      darkMode
+                        ? "bg-indigo-800 opacity-25"
+                        : "bg-green-300 opacity-40"
+                    } animate-pulse`}
+                  ></div> */}
+
+                  {/* Title and Sales Value */}
+                  <div className="flex flex-col items-center justify-center mb-6">
                     <h4
-                      className={`text-lg font-semibold ${
+                      className={`text-2xl font-semibold tracking-wide mb-2 transition-colors duration-300 ${
                         darkMode ? "text-gray-300" : "text-gray-800"
                       }`}
                     >
                       Average Daily Sales
                     </h4>
                     <p
-                       className={`text-2xl font-bold ${
-                        darkMode ? "text-gray-200" : "text-gray-900"
+                      className={`text-xl font-extrabold transition-colors duration-300 ${
+                        darkMode ? "text-yellow-300" : "text-gray-900"
                       }`}
                     >
                       $28,450
                     </p>
                   </div>
-                  <Line
-                    options={chartOptions()} // Ensure maintainAspectRatio is false in options
-                    data={monthlySalesData}
-                    className="h-96" // Adjust height as needed
-                  />
+
+                  {/* Centered Chart */}
+                  <div className="flex items-center justify-center flex-grow">
+                    <div
+                      className={`w-full h-full p-4 transition-all duration-300 ease-in-out shadow-md rounded-xl ${
+                        darkMode ? "bg-gray-900" : "bg-gray-50"
+                      }`}
+                    >
+                      <Line
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                              enabled: true,
+                              backgroundColor: darkMode ? "#1f2937" : "#ffffff",
+                              titleColor: darkMode ? "#e5e7eb" : "#000000",
+                              bodyColor: darkMode ? "#e5e7eb" : "#000000",
+                              borderColor: darkMode ? "#3b82f6" : "#6366f1",
+                              borderWidth: 1,
+                              displayColors: false,
+                            },
+                          },
+                          scales: {
+                            x: {
+                              grid: { display: false }, // Remove x-axis grid lines
+                              ticks: {
+                                color: darkMode ? "#e5e7eb" : "#111827",
+                                font: { weight: "600" },
+                              },
+                            },
+                            y: {
+                              grid: { display: false }, // Remove y-axis grid lines
+                              ticks: {
+                                color: darkMode ? "#e5e7eb" : "#111827",
+                                font: { weight: "600" },
+                              },
+                            },
+                          },
+                          animation: {
+                            duration: 1200,
+                            easing: "easeInOutQuad",
+                          },
+                        }}
+                        data={monthlySalesData}
+                        className="w-full h-full"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Sales Overview (1-column) */}
@@ -430,7 +490,7 @@ const Analytics = () => {
                     {/* Chart Containers */}
                     <div className="grid grid-cols-1 gap-4">
                       {/* First Line Chart */}
-                      <div className="h-64">
+                      <div className="h-56">
                         {" "}
                         {/* Adjust height as needed */}
                         <Line
