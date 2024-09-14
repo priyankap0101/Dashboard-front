@@ -71,6 +71,8 @@ const Analytics = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [feedback, setFeedback] = useState("");
   const chartsRef = useRef(null);
+  // Initialize the expandedIndex state
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -275,6 +277,22 @@ const Analytics = () => {
       },
     ],
   };
+
+  const faqData = [
+    // { question: 'What is analytics?', answer: 'Analytics involves the discovery, interpretation, and communication of meaningful patterns in data.' },
+    {
+      question: "How can I track user behavior?",
+      answer:
+        "User behavior can be tracked using various analytics tools like Google Analytics or custom tracking scripts.",
+    },
+    {
+      question: "What are key performance indicators (KPIs)?",
+      answer:
+        "KPIs are measurable values that demonstrate how effectively a company is achieving its objectives.",
+    },
+    // { question: 'How does data visualization help?', answer: 'Data visualization helps make complex data more accessible and understandable through graphical representation.' },
+    // { question: 'What is real-time analytics?', answer: 'Real-time analytics provides insights and data analysis as events happen, allowing for immediate decision-making.' }
+  ];
 
   const skillData = {
     labels: ["JavaScript", "React", "Node.js", "CSS", "HTML"],
@@ -576,6 +594,99 @@ const Analytics = () => {
                 >
                   <Bar options={chartOptions()} data={projectTimelineData} />
                 </div>
+
+                {/* Feedback Section */}
+
+                {/* Feedback Section */}
+                <div
+                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                >
+                  <h2
+                    className={`text-2xl font-semibold mb-4 ${
+                      darkMode ? "text-gray-100" : "text-gray-800"
+                    }`}
+                  >
+                    Feedback
+                  </h2>
+                  <textarea
+                    value={feedback}
+                    onChange={handleFeedbackChange}
+                    placeholder="Share your feedback here..."
+                    className={`w-full p-4 rounded-lg border focus:outline-none transition-colors duration-300 ease-in-out ${
+                      darkMode
+                        ? "bg-gray-900 text-gray-200 border-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-gray-500"
+                        : "bg-white text-gray-900 border-gray-300 placeholder-gray-600 focus:ring-2 focus:ring-blue-500"
+                    }`}
+                    rows="4"
+                  />
+                  <button
+                    onClick={handleFeedbackSubmit}
+                    className={`w-full px-4 py-2 mt-4 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
+                      darkMode
+                        ? "bg-gray-600 text-gray-100 hover:bg-gray-500"
+                        : "bg-blue-600 text-white hover:bg-blue-500"
+                    }`}
+                  >
+                    Submit Feedback
+                  </button>
+                </div>
+
+                <div
+                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                    darkMode
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                >
+                  <h2
+                    className={`text-2xl font-semibold mb-4 ${
+                      darkMode ? "text-gray-100" : "text-gray-800"
+                    }`}
+                  >
+                    FAQ
+                  </h2>
+                  {faqData.slice(0, 3).map((item, index) => (
+                    <div key={index} className="mb-4">
+                      <h4
+                        className={`text-lg font-semibold ${
+                          darkMode ? "text-gray-300" : "text-gray-800"
+                        }`}
+                      >
+                        {item.question}
+                      </h4>
+                      <p
+                        className={`mt-2 ${
+                          darkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        {item.answer.length > 100
+                          ? `${item.answer.slice(0, 100)}...`
+                          : item.answer}
+                        {item.answer.length > 100 && (
+                          <span
+                            className={`cursor-pointer text-blue-500 ml-2`}
+                            onClick={() => handleViewMore(index)}
+                          >
+                            View More
+                          </span>
+                        )}
+                      </p>
+                      {expandedIndex === index && (
+                        <p
+                          className={`mt-2 ${
+                            darkMode ? "text-gray-400" : "text-gray-600"
+                          }`}
+                        >
+                          {item.answer}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             )}
 
@@ -600,35 +711,6 @@ const Analytics = () => {
               >
                 Export as CSV
               </CSVLink>
-            </div>
-
-            {/* Feedback Section */}
-            <div className="mt-6">
-              <h2
-                className={`text-lg font-bold ${
-                  darkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Feedback
-              </h2>
-              <textarea
-                value={feedback}
-                onChange={handleFeedbackChange}
-                placeholder="Provide your feedback here..."
-                className={`w-full p-2 mt-2 rounded-lg ${
-                  darkMode
-                    ? "bg-gray-800 text-white"
-                    : "bg-gray-200 text-gray-900"
-                }`}
-              />
-              <button
-                onClick={handleFeedbackSubmit}
-                className={`mt-2 px-4 py-2 rounded-lg ${
-                  darkMode ? "bg-gray-700 text-white" : "bg-blue-500 text-white"
-                }`}
-              >
-                Submit Feedback
-              </button>
             </div>
           </motion.div>
         </main>
