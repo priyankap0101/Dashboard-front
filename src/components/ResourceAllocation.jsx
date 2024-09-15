@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Line, Pie, Doughnut } from "react-chartjs-2";
+import { Line, Pie, Doughnut, Bar } from "react-chartjs-2";
 import { ClipLoader } from "react-spinners";
 import Header from "./Header"; // Adjust path as needed
 import Sidebar from "./Sidebar"; // Adjust path as needed
@@ -12,7 +12,7 @@ import {
   LineElement,
   PointElement,
   ArcElement,
-  Filler,
+  BarElement,
   CategoryScale,
   LinearScale,
 } from "chart.js";
@@ -24,7 +24,7 @@ ChartJS.register(
   LineElement,
   PointElement,
   ArcElement,
-  Filler,
+  BarElement,
   CategoryScale,
   LinearScale
 );
@@ -126,6 +126,36 @@ const ResourceAllocation = () => {
     ],
   };
 
+  const barData = {
+    labels: data.map((item) => item.month),
+    datasets: [
+      {
+        label: "Utilization vs Allocation",
+        data: data.map((item) => item.utilization),
+        backgroundColor: darkMode
+          ? "rgba(75, 192, 192, 0.6)"
+          : "rgba(153, 102, 255, 0.6)",
+        borderColor: darkMode
+          ? "rgba(75, 192, 192, 1)"
+          : "rgba(153, 102, 255, 1)",
+        borderWidth: 1,
+        barPercentage: 0.5,
+      },
+      {
+        label: "Allocation",
+        data: data.map((item) => item.allocation),
+        backgroundColor: darkMode
+          ? "rgba(255, 99, 132, 0.6)"
+          : "rgba(255, 159, 64, 0.6)",
+        borderColor: darkMode
+          ? "rgba(255, 99, 132, 1)"
+          : "rgba(255, 159, 64, 1)",
+        borderWidth: 1,
+        barPercentage: 0.5,
+      },
+    ],
+  };
+
   const pieData = {
     labels: ["Utilization", "Allocation"],
     datasets: [
@@ -154,10 +184,10 @@ const ResourceAllocation = () => {
           data.reduce((sum, item) => sum + item.allocation, 0) / data.length,
         ],
         backgroundColor: darkMode
-          ? ["rgba(75, 192, 192, 0.6)", "rgba(153, 102, 255, 0.6)"]
+          ? ["rgba(255, 159, 64, 0.6)", "rgba(153, 102, 255, 0.6)"]
           : ["rgba(255, 206, 86, 0.6)", "rgba(153, 102, 255, 0.6)"],
         borderColor: darkMode
-          ? ["rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)"]
+          ? ["rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)"]
           : ["rgba(255, 206, 86, 1)", "rgba(153, 102, 255, 1)"],
         borderWidth: 1,
       },
@@ -207,7 +237,6 @@ const ResourceAllocation = () => {
       easing: "easeInOutQuad",
     },
   };
-
   return (
     <motion.div
       className={`min-h-screen ${
@@ -298,6 +327,24 @@ const ResourceAllocation = () => {
                 }`}
                 variants={itemVariants}
               >
+                <h2 className="mb-4 text-2xl font-semibold">Bar Chart</h2>
+                <motion.div
+                  className="h-64"
+                  variants={chartVariants}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <Bar data={barData} options={commonOptions} />
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                className={`p-6 transition-shadow rounded-lg shadow-lg ${
+                  darkMode
+                    ? "bg-gray-700 text-white hover:shadow-xl"
+                    : "bg-white text-gray-900 hover:shadow-lg"
+                }`}
+                variants={itemVariants}
+              >
                 <h2 className="mb-4 text-2xl font-semibold">Pie Chart</h2>
                 <motion.div
                   className="h-64"
@@ -316,9 +363,7 @@ const ResourceAllocation = () => {
                 }`}
                 variants={itemVariants}
               >
-                <h2 className="mb-4 text-2xl font-semibold">
-                  Doughnut Chart
-                </h2>
+                <h2 className="mb-4 text-2xl font-semibold">Doughnut Chart</h2>
                 <motion.div
                   className="h-64"
                   variants={chartVariants}
