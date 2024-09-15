@@ -350,7 +350,11 @@ const Analytics = () => {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
+    <div
+      className={`min-h-screen ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"
+      }`}
+    >
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -586,13 +590,70 @@ const Analytics = () => {
 
                 {/* Bar Chart for Project Timeline */}
                 <div
-                  className={`p-4 rounded-lg shadow-md border ${
+                  className={`relative p-4   mx-auto rounded-lg shadow-lg border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  }`}
+                  } transition-transform duration-300 ease-in-out transform hover:scale-[1.05] hover:shadow-2xl`}
                 >
-                  <Bar options={chartOptions()} data={projectTimelineData} />
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <h2
+                      className={`text-lg  font-black ${
+                        darkMode ? "text-gray-200" : "text-gray-800"
+                      }`}
+                    >
+                      Project Timeline
+                    </h2>
+                    <div
+                      className={`flex items-center space-x-4 ${
+                        darkMode ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      <span className="text-sm md:text-base">
+                        Updated 2 days ago
+                      </span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="transition-opacity duration-200 h-7 w-7 opacity-70 hover:opacity-100"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4v2m0 2v2m6 0H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Chart */}
+                  <div className="relative h-48 overflow-hidden shadow-inner rounded-2xl">
+                    <Bar options={chartOptions()} data={projectTimelineData} />
+                    <div
+                      className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-100 pointer-events-none ${
+                        darkMode
+                          ? "bg-gray-900 bg-opacity-25"
+                          : "bg-white bg-opacity-25"
+                      }`}
+                    ></div>
+                  </div>
+
+                  {/* Button */}
+                  <div className="flex justify-start mt-8">
+                    <button
+                      className={` px-4 py-2 mt-4 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
+                        darkMode
+                          ? "bg-gray-600 text-gray-100 hover:bg-gray-500"
+                          : "bg-blue-600 text-white hover:bg-blue-500"
+                      }`}
+                    >
+                      View Full Report
+                    </button>
+                  </div>
                 </div>
 
                 {/* Feedback Section */}
