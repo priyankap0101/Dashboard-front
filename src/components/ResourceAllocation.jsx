@@ -194,6 +194,26 @@ const ResourceAllocation = () => {
     ],
   };
 
+  const bubbleData = {
+    datasets: [
+      {
+        label: "Employee Utilization",
+        data: data.map((item) => ({
+          x: item.category, // e.g., [1, 2, 3]
+          y: item.utilization, // e.g., [65, 59, 90]
+          r: item.size, // Bubble size
+        })),
+        backgroundColor: darkMode
+          ? "rgba(75, 192, 192, 0.6)"
+          : "rgba(153, 102, 255, 0.6)",
+        borderColor: darkMode
+          ? "rgba(75, 192, 192, 1)"
+          : "rgba(153, 102, 255, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
   const commonOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -240,7 +260,7 @@ const ResourceAllocation = () => {
   return (
     <motion.div
       className={`min-h-screen ${
-        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"
       }`}
       initial="hidden"
       animate="visible"
@@ -254,7 +274,7 @@ const ResourceAllocation = () => {
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div
-          className={`flex-1 p-6 ${darkMode ? "bg-gray-800" : "bg-gray-100"}`}
+          className={`flex-1 p-6 ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}
         >
           <div className="mb-8">
             <motion.h1
@@ -280,23 +300,93 @@ const ResourceAllocation = () => {
               variants={containerVariants}
             >
               <motion.div
-                className={`p-6 transition-shadow rounded-lg shadow-lg ${
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode
-                    ? "bg-gray-700 text-white hover:shadow-xl"
-                    : "bg-white text-gray-900 hover:shadow-lg"
-                }`}
-                variants={itemVariants}
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                } shadow-md hover:shadow-lg`}
               >
-                <h2 className="mb-4 text-2xl font-semibold">
-                  Employee Utilization
-                </h2>
-                <motion.div
-                  className="h-64"
-                  variants={chartVariants}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <Line data={utilizationData} options={commonOptions} />
-                </motion.div>
+                {/* Main Content */}
+                <div className="relative z-10">
+                  {/* Header */}
+                  <h2 className="mb-5 text-2xl font-semibold">
+                    Employee Utilization
+                  </h2>
+
+                  {/* Chart Container */}
+                  <motion.div
+                    className="h-64"
+                    whileHover={{ scale: 1.01 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Line
+                      data={utilizationData}
+                      options={{
+                        ...commonOptions,
+                        scales: {
+                          x: {
+                            grid: {
+                              display: false, // Remove grid lines
+                            },
+                            ticks: {
+                              color: darkMode ? "#A0AEC0" : "#4A5568",
+                              font: {
+                                size: 12,
+                              },
+                            },
+                          },
+                          y: {
+                            grid: {
+                              display: false, // Remove grid lines
+                            },
+                            ticks: {
+                              color: darkMode ? "#A0AEC0" : "#4A5568",
+                              font: {
+                                size: 12,
+                              },
+                            },
+                          },
+                        },
+                        plugins: {
+                          tooltip: {
+                            backgroundColor: darkMode ? "#2D3748" : "#EDF2F7",
+                            titleColor: darkMode ? "#F7FAFC" : "#2D3748",
+                            bodyColor: darkMode ? "#F7FAFC" : "#2D3748",
+                            borderColor: darkMode ? "#4FD1C5" : "#3182CE",
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                          },
+                        },
+                        elements: {
+                          line: {
+                            tension: 0.4,
+                            borderWidth: 2.5,
+                            borderColor: darkMode ? "#4FD1C5" : "#3182CE",
+                            backgroundColor: darkMode
+                              ? "rgba(79, 209, 197, 0.2)"
+                              : "rgba(49, 130, 206, 0.2)",
+                          },
+                          point: {
+                            radius: 5,
+                            hoverRadius: 7,
+                            backgroundColor: darkMode ? "#4FD1C5" : "#3182CE",
+                          },
+                        },
+                      }}
+                    />
+                  </motion.div>
+
+                  {/* Action Buttons */}
+                  <div className="flex justify-end mt-6">
+                    <motion.button
+                      className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
+                      whileHover={{ translateY: -3 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Download Report
+                    </motion.button>
+                  </div>
+                </div>
               </motion.div>
 
               <motion.div
