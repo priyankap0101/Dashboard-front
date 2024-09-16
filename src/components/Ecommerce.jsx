@@ -408,9 +408,8 @@ const Ecommerce = () => {
                   }}
                   whileTap={{ scale: 0.98 }}
                   style={{
-                    maxWidth: "90%", // Maximum width adjusted for responsiveness
                     width: "100%", // Full width to adapt to screen sizes
-                    maxWidth: "400px", // Fixed maximum width for larger screens
+                    // maxWidth: "90%", // Uncomment this line if you need a responsive maximum width
                   }}
                 >
                   {/* Image */}

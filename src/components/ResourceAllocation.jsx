@@ -4,6 +4,8 @@ import { Line, Pie, Doughnut, Bar } from "react-chartjs-2";
 import { ClipLoader } from "react-spinners";
 import Header from "./Header"; // Adjust path as needed
 import Sidebar from "./Sidebar"; // Adjust path as needed
+import { Bubble } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   Title,
@@ -197,21 +199,102 @@ const ResourceAllocation = () => {
   const bubbleData = {
     datasets: [
       {
-        label: "Employee Utilization",
-        data: data.map((item) => ({
-          x: item.category, // e.g., [1, 2, 3]
-          y: item.utilization, // e.g., [65, 59, 90]
-          r: item.size, // Bubble size
-        })),
-        backgroundColor: darkMode
-          ? "rgba(75, 192, 192, 0.6)"
-          : "rgba(153, 102, 255, 0.6)",
-        borderColor: darkMode
-          ? "rgba(75, 192, 192, 1)"
-          : "rgba(153, 102, 255, 1)",
+        label: "High Budget ",
+        data: [
+          { x: 120000, y: 5, r: 20 },
+          { x: 150000, y: 7, r: 25 },
+          { x: 130000, y: 6, r: 22 },
+        ],
+        backgroundColor: "rgba(255,99,132,0.6)",
+        borderColor: "rgba(255,99,132,1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Medium Budget ",
+        data: [
+          { x: 70000, y: 10, r: 18 },
+          { x: 85000, y: 12, r: 20 },
+          { x: 90000, y: 11, r: 17 },
+        ],
+        backgroundColor: "rgba(54,162,235,0.6)",
+        borderColor: "rgba(54,162,235,1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Low Budget ",
+        data: [
+          { x: 30000, y: 20, r: 15 },
+          { x: 25000, y: 25, r: 12 },
+          { x: 20000, y: 30, r: 10 },
+        ],
+        backgroundColor: "rgba(75,192,192,0.6)",
+        borderColor: "rgba(75,192,192,1)",
         borderWidth: 1,
       },
     ],
+  };
+
+  const bubbleOptions = {
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          // color: "#333",
+          color: darkMode ? "#ffffff" : "#000000",
+          font: {
+            size: 10, // Slightly larger font for better readability
+            family: "Arial, sans-serif", // Consistent font family
+            // weight: 'bold'  // Bold text for better emphasis
+          },
+          padding: 20, // Add padding around legend labels
+          boxWidth: 14, // Width of the colored box for each legend item
+          usePointStyle: true, // Use point style instead of box for items
+        },
+        padding: {
+          top: -20, // Padding above the chart (creates gap between legend and chart)
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            const dataPoint = tooltipItem.raw;
+            return `Budget: $${dataPoint.x}, Team Size: ${dataPoint.y}, Impact Score: ${dataPoint.r}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Project Budget ($)",
+          // color: "#333",
+          color: darkMode ? "#ffffff" : "#000000",
+          font: {
+            size: 19,
+          },
+        },
+        grid: {
+          display: false,
+          color: "#ddd",
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Team Size",
+          color: darkMode ? "#ffffff" : "#000000",
+          font: {
+            size: 14,
+          },
+        },
+        grid: {
+          display: false,
+          color: "#ddd",
+        },
+      },
+    },
   };
 
   const commonOptions = {
@@ -221,7 +304,7 @@ const ResourceAllocation = () => {
       legend: {
         position: "top",
         labels: {
-          color: darkMode ? "#ffffff" : "#000000",
+          // color: darkMode ? "#ffffff" : "#000000",
           font: {
             size: 14,
             family: "Arial, sans-serif",
@@ -390,23 +473,22 @@ const ResourceAllocation = () => {
               </motion.div>
 
               <motion.div
-                className={`p-6 transition-shadow rounded-lg shadow-lg ${
-                  darkMode
-                    ? "bg-gray-700 text-white hover:shadow-xl"
-                    : "bg-white text-gray-900 hover:shadow-lg"
+                className={`p-6 rounded-lg  shadow-md transition-transform ${
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
-                variants={itemVariants}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
+                }}
               >
-                <h2 className="mb-4 text-2xl font-semibold">
+                <h2 className="mb-10 text-3xl font-medium text-center">
                   Project Allocation
                 </h2>
-                <motion.div
-                  className="h-64"
-                  variants={chartVariants}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <Line data={allocationData} options={commonOptions} />
-                </motion.div>
+                <div className="flex items-center justify-center w-full ">
+                  <div className="w-full h-full ">
+                    <Bubble data={bubbleData} options={bubbleOptions} />
+                  </div>
+                </div>
               </motion.div>
 
               <motion.div
