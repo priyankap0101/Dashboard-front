@@ -45,6 +45,11 @@ const itemVariants = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
+const refreshChart = () => {
+  // Logic to refresh the chart
+  console.log("Chart refreshed");
+};
+
 const chartVariants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
@@ -132,7 +137,7 @@ const ResourceAllocation = () => {
     labels: data.map((item) => item.month),
     datasets: [
       {
-        label: "Utilization vs Allocation",
+        label: "Utilization",
         data: data.map((item) => item.utilization),
         backgroundColor: darkMode
           ? "rgba(75, 192, 192, 0.6)"
@@ -451,7 +456,7 @@ const ResourceAllocation = () => {
                           },
                           point: {
                             radius: 5,
-                            hoverRadius: 7,
+                            hoverRadius: 3,
                             backgroundColor: darkMode ? "#4FD1C5" : "#3182CE",
                           },
                         },
@@ -473,7 +478,7 @@ const ResourceAllocation = () => {
               </motion.div>
 
               <motion.div
-                className={`p-6 rounded-lg  shadow-md transition-transform ${
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
                 whileHover={{
@@ -481,7 +486,7 @@ const ResourceAllocation = () => {
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
               >
-                <h2 className="mb-10 text-3xl font-medium text-center">
+                <h2 className="mb-5 text-2xl font-semibold">
                   Project Allocation
                 </h2>
                 <div className="flex items-center justify-center w-full ">
@@ -492,22 +497,134 @@ const ResourceAllocation = () => {
               </motion.div>
 
               <motion.div
-                className={`p-6 transition-shadow rounded-lg shadow-lg ${
-                  darkMode
-                    ? "bg-gray-700 text-white hover:shadow-xl"
-                    : "bg-white text-gray-900 hover:shadow-lg"
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
+                }}
                 variants={itemVariants}
               >
-                <h2 className="mb-4 text-2xl font-semibold">Bar Chart</h2>
-                <motion.div
-                  className="h-64"
-                  variants={chartVariants}
-                  whileHover={{ scale: 1.02 }}
+                <motion.h2
+                  className="mb-5 text-2xl font-semibold"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                  <Bar data={barData} options={commonOptions} />
+                  Utilization vs Allocation
+                </motion.h2>
+
+                <motion.div
+                  className="h-64 overflow-hidden shadow-inner md:h-72 rounded-xl"
+                  variants={chartVariants}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                >
+                  <Bar
+                    data={barData}
+                    options={{
+                      ...commonOptions,
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: darkMode ? "#f0f0f0" : "#333",
+                            font: {
+                              size: 14,
+                              family: "Poppins, sans-serif",
+                            },
+                          },
+                        },
+                      },
+                      scales: {
+                        x: {
+                          grid: {
+                            color: darkMode ? "#555" : "#ddd",
+                            display: false,
+                          },
+                        },
+                        y: {
+                          grid: {
+                            color: darkMode ? "#555" : "#ddd",
+                            display: false,
+                          },
+                        },
+                      },
+                    }}
+                  />
                 </motion.div>
               </motion.div>
+
+              {/* 
+<motion.div
+  className={`relative p-8 transition-all duration-700 ease-in-out transform rounded-2xl shadow-xl ${
+    darkMode
+      ? "bg-gradient-to-br from-gray-900 to-gray-800 text-white hover:shadow-2xl hover:scale-105"
+      : "bg-gradient-to-br from-gray-50 to-white text-gray-900 hover:shadow-lg hover:scale-105"
+  } border ${
+    darkMode ? "border-gray-700 border-opacity-50" : "border-gray-300 border-opacity-70"
+  } hover:border-opacity-100`}
+  variants={itemVariants}
+  whileHover={{ scale: 1.05, rotate: 1 }} // Slight rotation for a 3D effect
+>
+  <div className="flex items-center justify-between mb-6">
+    <h2
+      className={`text-3xl font-bold tracking-wider bg-clip-text text-transparent ${
+        darkMode
+          ? "bg-gradient-to-r from-teal-400 to-blue-500"
+          : "bg-gradient-to-r from-indigo-600 to-purple-600"
+      }`}
+    >
+      Bar Chart
+    </h2>
+
+    {/* Toggle button to switch between light and dark mode */}
+              {/* <button
+      onClick={toggleDarkMode}
+      className={`p-2 rounded-full transition-transform duration-300 ${
+        darkMode
+          ? "bg-gray-800 hover:bg-gray-700"
+          : "bg-gray-300 hover:bg-gray-400"
+      } focus:outline-none`}
+    >
+      {darkMode ? "🌙" : "☀️"} {/* Dark/Light mode icons */}
+              {/* </button> */}
+              {/* </div> */}
+
+              {/* Bar chart container */}
+              {/* <motion.div
+    className="relative h-64 overflow-hidden rounded-lg bg-opacity-30 md:h-72 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800"
+    variants={chartVariants}
+    whileHover={{ scale: 1.04 }}
+    transition={{ type: "spring", stiffness: 120, damping: 15 }}
+  > */}
+              {/* Chart refresh button */}
+              {/* <button
+      onClick={refreshChart}
+      className="absolute p-2 text-sm bg-gray-300 rounded-full top-4 right-4 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+    > */}
+              {/* 🔄 Refresh icon */}
+              {/* </button> */}
+
+              {/* The Bar chart itself */}
+              {/* <Bar data={barData} options={commonOptions} />
+  </motion.div> */}
+
+              {/* Chart legend */}
+              {/* <div className="flex justify-center mt-4 space-x-4">
+    {barData.datasets.map((dataset, index) => (
+      <div key={index} className="flex items-center space-x-2">
+        <span
+          className="block w-4 h-4 rounded-full"
+          style={{ backgroundColor: dataset.backgroundColor }}
+        ></span>
+        <span className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+          {dataset.label}
+        </span>
+      </div>
+    ))}
+  </div>
+</motion.div> */}
 
               <motion.div
                 className={`p-6 transition-shadow rounded-lg shadow-lg ${
