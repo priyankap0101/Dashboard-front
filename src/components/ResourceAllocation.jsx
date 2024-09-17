@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Line, Pie, Doughnut, Bar } from "react-chartjs-2";
+import { Radar, Line, Pie, Doughnut, Bar } from "react-chartjs-2";
 import { ClipLoader } from "react-spinners";
 import Header from "./Header"; // Adjust path as needed
 import Sidebar from "./Sidebar"; // Adjust path as needed
@@ -163,44 +163,6 @@ const ResourceAllocation = () => {
     ],
   };
 
-  const pieData = {
-    labels: ["Utilization", "Allocation"],
-    datasets: [
-      {
-        data: [
-          data.reduce((sum, item) => sum + item.utilization, 0) / data.length,
-          data.reduce((sum, item) => sum + item.allocation, 0) / data.length,
-        ],
-        backgroundColor: darkMode
-          ? ["rgba(54, 162, 235, 0.6)", "rgba(255, 99, 132, 0.6)"]
-          : ["rgba(75, 192, 192, 0.6)", "rgba(255, 159, 64, 0.6)"],
-        borderColor: darkMode
-          ? ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"]
-          : ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const doughnutData = {
-    labels: ["Utilization", "Allocation"],
-    datasets: [
-      {
-        data: [
-          data.reduce((sum, item) => sum + item.utilization, 0) / data.length,
-          data.reduce((sum, item) => sum + item.allocation, 0) / data.length,
-        ],
-        backgroundColor: darkMode
-          ? ["rgba(255, 159, 64, 0.6)", "rgba(153, 102, 255, 0.6)"]
-          : ["rgba(255, 206, 86, 0.6)", "rgba(153, 102, 255, 0.6)"],
-        borderColor: darkMode
-          ? ["rgba(255, 159, 64, 1)", "rgba(153, 102, 255, 1)"]
-          : ["rgba(255, 206, 86, 1)", "rgba(153, 102, 255, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
   const bubbleData = {
     datasets: [
       {
@@ -345,6 +307,143 @@ const ResourceAllocation = () => {
       easing: "easeInOutQuad",
     },
   };
+
+  const radarData = {
+    labels: [
+      "Budget Management",
+      "Time Management",
+      "Team Coordination",
+      "Risk Assessment",
+      "Resource Planning",
+    ],
+    datasets: [
+      {
+        label: "Resource Allocation Proficiency",
+        data: [75, 80, 85, 70, 78], // Adjust data values as needed
+        backgroundColor: darkMode
+          ? "rgba(153, 102, 255, 0.2)" // Purple
+          : "rgba(255, 206, 86, 0.2)", // Yellow
+        borderColor: darkMode
+          ? "rgba(153, 102, 255, 1)" // Purple
+          : "rgba(255, 206, 86, 1)", // Yellow
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const radarOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${context.raw}%`,
+        },
+      },
+    },
+    scales: {
+      r: {
+        angleLines: {
+          color: darkMode ? "#444" : "#ddd",
+        },
+        grid: {
+          color: darkMode ? "#444" : "#ddd",
+        },
+        ticks: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
+    },
+  };
+
+  const donutData = {
+    labels: ["Completed", "In Progress", "Pending"],
+    datasets: [
+      {
+        label: "Resource Status",
+        data: [55, 25, 20],
+        backgroundColor: [
+          darkMode ? "rgba(75, 192, 192, 0.6)" : "rgba(75, 192, 192, 0.6)",
+          darkMode ? "rgba(255, 159, 64, 0.6)" : "rgba(255, 159, 64, 0.6)",
+          darkMode ? "rgba(255, 99, 132, 0.6)" : "rgba(255, 99, 132, 0.6)",
+        ],
+        borderColor: [
+          darkMode ? "rgba(75, 192, 192, 1)" : "rgba(75, 192, 192, 1)",
+          darkMode ? "rgba(255, 159, 64, 1)" : "rgba(255, 159, 64, 1)",
+          darkMode ? "rgba(255, 99, 132, 1)" : "rgba(255, 99, 132, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const donutOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${context.raw}%`,
+        },
+      },
+    },
+  };
+
+  const pieData = {
+    labels: ["Frontend", "Backend", "Fullstack", "Design", "Testing"],
+    datasets: [
+      {
+        label: "Team Roles",
+        data: [30, 25, 20, 15, 10],
+        backgroundColor: [
+          darkMode ? "rgba(54, 162, 235, 0.6)" : "rgba(54, 162, 235, 0.6)",
+          darkMode ? "rgba(255, 99, 132, 0.6)" : "rgba(255, 99, 132, 0.6)",
+          darkMode ? "rgba(255, 206, 86, 0.6)" : "rgba(255, 206, 86, 0.6)",
+          darkMode ? "rgba(75, 192, 192, 0.6)" : "rgba(75, 192, 192, 0.6)",
+          darkMode ? "rgba(153, 102, 255, 0.6)" : "rgba(153, 102, 255, 0.6)",
+        ],
+        borderColor: [
+          darkMode ? "rgba(54, 162, 235, 1)" : "rgba(54, 162, 235, 1)",
+          darkMode ? "rgba(255, 99, 132, 1)" : "rgba(255, 99, 132, 1)",
+          darkMode ? "rgba(255, 206, 86, 1)" : "rgba(255, 206, 86, 1)",
+          darkMode ? "rgba(75, 192, 192, 1)" : "rgba(75, 192, 192, 1)",
+          darkMode ? "rgba(153, 102, 255, 1)" : "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const pieOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${context.raw}%`,
+        },
+      },
+    },
+  };
+
   return (
     <motion.div
       className={`min-h-screen ${
@@ -555,111 +654,48 @@ const ResourceAllocation = () => {
                 </motion.div>
               </motion.div>
 
-              {/* 
-<motion.div
-  className={`relative p-8 transition-all duration-700 ease-in-out transform rounded-2xl shadow-xl ${
-    darkMode
-      ? "bg-gradient-to-br from-gray-900 to-gray-800 text-white hover:shadow-2xl hover:scale-105"
-      : "bg-gradient-to-br from-gray-50 to-white text-gray-900 hover:shadow-lg hover:scale-105"
-  } border ${
-    darkMode ? "border-gray-700 border-opacity-50" : "border-gray-300 border-opacity-70"
-  } hover:border-opacity-100`}
-  variants={itemVariants}
-  whileHover={{ scale: 1.05, rotate: 1 }} // Slight rotation for a 3D effect
->
-  <div className="flex items-center justify-between mb-6">
-    <h2
-      className={`text-3xl font-bold tracking-wider bg-clip-text text-transparent ${
-        darkMode
-          ? "bg-gradient-to-r from-teal-400 to-blue-500"
-          : "bg-gradient-to-r from-indigo-600 to-purple-600"
-      }`}
-    >
-      Bar Chart
-    </h2>
-
-    {/* Toggle button to switch between light and dark mode */}
-              {/* <button
-      onClick={toggleDarkMode}
-      className={`p-2 rounded-full transition-transform duration-300 ${
-        darkMode
-          ? "bg-gray-800 hover:bg-gray-700"
-          : "bg-gray-300 hover:bg-gray-400"
-      } focus:outline-none`}
-    >
-      {darkMode ? "🌙" : "☀️"} {/* Dark/Light mode icons */}
-              {/* </button> */}
-              {/* </div> */}
-
-              {/* Bar chart container */}
-              {/* <motion.div
-    className="relative h-64 overflow-hidden rounded-lg bg-opacity-30 md:h-72 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800"
-    variants={chartVariants}
-    whileHover={{ scale: 1.04 }}
-    transition={{ type: "spring", stiffness: 120, damping: 15 }}
-  > */}
-              {/* Chart refresh button */}
-              {/* <button
-      onClick={refreshChart}
-      className="absolute p-2 text-sm bg-gray-300 rounded-full top-4 right-4 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
-    > */}
-              {/* 🔄 Refresh icon */}
-              {/* </button> */}
-
-              {/* The Bar chart itself */}
-              {/* <Bar data={barData} options={commonOptions} />
-  </motion.div> */}
-
-              {/* Chart legend */}
-              {/* <div className="flex justify-center mt-4 space-x-4">
-    {barData.datasets.map((dataset, index) => (
-      <div key={index} className="flex items-center space-x-2">
-        <span
-          className="block w-4 h-4 rounded-full"
-          style={{ backgroundColor: dataset.backgroundColor }}
-        ></span>
-        <span className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-          {dataset.label}
-        </span>
-      </div>
-    ))}
-  </div>
-</motion.div> */}
-
+              {/* Radar Chart */}
               <motion.div
-                className={`p-6 transition-shadow rounded-lg shadow-lg ${
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode
-                    ? "bg-gray-700 text-white hover:shadow-xl"
-                    : "bg-white text-gray-900 hover:shadow-lg"
-                }`}
-                variants={itemVariants}
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                } shadow-md hover:shadow-lg`}
               >
-                <h2 className="mb-4 text-2xl font-semibold">Pie Chart</h2>
-                <motion.div
-                  className="h-64"
-                  variants={chartVariants}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <Pie data={pieData} options={commonOptions} />
-                </motion.div>
+                <h2 className="mb-5 text-2xl font-semibold">
+                  Skill Distribution
+                </h2>
+                <div className="h-64">
+                  <Radar data={radarData} options={radarOptions} />
+                </div>
               </motion.div>
 
+              {/* Donut Chart */}
               <motion.div
-                className={`p-6 transition-shadow rounded-lg shadow-lg ${
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode
-                    ? "bg-gray-700 text-white hover:shadow-xl"
-                    : "bg-white text-gray-900 hover:shadow-lg"
-                }`}
-                variants={itemVariants}
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                } shadow-md hover:shadow-lg`}
               >
-                <h2 className="mb-4 text-2xl font-semibold">Doughnut Chart</h2>
-                <motion.div
-                  className="h-64"
-                  variants={chartVariants}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <Doughnut data={doughnutData} options={commonOptions} />
-                </motion.div>
+                <h2 className="mb-5 text-2xl font-semibold">Resource Status</h2>
+                <div className="h-64">
+                  <Doughnut data={donutData} options={donutOptions} />
+                </div>
+              </motion.div>
+
+              {/* Pie Chart */}
+              <motion.div
+                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                  darkMode
+                    ? "bg-gray-800 text-white hover:bg-gray-700"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                } shadow-md hover:shadow-lg`}
+              >
+                <h2 className="mb-5 text-2xl font-semibold">Team Roles</h2>
+                <div className="h-64">
+                  <Pie data={pieData} options={pieOptions} />
+                </div>
               </motion.div>
             </motion.div>
           )}
