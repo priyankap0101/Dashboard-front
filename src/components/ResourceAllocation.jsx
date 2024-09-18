@@ -399,10 +399,21 @@ const ResourceAllocation = () => {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top', // Position the legend at the top
+        align: 'center', // Center-align the legend
         labels: {
-          color: darkMode ? "#ffffff" : "#000000",
+          boxWidth: 20, // Width of the color box in the legend
+          padding: 10,  // Padding between legend items
+          font: {
+            size: 12, // Font size of the legend text
+            weight: 'bold', // Font weight of the legend text
+          },
+          color: darkMode ? "#e0e0e0" : "#333333", // Text color based on dark mode
+          
+          usePointStyle: true,
         },
+       
+        fullSize: true, // Ensure full width for the legend
       },
       tooltip: {
         callbacks: {
@@ -410,7 +421,10 @@ const ResourceAllocation = () => {
         },
       },
     },
+  
   };
+  
+  
 
   const pieData = {
     labels: ["Frontend", "Backend", "Fullstack", "Design", "Testing"],
