@@ -450,22 +450,54 @@ const ResourceAllocation = () => {
 
   const pieOptions = {
     responsive: true,
+    maintainAspectRatio: false, // Ensures the chart resizes with its container
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top', // Legend at the top
+        align: 'center', // Center-aligns the legend
         labels: {
-          color: darkMode ? "#ffffff" : "#000000",
+          color: darkMode ? "#e0e0e0" : "#333333", // Adjusted color for better contrast
+          font: {
+            size: 10, // Slightly larger font for better readability
+            // weight: '600', // Semi-bold for emphasis
+          },
+          boxWidth: 20, // Larger box width for better visibility
+          padding: 15, // Increased padding for clarity
+          usePointStyle: true, // Uses point style for cleaner look
         },
+        fullSize: true, // Full width for the legend
       },
       tooltip: {
+        backgroundColor: darkMode ? "#1a1a1a" : "#ffffff", // Darker background for better contrast
+        titleColor: darkMode ? "#ffffff" : "#000000", // Title color in tooltip
+        bodyColor: darkMode ? "#ffffff" : "#000000", // Body text color in tooltip
+        borderColor: darkMode ? "#444444" : "#dddddd", // Subtle border color
+        borderWidth: 1, // Thin border for a sleek appearance
         callbacks: {
-          label: (context) => `${context.label}: ${context.raw}%`,
+          label: (context) => `${context.label}: ${context.raw}%`, // Formatting tooltip labels
+        },
+        padding: 12, // Padding inside the tooltip for better spacing
+        cornerRadius: 6, // Rounded corners for a modern look
+        displayColors: false, // Hides the color box in the tooltip
+        titleFont: {
+          size: 16, // Larger font size for title
+          weight: '700', // Bold font weight for the title
+        },
+        bodyFont: {
+          size: 10, // Larger font size for body text
+          weight: '700', // Regular weight for body text
         },
       },
     },
+   
+    elements: {
+      arc: {
+        borderWidth: 3, // Adds border width to arcs for better separation
+      },
+    },
   };
-
+  
   return (
     <motion.div
       className={`min-h-screen ${
