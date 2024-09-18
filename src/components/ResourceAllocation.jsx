@@ -399,20 +399,20 @@ const ResourceAllocation = () => {
     plugins: {
       legend: {
         display: true,
-        position: 'top', // Position the legend at the top
-        align: 'center', // Center-align the legend
+        position: "top", // Position the legend at the top
+        align: "center", // Center-align the legend
         labels: {
           boxWidth: 20, // Width of the color box in the legend
-          padding: 10,  // Padding between legend items
+          padding: 10, // Padding between legend items
           font: {
             size: 12, // Font size of the legend text
-            weight: 'bold', // Font weight of the legend text
+            weight: "bold", // Font weight of the legend text
           },
           color: darkMode ? "#e0e0e0" : "#333333", // Text color based on dark mode
-          
+
           usePointStyle: true,
         },
-       
+
         fullSize: true, // Ensure full width for the legend
       },
       tooltip: {
@@ -421,10 +421,7 @@ const ResourceAllocation = () => {
         },
       },
     },
-  
   };
-  
-  
 
   const pieData = {
     labels: ["Frontend", "Backend", "Fullstack", "Design", "Testing"],
@@ -519,6 +516,7 @@ const ResourceAllocation = () => {
                   scale: 1.02,
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
+                whileTap={{ scale: 0.98 }}
               >
                 {/* Main Content */}
                 <div className="relative z-10">
@@ -611,6 +609,7 @@ const ResourceAllocation = () => {
                   scale: 1.02,
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <h2 className="mb-5 text-2xl font-semibold">
                   Project Allocation
@@ -630,6 +629,7 @@ const ResourceAllocation = () => {
                   scale: 1.02,
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
+                whileTap={{ scale: 0.98 }}
                 variants={itemVariants}
               >
                 <motion.h2
@@ -691,6 +691,7 @@ const ResourceAllocation = () => {
                   scale: 1.02,
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <h2
                   className="mb-5 text-2xl font-semibold"
@@ -714,6 +715,7 @@ const ResourceAllocation = () => {
                   scale: 1.03,
                   boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
                 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <motion.h2
                   className="mb-5 text-2xl font-semibold"
