@@ -733,13 +733,23 @@ const ResourceAllocation = () => {
               {/* Pie Chart */}
               <motion.div
                 className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
-                  darkMode
-                    ? "bg-gray-800 text-white hover:bg-gray-700"
-                    : "bg-white text-gray-900 hover:bg-gray-100"
-                } shadow-md hover:shadow-lg`}
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+                }`}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+                }}
+                whileTap={{ scale: 0.98 }}
               >
-                <h2 className="mb-5 text-2xl font-semibold">Team Roles</h2>
-                <div className="h-64">
+                <h2
+                  className="mb-5 text-2xl font-semibold"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  Team Roles
+                </h2>
+                <div className="flex items-center justify-center h-72">
                   <Pie data={pieData} options={pieOptions} />
                 </div>
               </motion.div>
