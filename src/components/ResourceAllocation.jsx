@@ -338,10 +338,17 @@ const ResourceAllocation = () => {
         display: true,
         position: "top",
         labels: {
-          color: darkMode ? "#ffffff" : "#000000",
+          color: darkMode ? "#e0e0e0" : "#333333", // Slightly lighter color for better readability
+          font: {
+            size: 14, // Adjust font size for better readability
+            weight: "600", // Bolder font weight for emphasis
+          },
         },
       },
       tooltip: {
+        backgroundColor: darkMode ? "#333333" : "#ffffff", // Better visibility with a contrasting background
+        titleColor: darkMode ? "#ffffff" : "#000000", // Title color in tooltip
+        bodyColor: darkMode ? "#ffffff" : "#000000", // Body text color in tooltip
         callbacks: {
           label: (context) => `${context.label}: ${context.raw}%`,
         },
@@ -350,13 +357,17 @@ const ResourceAllocation = () => {
     scales: {
       r: {
         angleLines: {
-          color: darkMode ? "#444" : "#ddd",
+          color: darkMode ? "#666666" : "#cccccc", // Adjusted color for better contrast
+          lineWidth: 1, // Thin lines for a cleaner look
         },
         grid: {
-          color: darkMode ? "#444" : "#ddd",
+          color: darkMode ? "#444444" : "#cccccc", // Slightly lighter color for grid lines
+          lineWidth: 1, // Thin grid lines for a modern look
         },
         ticks: {
-          color: darkMode ? "#ffffff" : "#000000",
+          color: darkMode ? "#e0e0e0" : "#333333", // Lighter color for ticks for better readability
+          backdropColor: darkMode ? "#444444" : "#ffffff", // Background color for tick labels for improved contrast
+          backdropPadding: 4, // Padding around the tick labels for better visibility
         },
       },
     },
@@ -488,10 +499,12 @@ const ResourceAllocation = () => {
             >
               <motion.div
                 className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
-                  darkMode
-                    ? "bg-gray-800 text-white hover:bg-gray-700"
-                    : "bg-white text-gray-900 hover:bg-gray-100"
-                } shadow-md hover:shadow-lg`}
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+                }`}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
+                }}
               >
                 {/* Main Content */}
                 <div className="relative z-10">
@@ -621,6 +634,7 @@ const ResourceAllocation = () => {
                   transition={{ type: "spring", stiffness: 120, damping: 15 }}
                 >
                   <Bar
+                    className="items-center justify-center"
                     data={barData}
                     options={{
                       ...commonOptions,
@@ -657,15 +671,22 @@ const ResourceAllocation = () => {
               {/* Radar Chart */}
               <motion.div
                 className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
-                  darkMode
-                    ? "bg-gray-800 text-white hover:bg-gray-700"
-                    : "bg-white text-gray-900 hover:bg-gray-100"
-                } shadow-md hover:shadow-lg`}
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+                }`}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
+                }}
               >
-                <h2 className="mb-5 text-2xl font-semibold">
+                <h2
+                  className="mb-5 text-2xl font-semibold"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
                   Skill Distribution
                 </h2>
-                <div className="h-64">
+                <div className="flex items-center justify-center ">
                   <Radar data={radarData} options={radarOptions} />
                 </div>
               </motion.div>
