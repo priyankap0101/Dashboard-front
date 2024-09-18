@@ -1,5 +1,6 @@
 // src/App.jsx
 import React from "react";
+import { motion } from "framer-motion"; 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
@@ -20,6 +21,17 @@ import ResourceAllocation from "./components/ResourceAllocation";
 const ECommerce = () => <div>E-commerce Content</div>;
 // const Logistics = () => <div>Logistics Content</div>;
 const Academy = () => <div>Academy Content</div>;
+
+
+const lightningAnimation = {
+  keyframes: [
+    { boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)" },
+    { boxShadow: "0 0 15px rgba(255, 255, 255, 1)" },
+    { boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)" }
+  ],
+  duration: 1000, // Duration of the animation in milliseconds
+  iterations: Infinity // Infinite loop
+};
 
 const App = () => {
   return (
@@ -47,6 +59,19 @@ const App = () => {
               element={<div>Select an option from the sidebar</div>}
             />
           </Routes>
+          {/* Button positioned at bottom-right */}
+          <div className="fixed bottom-6 right-6">
+              <motion.button
+                className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
+                whileHover={{ translateY: -3 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  animation: `lightning ${lightningAnimation.duration}ms ${lightningAnimation.iterations} linear`
+                }}
+              >
+                Shop Now
+              </motion.button>
+            </div>
         </div>
       </div>
     </Router>
