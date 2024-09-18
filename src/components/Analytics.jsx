@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { CSVLink } from "react-csv";
 import { jsPDF } from "jspdf";
+import { FiDownload } from "react-icons/fi";
 
 import Slider from "react-slick"; // Import react-slick
 import "slick-carousel/slick/slick.css"; // Import slick-carousel CSS
@@ -388,22 +389,6 @@ const Analytics = () => {
                       : "bg-gradient-to-br from-white via-gray-100 to-gray-300 border-gray-200"
                   } h-96 flex flex-col justify-center relative overflow-hidden`}
                 >
-                  {/* Decorative Elements */}
-                  {/* <div
-                    className={`absolute top-4 right-4 w-8 h-20 rounded-full ${
-                      darkMode
-                        ? "bg-purple-900 opacity-30"
-                        : "bg-blue-300 opacity-30"
-                    } animate-pulse`}
-                  ></div>
-                  <div
-                    className={`absolute bottom-4 left-4 w-16 h-16 rounded-full ${
-                      darkMode
-                        ? "bg-indigo-800 opacity-25"
-                        : "bg-green-300 opacity-40"
-                    } animate-pulse`}
-                  ></div> */}
-
                   {/* Title and Sales Value */}
                   <div className="flex flex-col items-center justify-center mb-6">
                     <h4
@@ -752,27 +737,16 @@ const Analytics = () => {
             )}
 
             {/* Export Buttons */}
-            <div className="flex justify-end mt-6 space-x-4">
-              <button
-                onClick={exportToPDF}
-                className={`px-4 py-2 rounded-lg shadow-md ${
-                  darkMode ? "bg-gray-700 text-white" : "bg-blue-500 text-white"
-                }`}
-              >
-                Export as PDF
-              </button>
+            {/* <div className="absolute top-4 right-4">
               <CSVLink
                 data={csvData}
                 filename={"chart_data.csv"}
-                className={`px-4 py-2 rounded-lg shadow-md ${
-                  darkMode
-                    ? "bg-gray-700 text-white"
-                    : "bg-green-500 text-white"
-                }`}
+                className={`p-3 text-white transition-transform transform rounded-full shadow-lg border border-transparent  hover:scale-105`}
+                aria-label="Export options"
               >
-                Export as CSV
+                <FiDownload size={24} />
               </CSVLink>
-            </div>
+            </div> */}
           </motion.div>
         </main>
       </div>

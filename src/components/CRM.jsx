@@ -336,23 +336,23 @@ const CRM = () => {
             variants={containerVariants}
             className="mb-6"
           >
-            <h1
+            {/* <h1
               className={`text-4xl font-extrabold mb-6 ${
                 darkMode ? "text-white" : "text-gray-900"
               }`}
             >
               CRM Dashboard
-            </h1>
-            <div className="mb-4">
+            </h1> */}
+            {/* <div className="mb-4">
               <CSVLink
                 data={csvData}
                 filename="client_data.csv"
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+                className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600"
               >
                 Export Data
               </CSVLink>
               <motion.button
-                className="ml-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
+                className="px-4 py-2 ml-4 text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600"
                 variants={buttonVariants}
                 whileHover="hover"
                 whileTap="tap"
@@ -360,9 +360,9 @@ const CRM = () => {
               >
                 Show Modal
               </motion.button>
-            </div>
+            </div> */}
             {loading ? (
-              <div className="flex justify-center items-center h-64">
+              <div className="flex items-center justify-center h-64">
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
@@ -394,8 +394,8 @@ const CRM = () => {
                   <Pie data={doughnutData} options={doughnutOptions} />
                 </div>
 
-                <div className="p-4  border border-gray-200 dark:border-gray-700 rounded-lg shadow-md col-span-1 md:col-span-2 lg:col-span-1 transition-all duration-300 ease-in-out">
-                  <h2 className="text-2xl font-semibold mb-4">
+                <div className="col-span-1 p-4 transition-all duration-300 ease-in-out border border-gray-200 rounded-lg shadow-md dark:border-gray-700 md:col-span-2 lg:col-span-1">
+                  <h2 className="mb-4 text-2xl font-semibold">
                     Recent Activities
                   </h2>
                   {recentActivities.length > 0 ? (
@@ -403,9 +403,9 @@ const CRM = () => {
                       {recentActivities.map((activity, index) => (
                         <li
                           key={index}
-                          className="flex items-start p-3  border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out relative"
+                          className="relative flex items-start p-3 transition-shadow duration-300 ease-in-out border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 hover:shadow-md"
                         >
-                          <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 dark:from-blue-600 dark:to-indigo-700  shadow-sm mr-3">
+                          <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-3 rounded-full shadow-sm bg-gradient-to-r from-blue-400 to-indigo-500 dark:from-blue-600 dark:to-indigo-700">
                             <svg
                               className="w-5 h-5"
                               fill="none"
@@ -429,12 +429,12 @@ const CRM = () => {
                               {activity.time}
                             </p>
                           </div>
-                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent opacity-20 group-hover:opacity-10 transition-opacity duration-300 ease-in-out"></div>
+                          <div className="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-lg bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent opacity-20 group-hover:opacity-10"></div>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                       No recent activities.
                     </p>
                   )}

@@ -426,13 +426,13 @@ const Logistics = () => {
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className={`flex-1 p-6 space-y-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-semibold dark:text-gray-100">Logistics Dashboard</h1>
-            <button
+            {/* <h1 className="text-2xl font-semibold dark:text-gray-100">Logistics Dashboard</h1> */}
+            {/* <button
               className="px-4 py-2 text-white bg-blue-600 rounded-lg dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-400"
               onClick={toggleModal}
             >
               Export Data
-            </button>
+            </button> */}
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <ChartCard title="Deliveries Over Time">

@@ -518,14 +518,14 @@ const ResourceAllocation = () => {
           className={`flex-1 p-6 ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}
         >
           <div className="mb-8">
-            <motion.h1
+            {/* <motion.h1
               className={`text-4xl font-bold ${
                 darkMode ? "text-gray-100" : "text-gray-900"
               }`}
               variants={itemVariants}
             >
               Resource Allocation Dashboard
-            </motion.h1>
+            </motion.h1> */}
           </div>
           {loading ? (
             <div className="flex items-center justify-center h-64">
