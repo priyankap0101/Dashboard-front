@@ -336,31 +336,6 @@ const CRM = () => {
             variants={containerVariants}
             className="mb-6"
           >
-            {/* <h1
-              className={`text-4xl font-extrabold mb-6 ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
-              CRM Dashboard
-            </h1> */}
-            {/* <div className="mb-4">
-              <CSVLink
-                data={csvData}
-                filename="client_data.csv"
-                className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600"
-              >
-                Export Data
-              </CSVLink>
-              <motion.button
-                className="px-4 py-2 ml-4 text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600"
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                onClick={toggleModal}
-              >
-                Show Modal
-              </motion.button>
-            </div> */}
             {loading ? (
               <div className="flex items-center justify-center h-64">
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
@@ -425,9 +400,7 @@ const CRM = () => {
                             <p className="text-sm font-medium ">
                               {activity.activity}
                             </p>
-                            <p className="text-xs  mt-0.5">
-                              {activity.time}
-                            </p>
+                            <p className="text-xs  mt-0.5">{activity.time}</p>
                           </div>
                           <div className="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-lg bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent opacity-20 group-hover:opacity-10"></div>
                         </li>

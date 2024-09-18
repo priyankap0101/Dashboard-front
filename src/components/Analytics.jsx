@@ -351,17 +351,20 @@ const Analytics = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen ${
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"
-      }`}
-    >
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+    <motion.div
+    className={`min-h-screen ${
+      darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
+    } transition-colors duration-300 ease-in-out`}
+    initial="hidden"
+    animate="visible"
+    variants={containerVariants}
+  >
+      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode}  className="relative z-50"/>
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex-1 p-6">
+        <motion.main className="flex-1 p-6">
           <motion.div
-            className="space-y-6"
+            className="flex-grow p-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -372,6 +375,7 @@ const Analytics = () => {
                 <ClipLoader color="#4A90E2" loading={loading} size={150} />
               </div>
             ) : (
+              
               <motion.div
                 className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
                 variants={itemVariants}
@@ -387,7 +391,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 border-gray-600"
                       : "bg-gradient-to-br from-white via-gray-100 to-gray-300 border-gray-200"
-                  } h-96 flex flex-col justify-center relative overflow-hidden`}
+                  } h-96 flex flex-col justify-center `}
                 >
                   {/* Title and Sales Value */}
                   <div className="flex flex-col items-center justify-center mb-6">
@@ -748,11 +752,11 @@ const Analytics = () => {
               </CSVLink>
             </div> */}
           </motion.div>
-        </main>
+        </motion.main>
       </div>
 
       <ToastContainer />
-    </div>
+    </motion.div>
   );
 };
 

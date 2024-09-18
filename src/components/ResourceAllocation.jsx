@@ -634,7 +634,7 @@ const ResourceAllocation = () => {
               </motion.div>
 
               <motion.div
-                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                className={` p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
                 whileHover={{

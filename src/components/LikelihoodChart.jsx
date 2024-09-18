@@ -190,7 +190,7 @@ const LikelihoodChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div >
+    <div>
       <div className="flex justify-center mb-4 space-x-2">
         <button
           onClick={() =>
@@ -198,24 +198,22 @@ const LikelihoodChart = ({ data, darkMode }) => {
           }
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
         >
-
-<MdSwapHoriz className="inline-block ml-1" />
+          <MdSwapHoriz className="inline-block ml-1" />
           {chartType === "doughnut" ? "Polar Area" : "Doughnut"}{" "}
-         
         </button>
 
         <button
           onClick={downloadChartAsPDF}
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
         >
-         <FaDownload className="inline-block ml-1" /> PDF 
+          <FaDownload className="inline-block ml-1" /> PDF
         </button>
 
         <button
           onClick={downloadChartAsImage}
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
         >
-           <FaDownload className="inline-block ml-1" /> JPG 
+          <FaDownload className="inline-block ml-1" /> JPG
         </button>
       </div>
 

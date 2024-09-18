@@ -97,7 +97,7 @@ const Dashboard = () => {
       />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="relative flex-1 p-6">
+        <main className="flex-1 p-6 ">
           <header className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold"></h1>
             {/* Download Button Section */}
@@ -114,7 +114,7 @@ const Dashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  className="absolute right-0 z-50 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12"
+                  className="right-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12"
                 >
                   <button
                     onClick={() => handleExport("csv")}
@@ -130,23 +130,36 @@ const Dashboard = () => {
 
           {loading ? (
             <div className="flex items-center justify-center h-64">
-              <ClipLoader color={darkMode ? "#ffffff" : "#000000"} loading={loading} size={50} />
+              <ClipLoader
+                color={darkMode ? "#ffffff" : "#000000"}
+                loading={loading}
+                size={50}
+              />
             </div>
           ) : (
             <>
               <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-2">
-                {(showAllCharts ? [
-                  { component: IntensityChart, name: "Intensity Chart" },
-                  { component: LikelihoodChart, name: "Likelihood Chart" },
-                  { component: RelevanceChart, name: "Relevance Chart" },
-                  { component: YearlyTrendsChart, name: "Yearly Trends Chart" }
-                ] : [
-                  { component: IntensityChart, name: "Intensity Chart" },
-                  { component: LikelihoodChart, name: "Likelihood Chart" }
-                ]).map(({ component: ChartComponent, name }, index) => (
+                {(showAllCharts
+                  ? [
+                      { component: IntensityChart, name: "Intensity Chart" },
+                      { component: LikelihoodChart, name: "Likelihood Chart" },
+                      { component: RelevanceChart, name: "Relevance Chart" },
+                      {
+                        component: YearlyTrendsChart,
+                        name: "Yearly Trends Chart",
+                      },
+                    ]
+                  : [
+                      { component: IntensityChart, name: "Intensity Chart" },
+                      { component: LikelihoodChart, name: "Likelihood Chart" },
+                    ]
+                ).map(({ component: ChartComponent, name }, index) => (
                   <motion.div
                     key={index}
-                    whileHover={{ scale: 1.05, boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    }}
                     className={`p-6 rounded-lg shadow-lg ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
