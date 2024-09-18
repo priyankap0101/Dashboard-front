@@ -10,13 +10,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "tailwindcss/tailwind.css";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import { exportToCSV, exportToPDF } from "../utils/exportUtils";
+import { exportToCSV } from "../utils/exportUtils";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { FiDownload, FiXCircle } from "react-icons/fi";
+import { FiDownload } from "react-icons/fi";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton"; // For modern loading
-import "react-loading-skeleton/dist/skeleton.css"; // Ensure you include skeleton CSS
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -25,7 +25,6 @@ const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showAllCharts, setShowAllCharts] = useState(false);
 
   useEffect(() => {
@@ -48,12 +47,6 @@ const Dashboard = () => {
     const applyFiltersAndSort = () => {
       let filteredResult = data;
 
-      if (searchTerm) {
-        filteredResult = filteredResult.filter((item) =>
-          item.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-
       if (sortOption) {
         filteredResult = filteredResult.sort((a, b) => {
           if (a[sortOption] < b[sortOption]) return -1;
@@ -66,7 +59,7 @@ const Dashboard = () => {
     };
 
     applyFiltersAndSort();
-  }, [data, sortOption, searchTerm]);
+  }, [data, sortOption]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -79,19 +72,6 @@ const Dashboard = () => {
       case "csv":
         exportToCSV(filteredData, "data_export.csv");
         toast.success("Data exported as CSV");
-        break;
-      case "pdf":
-        exportToPDF(filteredData, "data_export.pdf");
-        toast.success("Data exported as PDF");
-        break;
-      case "zip":
-        const zip = new JSZip();
-        zip.file("data_export.csv", exportToCSV(filteredData, null, true));
-        zip.file("data_export.pdf", exportToPDF(filteredData, null, true));
-        zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(content, "data_export.zip");
-          toast.success("Data exported as ZIP");
-        });
         break;
       default:
         toast.error("Invalid export format");
@@ -117,44 +97,35 @@ const Dashboard = () => {
       />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex-1 p-6">
+        <main className="relative flex-1 p-6">
           <header className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold">Data Visualization Dashboard</h1>
+            {/* Download Button Section */}
             <div className="relative flex items-center">
-              <input
-                type="text"
-                className={`w-full md:w-80 p-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 ${
-                  darkMode
-                    ? "bg-gray-800 text-gray-200 focus:ring-blue-500"
-                    : "bg-white text-gray-800 focus:ring-blue-500"
-                }`}
-                placeholder="Search by topic..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute text-gray-500 transform -translate-y-1/2 right-2 top-1/2 hover:text-gray-700"
-                  aria-label="Clear search"
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                className="p-2 text-white transition-transform transform bg-blue-600 rounded-full hover:bg-blue-700 hover:scale-105"
+                aria-label="Export options"
+              >
+                <FiDownload size={20} />
+              </button>
+              {showExportMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  className="absolute right-0 z-50 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12"
                 >
-                  <FiXCircle size={20} />
-                </button>
+                  <button
+                    onClick={() => handleExport("csv")}
+                    className={`block  px-4  py-2 text-sm text-gray-800  `}
+                    aria-label="Export as CSV"
+                  >
+                    Export as CSV
+                  </button>
+                </motion.div>
               )}
             </div>
-            <select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              className={`ml-4 p-2 border rounded-md shadow-sm ${
-                darkMode
-                  ? "bg-gray-900 text-gray-200 border-gray-700"
-                  : "bg-white text-gray-800 border-gray-300"
-              }`}
-            >
-              <option value="topic">Sort by Topic</option>
-              <option value="year">Sort by Year</option>
-              <option value="sector">Sort by Sector</option>
-            </select>
           </header>
 
           {loading ? (
@@ -201,45 +172,9 @@ const Dashboard = () => {
             </>
           )}
 
-          <div className="fixed bottom-4 right-4">
-            <button
-              onClick={() => setShowExportMenu(!showExportMenu)}
-              className="p-3 text-white transition-transform transform bg-blue-600 rounded-full hover:bg-blue-700 hover:scale-105"
-              aria-label="Export options"
-            >
-              <FiDownload size={24} />
-            </button>
-            {showExportMenu && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="absolute right-0 bg-white border border-gray-300 rounded-md shadow-lg bottom-14"
-              >
-                <button
-                  onClick={() => handleExport("csv")}
-                  className="w-full p-2 text-left hover:bg-gray-100"
-                >
-                  Export as CSV
-                </button>
-                <button
-                  onClick={() => handleExport("pdf")}
-                  className="w-full p-2 text-left hover:bg-gray-100"
-                >
-                  Export as PDF
-                </button>
-                <button
-                  onClick={() => handleExport("zip")}
-                  className="w-full p-2 text-left hover:bg-gray-100"
-                >
-                  Export as ZIP
-                </button>
-              </motion.div>
-            )}
-          </div>
+          <ToastContainer />
         </main>
       </div>
-      <ToastContainer />
     </div>
   );
 };
