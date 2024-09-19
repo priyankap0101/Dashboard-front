@@ -114,7 +114,7 @@ const Dashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  className="right-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12"
+                  className="absolute right-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12" 
                 >
                   <button
                     onClick={() => handleExport("csv")}

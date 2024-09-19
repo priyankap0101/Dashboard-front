@@ -87,7 +87,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search..."
-          className={`w-full px-4 py-2 rounded-full focus:outline-none transition-all duration-300 ${
+          className={`w-full  h-8 px-4 py-2 rounded-full focus:outline-none transition-all duration-300 ${
             darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-900"
           }`}
         />
@@ -136,7 +136,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
                 className={`w-full px-2 py-1 text-left text-xs flex items-center ${
                   darkMode ? "hover:bg-gray-700" : "hover:bg-blue-50"
                 }`}
-                onClick={() => handleProfileNavigation("/profile")}
+                onClick={() => handleProfileNavigation("/")}
               >
                 <FaUserCircle className="mr-1 text-xs" /> Profile
               </button>
@@ -144,7 +144,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
                 className={`w-full px-2 py-1 text-left text-xs flex items-center ${
                   darkMode ? "hover:bg-gray-700" : "hover:bg-blue-50"
                 }`}
-                onClick={() => handleProfileNavigation("/settings")}
+                onClick={() => handleProfileNavigation("/")}
               >
                 <FaCog className="mr-1 text-xs" /> Settings
               </button>
@@ -152,9 +152,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
                 className={`w-full px-2 py-1 text-left text-xs flex items-center ${
                   darkMode ? "hover:bg-gray-700" : "hover:bg-blue-50"
                 }`}
-                onClick={() => {
-                  /* Handle Share Profile */
-                }}
+                onClick={() => handleProfileNavigation("/")}
               >
                 <FaShareAlt className="mr-1 text-xs" /> Share Profile
               </button>
@@ -162,9 +160,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
                 className={`w-full px-2 py-1 text-left text-xs flex items-center ${
                   darkMode ? "hover:bg-gray-700" : "hover:bg-blue-50"
                 }`}
-                onClick={() => {
-                  /* Handle Logout */
-                }}
+                onClick={() => handleProfileNavigation("/")}
               >
                 <FaSignOutAlt className="mr-1 text-xs" /> Logout
               </button>

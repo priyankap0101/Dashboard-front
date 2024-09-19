@@ -24,7 +24,9 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       padding: "20px",
       backgroundColor: darkMode ? "#000000" : "#f7f7f7",
       borderRadius: "8px",
-      boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
+      boxShadow: darkMode
+        ? "0 4px 8px rgba(0, 0, 0, 0.5)"
+        : "0 4px 8px rgba(0, 0, 0, 0.1)",
       maxWidth: "1000px",
       margin: "auto",
     },
@@ -78,7 +80,9 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       height: "400px",
       marginTop: "20px",
       borderRadius: "8px",
-      boxShadow: darkMode ? "0 4px 8px rgba(0, 0, 0, 0.5)" : "0 4px 8px rgba(0, 0, 0, 0.1)",
+      boxShadow: darkMode
+        ? "0 4px 8px rgba(0, 0, 0, 0.5)"
+        : "0 4px 8px rgba(0, 0, 0, 0.1)",
       padding: "10px", // Add padding to avoid cutting off chart edges
     },
     buttonIcon: {
@@ -137,28 +141,28 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       case "bar":
         return (
           <BarChart data={data}>
-            <XAxis 
-              dataKey="name" 
-              stroke={darkMode ? "#ffffff" : "#000000"} 
+            <XAxis
+              dataKey="name"
+              stroke={darkMode ? "#ffffff" : "#000000"}
               tick={{ fontSize: 12, fontWeight: 500 }}
             />
-            <YAxis 
-              stroke={darkMode ? "#FFFFFF" : "#2D3748"} 
+            <YAxis
+              stroke={darkMode ? "#FFFFFF" : "#2D3748"}
               tick={{ fontSize: 12, fontWeight: 500 }}
             />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: darkMode ? "#333" : "#ffffff", 
-                color: darkMode ? "#ffffff" : "#000000", 
-                borderRadius: 8, 
-                border: '1px solid', 
-                borderColor: darkMode ? "#444" : "#ccc", 
-                padding: '8px 12px' 
-              }} 
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? "#333" : "#ffffff",
+                color: darkMode ? "#ffffff" : "#000000",
+                borderRadius: 8,
+                border: "1px solid",
+                borderColor: darkMode ? "#444" : "#ccc",
+                padding: "8px 12px",
+              }}
             />
-            <Bar 
-              dataKey="intensity" 
-              fill={darkMode ? "#ff7f0e" : "#1f77b4"} 
+            <Bar
+              dataKey="intensity"
+              fill={darkMode ? "#ff7f0e" : "#1f77b4"}
               barSize={30}
             />
           </BarChart>
@@ -166,10 +170,36 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       case "line":
         return (
           <LineChart data={data}>
-            <XAxis dataKey="name" stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
-            <YAxis stroke={ darkMode ? "#E5E7EB" : "#2D3748"} />
-            <Tooltip contentStyle={{ backgroundColor: darkMode ? "#333" : "#ffffff", color: darkMode ? "#f7dc6f " : "#000000" }} />
-            <Line type="monotone" dataKey="intensity" stroke= "#d35400 " strokeWidth={1} />
+            <XAxis dataKey="name" stroke={darkMode ? "#E5E7EB" : "#2D3748"} />
+            <YAxis stroke={darkMode ? "#E5E7EB" : "#2D3748"} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? "#333" : "#ffffff",
+                color: darkMode ? "#f7dc6f" : "#000000",
+                borderRadius: "10px", // Rounded corners for the tooltip
+                fontSize: "14px", // Custom font size
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", // Shadow effect
+              }}
+              itemStyle={{
+                color: darkMode ? "#f7dc6f" : "#000000", // Color for the text inside the tooltip
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="intensity"
+              stroke="#d35400"
+              strokeWidth={1}
+              dot={{
+                stroke: darkMode ? "#f7dc6f" : "#000000", // Color of dots
+                strokeWidth: 2,
+                r: 5, // Default radius of the dots
+              }}
+              activeDot={{
+                r: 8, // Increased radius on hover
+                stroke: darkMode ? "#e67e22" : "#3498db", // Custom stroke on hover
+                strokeWidth: 3,
+              }}
+            />
           </LineChart>
         );
       default:
@@ -178,15 +208,23 @@ const IntensityGraphChart = ({ data, darkMode }) => {
   };
 
   return (
-    <div id="chart-container" >
+    <div id="chart-container">
       <div className="flex justify-center mb-4 space-x-2">
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleChartTypeToggle}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
-          onMouseUp={(e) => e.currentTarget.style.transform = ""}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.button.backgroundColor)
+          }
+          onMouseDown={(e) =>
+            (e.currentTarget.style.transform = styles.buttonActive.transform)
+          }
+          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
           {chartType === "bar" ? (
             <>
@@ -201,22 +239,39 @@ const IntensityGraphChart = ({ data, darkMode }) => {
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleExportPDF}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
-          onMouseUp={(e) => e.currentTarget.style.transform = ""}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.button.backgroundColor)
+          }
+          onMouseDown={(e) =>
+            (e.currentTarget.style.transform = styles.buttonActive.transform)
+          }
+          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
           <FaDownload className="mr-2" /> PDF
         </button>
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleExportImage}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-          onMouseDown={(e) => e.currentTarget.style.transform = styles.buttonActive.transform}
-          onMouseUp={(e) => e.currentTarget.style.transform = ""}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              styles.button.backgroundColor)
+          }
+          onMouseDown={(e) =>
+            (e.currentTarget.style.transform = styles.buttonActive.transform)
+          }
+          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
-          <FaDownload className="mr-2" />JPG
+          <FaDownload className="mr-2" />
+          JPG
         </button>
       </div>
       <ResponsiveContainer width="100%" height={400}>
@@ -228,11 +283,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
           onClick={handleLoadMore}
           disabled={loading}
         >
-          {loading ? (
-            <div style={styles.loadingSpinner}></div>
-          ) : (
-            "Load More"
-          )}
+          {loading ? <div style={styles.loadingSpinner}></div> : "Load More"}
         </button>
       )}
     </div>

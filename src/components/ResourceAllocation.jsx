@@ -621,7 +621,7 @@ const ResourceAllocation = () => {
                   </motion.div>
 
                   {/* Action Buttons */}
-                  <div className="flex justify-end mt-6">
+                  {/* <div className="flex justify-end mt-6">
                     <motion.button
                       className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
                       whileHover={{ translateY: -3 }}
@@ -629,7 +629,7 @@ const ResourceAllocation = () => {
                     >
                       Download Report
                     </motion.button>
-                  </div>
+                  </div> */}
                 </div>
               </motion.div>
 

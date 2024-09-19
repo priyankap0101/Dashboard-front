@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
@@ -72,6 +72,12 @@ const Register = () => {
     }
   };
 
+  useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+    setDarkMode(savedDarkMode);
+  }, []);
+
+  
   // Toggle dark mode function
   const toggleDarkMode = () => setDarkMode(prevMode => !prevMode);
 

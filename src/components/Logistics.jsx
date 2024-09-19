@@ -21,7 +21,7 @@ import {
   RadialLinearScale,
   BarElement
 } from 'chart.js';
-import { Line, Pie, Radar, Bar, Doughnut } from 'react-chartjs-2';
+import { Line, Pie, Radar, Bar, Doughnut,Bubble  } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -48,7 +48,6 @@ const containerVariants = {
     },
   },
 };
-
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.95 },
@@ -124,6 +123,33 @@ const Logistics = () => {
 
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  // Dummy chart data
+  const dummyChartData = {
+    labels: ['A', 'B', 'C', 'D', 'E', 'F'],
+    datasets: [{
+      label: 'Dummy Data',
+      data: [10, 20, 15, 25, 30, 40],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2
+    }]
+  };
+
+  const dummyChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Value: ${context.raw}`,
+          title: (tooltipItems) => `Label: ${tooltipItems[0].label}`,
+        }
+      }
+    }
   };
 
   const deliveryData = {
@@ -276,60 +302,15 @@ const Logistics = () => {
     }
   };
 
-  const productDistributionData = {
-    labels: ['Electronics', 'Furniture', 'Clothing', 'Toys'],
-    datasets: [{
-      label: 'Product Distribution',
-      data: [300, 450, 250, 350],
-      backgroundColor: [
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(75, 192, 192, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 159, 64, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 99, 132, 1)',
-        'rgba(75, 192, 192, 1)'
-      ],
-      borderWidth: 1
-    }]
-  };
-
-  const productDistributionOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.label}: ${context.raw} units`,
-        }
-      }
-    }
-  };
-
   const monthlyExpensesData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [
-      {
-        label: 'Transport',
-        data: [500, 600, 700, 800, 600, 700, 800, 900, 700, 800, 900, 1000],
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-      },
-      {
-        label: 'Storage',
-        data: [300, 400, 500, 600, 500, 600, 700, 800, 600, 700, 800, 900],
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-      },
-      {
-        label: 'Miscellaneous',
-        data: [200, 300, 400, 500, 400, 500, 600, 700, 500, 600, 700, 800],
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      }
-    ]
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [{
+      label: 'Monthly Expenses ($)',
+      data: [1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300],
+      backgroundColor: 'rgba(255, 159, 64, 0.2)',
+      borderColor: 'rgba(255, 159, 64, 1)',
+      borderWidth: 2
+    }]
   };
 
   const monthlyExpensesOptions = {
@@ -340,38 +321,29 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.dataset.label}: $${context.raw}`,
+          label: (context) => `Expenses: $${context.raw}`,
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
         }
-      }
-    },
-    scales: {
-      x: {
-        stacked: true
-      },
-      y: {
-        stacked: true
       }
     }
   };
 
   const deliveryStatusData = {
-    labels: ['On Time', 'Delayed', 'In Transit', 'Cancelled'],
+    labels: ['On Time', 'Delayed', 'Pending'],
     datasets: [{
-      data: [60, 20, 15, 5],
+      label: 'Delivery Status',
+      data: [70, 20, 10],
       backgroundColor: [
         'rgba(75, 192, 192, 0.2)',
         'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(153, 102, 255, 0.2)'
+        'rgba(255, 205, 86, 0.2)'
       ],
       borderColor: [
         'rgba(75, 192, 192, 1)',
         'rgba(255, 99, 132, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(153, 102, 255, 1)'
+        'rgba(255, 205, 86, 1)'
       ],
-      borderWidth: 1
+      borderWidth: 2
     }]
   };
 
@@ -383,20 +355,21 @@ const Logistics = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.label}: ${context.raw}%`,
+          label: (context) => `Status: ${context.raw}`,
+          title: (tooltipItems) => `Delivery Status: ${tooltipItems[0].label}`,
         }
       }
     }
   };
 
   const fleetUtilizationData = {
-    labels: ['Truck', 'Van', 'Bike', 'Drone'],
+    labels: ['Utilized', 'Idle'],
     datasets: [{
-      label: 'Utilization (%)',
-      data: [80, 90, 70, 85],
-      backgroundColor: 'rgba(153, 102, 255, 0.6)',
-      borderColor: 'rgba(153, 102, 255, 1)',
-      borderWidth: 1
+      label: 'Fleet Utilization (%)',
+      data: [80, 20],
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 2
     }]
   };
 
@@ -409,10 +382,90 @@ const Logistics = () => {
       tooltip: {
         callbacks: {
           label: (context) => `Utilization: ${context.raw}%`,
+          title: (tooltipItems) => `Fleet Status: ${tooltipItems[0].label}`,
         }
       }
     }
   };
+
+  const bubbleChartData = {
+    datasets: [
+      {
+        label: 'Sales Data',
+        data: [
+          { x: 10, y: 20, r: 15 },
+          { x: 15, y: 30, r: 25 },
+          { x: 20, y: 40, r: 35 },
+          { x: 25, y: 50, r: 45 },
+          { x: 30, y: 60, r: 55 }
+        ],
+        backgroundColor: (context) => {
+          const value = context.raw.y; // Dynamic color based on value
+          return value > 50 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)';
+        },
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 2,
+        hoverBackgroundColor: 'rgba(75, 192, 192, 0.8)',
+      }
+    ]
+  };
+  
+  const bubbleChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          font: {
+            size: 14
+          }
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark background for readability
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        callbacks: {
+          label: (context) => `Revenue: $${context.raw.y}k\nUnits Sold: ${context.raw.r} units`,
+          title: (tooltipItems) => `Quarter: Q${tooltipItems[0].label}`,
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(200, 200, 200, 0.3)', // Subtle gridlines
+        },
+        title: {
+          display: true,
+          text: 'Quarter',
+          color: '#666',
+          font: {
+            size: 16,
+            weight: 'bold',
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(200, 200, 200, 0.3)', // Subtle gridlines
+        },
+        title: {
+          display: true,
+          text: 'Revenue (in $k)',
+          color: '#666',
+          font: {
+            size: 16,
+            weight: 'bold',
+          }
+        }
+      }
+    }
+  };
+  
 
   return (
     <motion.div
@@ -426,15 +479,9 @@ const Logistics = () => {
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className={`flex-1 p-6 space-y-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
           <div className="flex items-center justify-between mb-4">
-            {/* <h1 className="text-2xl font-semibold dark:text-gray-100">Logistics Dashboard</h1> */}
-            {/* <button
-              className="px-4 py-2 text-white bg-blue-600 rounded-lg dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-400"
-              onClick={toggleModal}
-            >
-              Export Data
-            </button> */}
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* Existing ChartCards */}
             <ChartCard title="Deliveries Over Time">
               <Line data={deliveryData} options={deliveryOptions} />
             </ChartCard>
@@ -459,7 +506,12 @@ const Logistics = () => {
             <ChartCard title="Fleet Utilization">
               <Bar data={fleetUtilizationData} options={fleetUtilizationOptions} />
             </ChartCard>
+            {/* New Bubble Chart */}
+            <ChartCard title="Sales Data">
+              <Bubble data={bubbleChartData} options={bubbleChartOptions} />
+            </ChartCard>
           </div>
+          {/* Existing loading spinner, ToastContainer, and Modal */}
           {loading && (
             <div className="flex items-center justify-center h-40">
               <ClipLoader color={darkMode ? 'white' : 'black'} />
