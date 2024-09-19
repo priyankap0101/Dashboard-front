@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import {
   LineChart,
   Line,
-  BarChart,
-  Bar,
+  ScatterChart,
+  Scatter,
+  ZAxis,
   XAxis,
   YAxis,
+  LabelList,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { FaDownload, FaChartLine, FaChartBar } from "react-icons/fa";
+import { FaDownload, FaChartLine, FaDotCircle } from "react-icons/fa";
 
 const IntensityGraphChart = ({ data, darkMode }) => {
-  const [chartType, setChartType] = useState("bar"); // Default chart type
+  const [chartType, setChartType] = useState("scatter"); // Default chart type
   const [visibleData, setVisibleData] = useState(data.slice(0, 5));
   const [loading, setLoading] = useState(false);
 
@@ -51,12 +53,6 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       textAlign: "center",
       marginRight: "8px",
     },
-    buttonHover: {
-      backgroundColor: darkMode ? "#4a4a4a" : "#0056b3",
-    },
-    buttonActive: {
-      transform: "scale(0.98)",
-    },
     loadMoreButton: {
       padding: "4px 8px",
       backgroundColor: darkMode ? "#4caf50" : "#28a745",
@@ -83,15 +79,12 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       boxShadow: darkMode
         ? "0 4px 8px rgba(0, 0, 0, 0.5)"
         : "0 4px 8px rgba(0, 0, 0, 0.1)",
-      padding: "10px", // Add padding to avoid cutting off chart edges
-    },
-    buttonIcon: {
-      marginRight: "2px",
+      padding: "10px",
     },
   };
 
   const handleChartTypeToggle = () => {
-    setChartType((prevType) => (prevType === "bar" ? "line" : "bar"));
+    setChartType((prevType) => (prevType === "scatter" ? "line" : "scatter"));
   };
 
   const handleLoadMore = () => {
@@ -138,34 +131,97 @@ const IntensityGraphChart = ({ data, darkMode }) => {
 
   const renderChart = (data) => {
     switch (chartType) {
-      case "bar":
+      case "scatter":
         return (
-          <BarChart data={data}>
-            <XAxis
-              dataKey="name"
-              stroke={darkMode ? "#ffffff" : "#000000"}
-              tick={{ fontSize: 12, fontWeight: 500 }}
-            />
-            <YAxis
-              stroke={darkMode ? "#FFFFFF" : "#2D3748"}
-              tick={{ fontSize: 12, fontWeight: 500 }}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: darkMode ? "#333" : "#ffffff",
-                color: darkMode ? "#ffffff" : "#000000",
-                borderRadius: 8,
-                border: "1px solid",
-                borderColor: darkMode ? "#444" : "#ccc",
-                padding: "8px 12px",
-              }}
-            />
-            <Bar
-              dataKey="intensity"
-              fill={darkMode ? "#ff7f0e" : "#1f77b4"}
-              barSize={30}
-            />
-          </BarChart>
+          <ResponsiveContainer width="100%" height={400}>
+            <ScatterChart
+              data={data}
+              // margin={{ top: 20, right: 40, bottom: 60, left: 60 }}
+            >
+              {/* X-Axis for Quarters */}
+              <XAxis
+                dataKey="name"
+                stroke={darkMode ? "#ffffff" : "#000000"}
+                tick={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  fill: darkMode ? "#ffffff" : "#000000",
+                }}
+                label={{
+                  // value: "Quarter",
+                  position: "insideBottom",
+                  // offset: -10,
+                  style: {
+                    fill: darkMode ? "#ffffff" : "#000000",
+                    fontSize: 14,
+                  },
+                }}
+                tickLine={false}
+              />
+
+              {/* Y-Axis for Revenue */}
+              <YAxis
+                stroke={darkMode ? "#FFFFFF" : "#2D3748"}
+                tick={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  fill: darkMode ? "#ffffff" : "#000000",
+                }}
+                label={{
+                  value: "Revenue (in $)",
+                  angle: -90,
+                  position: "insideLeft",
+                  offset: -10,
+                  style: {
+                    fill: darkMode ? "#ffffff" : "#000000",
+                    fontSize: 14,
+                  },
+                }}
+                tickLine={false}
+                grid={{
+                  stroke: darkMode ? "#444" : "#ddd",
+                  strokeDasharray: "3 3",
+                }}
+              />
+
+              {/* Z-Axis for Bubble Size */}
+              <ZAxis dataKey="intensity" range={[10, 200]} />
+
+              {/* Tooltip for enhanced data insight */}
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: darkMode ? "#333" : "#ffffff",
+                  color: darkMode ? "#ffffff" : "#000000",
+                  borderRadius: 10,
+                  border: "1px solid",
+                  borderColor: darkMode ? "#444" : "#ccc",
+                  padding: "10px 15px",
+                  fontSize: "14px",
+                  boxShadow: "0px 4px 12px rgba(0,0,0,0.2)", // Enhanced shadow for better focus
+                }}
+                cursor={{ strokeDasharray: "3 3" }}
+                itemStyle={{ fontWeight: "bold" }}
+              />
+
+              {/* Scatter Plot Points with hover effects */}
+              <Scatter
+                dataKey="intensity"
+                fill={
+                  darkMode ? "rgba(255,127,14,0.8)" : "rgba(31,119,180,0.8)"
+                }
+                shape="circle"
+              >
+                <LabelList
+                  dataKey="name"
+                  position="top"
+                  style={{
+                    fill: darkMode ? "#ffffff" : "#000000",
+                    fontSize: 12,
+                  }}
+                />
+              </Scatter>
+            </ScatterChart>
+          </ResponsiveContainer>
         );
       case "line":
         return (
@@ -176,12 +232,12 @@ const IntensityGraphChart = ({ data, darkMode }) => {
               contentStyle={{
                 backgroundColor: darkMode ? "#333" : "#ffffff",
                 color: darkMode ? "#f7dc6f" : "#000000",
-                borderRadius: "10px", // Rounded corners for the tooltip
-                fontSize: "14px", // Custom font size
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", // Shadow effect
+                borderRadius: "10px",
+                fontSize: "14px",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
               }}
               itemStyle={{
-                color: darkMode ? "#f7dc6f" : "#000000", // Color for the text inside the tooltip
+                color: darkMode ? "#f7dc6f" : "#000000",
               }}
             />
             <Line
@@ -190,13 +246,13 @@ const IntensityGraphChart = ({ data, darkMode }) => {
               stroke="#d35400"
               strokeWidth={1}
               dot={{
-                stroke: darkMode ? "#f7dc6f" : "#000000", // Color of dots
+                stroke: darkMode ? "#f7dc6f" : "#000000",
                 strokeWidth: 2,
-                r: 5, // Default radius of the dots
+                r: 5,
               }}
               activeDot={{
-                r: 8, // Increased radius on hover
-                stroke: darkMode ? "#e67e22" : "#3498db", // Custom stroke on hover
+                r: 8,
+                stroke: darkMode ? "#e67e22" : "#3498db",
                 strokeWidth: 3,
               }}
             />
@@ -213,62 +269,26 @@ const IntensityGraphChart = ({ data, darkMode }) => {
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleChartTypeToggle}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.button.backgroundColor)
-          }
-          onMouseDown={(e) =>
-            (e.currentTarget.style.transform = styles.buttonActive.transform)
-          }
-          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
-          {chartType === "bar" ? (
+          {chartType === "scatter" ? (
             <>
-              <FaChartLine className="mr-2" /> Line
+              <FaDotCircle className="mr-2" /> Bubble
             </>
           ) : (
             <>
-              <FaChartBar className="mr-2" /> Bar
+              <FaChartLine className="mr-2" /> Line
             </>
           )}
         </button>
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleExportPDF}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.button.backgroundColor)
-          }
-          onMouseDown={(e) =>
-            (e.currentTarget.style.transform = styles.buttonActive.transform)
-          }
-          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
           <FaDownload className="mr-2" /> PDF
         </button>
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleExportImage}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor =
-              styles.button.backgroundColor)
-          }
-          onMouseDown={(e) =>
-            (e.currentTarget.style.transform = styles.buttonActive.transform)
-          }
-          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
         >
           <FaDownload className="mr-2" />
           JPG
@@ -279,11 +299,11 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       </ResponsiveContainer>
       {visibleData.length < data.length && (
         <button
-          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
+          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md hover:scale-105"
           onClick={handleLoadMore}
-          disabled={loading}
+          style={styles.loadMoreButton}
         >
-          {loading ? <div style={styles.loadingSpinner}></div> : "Load More"}
+          {loading ? <div style={styles.loadingSpinner} /> : "Show More"}
         </button>
       )}
     </div>
