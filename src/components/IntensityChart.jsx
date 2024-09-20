@@ -133,7 +133,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
     switch (chartType) {
       case "scatter":
         return (
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={800}>
             <ScatterChart
               data={data}
               // margin={{ top: 20, right: 40, bottom: 60, left: 60 }}
@@ -265,7 +265,7 @@ const IntensityGraphChart = ({ data, darkMode }) => {
 
   return (
     <div id="chart-container">
-      <div className="flex justify-center mb-4 space-x-2">
+      <div className="flex justify-center space-x-2 mb-14 ">
         <button
           className="flex items-center justify-center w-20 text-xs font-semibold text-white transition-transform duration-300 transform rounded-md shadow-lg h-7 hover:scale-105 bg-gradient-to-r from-indigo-400 to-indigo-600 hover:from-indigo-500 hover:to-indigo-700"
           onClick={handleChartTypeToggle}
@@ -299,11 +299,11 @@ const IntensityGraphChart = ({ data, darkMode }) => {
       </ResponsiveContainer>
       {visibleData.length < data.length && (
         <button
-          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md hover:scale-105"
+          className="flex items-center justify-center w-32 px-2 py-1 text-xs font-semibold text-white transition-transform duration-300 transform bg-green-500 rounded-md shadow-lg h-7 hover:bg-green-600 hover:scale-105"
           onClick={handleLoadMore}
           style={styles.loadMoreButton}
         >
-          {loading ? <div style={styles.loadingSpinner} /> : "Show More"}
+          {loading ? <div style={styles.loadingSpinner} /> : "Load More"}
         </button>
       )}
     </div>
