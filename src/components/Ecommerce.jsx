@@ -699,27 +699,27 @@ const Ecommerce = () => {
               </div>
             )}
 
-            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">Sales Overview</h2>
                 <Line data={salesData} options={salesOptions} />
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">
                   Customer Feedback
                 </h2>
                 <Radar data={feedbackData} options={feedbackOptions} />
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">
                   Product Categories
                 </h2>
                 <Pie data={categoryData} options={categoryOptions} />
               </div>
 
-              <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3">
+              <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-6 text-2xl font-semibold">
                   Product Data Table
                 </h2>
@@ -733,8 +733,8 @@ const Ecommerce = () => {
                     <p className="text-lg">No data available</p>
                   </div>
                 ) : (
-                  <div className="relative overflow-x-auto rounded-lg shadow-md">
-                    <table className="w-full divide-y divide-gray-200 table-auto dark:divide-gray-700">
+                  <div className="relative overflow-x-auto rounded-lg shadow-md ">
+                    <table className="w-full divide-y divide-gray-200 table-auto dark:divide-gray-700 ">
                       <thead className="text-gray-900 bg-gradient-to-r from-blue-300 to-blue-200">
                         <tr>
                           <th className="px-6 py-3 text-sm font-semibold text-left uppercase">
@@ -806,7 +806,7 @@ const Ecommerce = () => {
                 )}
               </div>
 
-              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:shadow-2xl ">
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="flex items-center mb-4 text-xl font-bold ">
                   <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
                   Event Timeline
@@ -840,7 +840,7 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">Stock Levels</h2>
                 <Doughnut data={stockData} options={stockOptions} />
               </div>
@@ -927,7 +927,7 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-              <div className="col-span-2 p-6 transition-transform duration-300 transform border border-gray-200 rounded-lg shadow-lg h-75 dark:border-gray-700 hover:scale-105 hover:shadow-2xl lg:col-span-1">
+              <div className="p-6 transition-transform duration-300 transform border border-gray-200 rounded-lg shadow-lg chover:scale-105 hover:border-blue-500ol-span-2 h-75 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 {/* Title Section */}
                 <h2 className="mb-4 text-xl font-semibold text-center ">
                   Visit US

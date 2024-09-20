@@ -75,7 +75,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           <ul className="space-y-4">
             <li>
               <div
-                className={`${linkStyle} cursor-pointer`}
+                className={`${linkStyle} ${baseTextStyle}   ${linkHoverStyle}  `}
                 onClick={handleAnalyticsClick} // Handle Analytics toggle and navigation
                 aria-label="Analytics"
               >
