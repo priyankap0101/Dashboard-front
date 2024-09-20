@@ -1,7 +1,6 @@
-// src/App.jsx
 import React from "react";
 import { motion } from "framer-motion"; 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -19,9 +18,7 @@ import ResourceAllocation from "./components/ResourceAllocation";
 
 // Placeholder components for other routes
 const ECommerce = () => <div>E-commerce Content</div>;
-// const Logistics = () => <div>Logistics Content</div>;
 const Academy = () => <div>Academy Content</div>;
-
 
 const lightningAnimation = {
   keyframes: [
@@ -38,40 +35,44 @@ const App = () => {
     <Router>
       <div className="flex">
         <div className="flex-1">
+          {/* Ensure Sidebar or Header does not render Dashboard first */}
+          {/* Ensure Routes are rendering correctly */}
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            {/* Redirect root to analytics */}
+            <Route path="/" element={<Navigate to="/analytics" replace />} />
+            
+            {/* Your other routes */}
             <Route path="/analytics" element={<Analytics />} />
-            <Route path="/crm/*" element={<CRM />} /> {/* Updated path */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/crm/*" element={<CRM />} />
             <Route path="/ecommerce" element={<Ecommerce />} />
             <Route path="/logistics" element={<Logistics />} />
             <Route path="/academy" element={<Academy />} />
             <Route path="/resource" element={<ResourceAllocation />} />
-            
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/saveprofile" element={<SaveProfile />} />
             <Route path="/updateprofile" element={<UpdateProfile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/searchprofile/:query" element={<SearchProfile />} />
-            {/* Default route */}
-            <Route
-              path="*"
-              element={<div>Select an option from the sidebar</div>}
-            />
+
+            {/* Default route: any undefined route redirects to analytics */}
+            <Route path="*" element={<Navigate to="/analytics" replace />} />
           </Routes>
+
           {/* Button positioned at bottom-right */}
           <div className="fixed bottom-6 right-6">
-              <motion.button
-                className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
-                whileHover={{ translateY: -3 }}
-                whileTap={{ scale: 0.98 }}
-                style={{
-                  animation: `lightning ${lightningAnimation.duration}ms ${lightningAnimation.iterations} linear`
-                }}
-              >
-                Shop Now
-              </motion.button>
-            </div>
+            <motion.button
+              className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
+              whileHover={{ translateY: -3 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                animation: `lightning ${lightningAnimation.duration}ms ${lightningAnimation.iterations} linear`
+              }}
+            >
+              Shop Now
+            </motion.button>
+          </div>
         </div>
       </div>
     </Router>

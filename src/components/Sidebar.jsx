@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   FaChartPie,
   FaChartLine,
@@ -16,6 +16,9 @@ import {
 
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const linkStyle = `flex items-center p-3 space-x-3 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105`;
   const linkActiveStyle = `bg-indigo-600 text-white shadow-lg`;
@@ -25,6 +28,21 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
+
+  const handleAnalyticsClick = () => {
+    if (isAnalyticsOpen) {
+      // Navigate to the dashboard when closing the dropdown
+      navigate("/analytics");
+    }
+    setIsAnalyticsOpen(!isAnalyticsOpen);
+  };
+
+  // Reset the analytics dropdown state when navigating to a different route
+  useEffect(() => {
+    if (location.pathname !== "/dashboard") {
+      setIsAnalyticsOpen(false);
+    }
+  }, [location]);
 
   return (
     <div className="flex">
@@ -43,18 +61,6 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           {isSidebarCollapsed ? <FaBars /> : <FaTimes />}
         </button>
 
-        {/* Logo Section */}
-        {/* <div className={`flex items-center mb-6 ${isSidebarCollapsed ? "justify-center" : ""}`}>
-          {!isSidebarCollapsed && (
-            <img
-              src=""
-              alt="Logo"
-              className="w-12 h-12 rounded-full"
-            />
-          )}
-        </div> */}
-
-        {/* Profile Section */}
         {!isSidebarCollapsed && (
           <div className="flex items-center mb-6 space-x-3">
             <FaUserCircle size={40} />
@@ -68,34 +74,35 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         <nav className={`${isSidebarCollapsed ? "hidden" : "block"} lg:block`}>
           <ul className="space-y-4">
             <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
-                    isActive ? linkActiveStyle : ""
-                  }`
-                }
-                aria-label="Dashboard"
-                aria-current="page"
-              >
-                <FaChartPie size={20} />
-                {!isSidebarCollapsed && <span>Dashboard</span>}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/analytics"
-                className={({ isActive }) =>
-                  `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
-                    isActive ? linkActiveStyle : ""
-                  }`
-                }
+              <div
+                className={`${linkStyle} cursor-pointer`}
+                onClick={handleAnalyticsClick} // Handle Analytics toggle and navigation
                 aria-label="Analytics"
               >
                 <FaChartLine size={20} />
                 {!isSidebarCollapsed && <span>Analytics</span>}
-              </NavLink>
+              </div>
+
+              {isAnalyticsOpen && ( // Conditionally render the nested links
+                <ul className="ml-6 space-y-2">
+                  <li>
+                    <NavLink
+                      to="/dashboard"
+                      className={({ isActive }) =>
+                        `${linkStyle} ${baseTextStyle} ${linkHoverStyle} ${
+                          isActive ? linkActiveStyle : ""
+                        }`
+                      }
+                      aria-label="Dashboard"
+                    >
+                      <FaChartPie size={18} />
+                      {!isSidebarCollapsed && <span>Dashboard</span>}
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
             </li>
+
             <li>
               <NavLink
                 to="/crm"
@@ -169,7 +176,6 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           </ul>
         </nav>
 
-        {/* Dark Mode Toggle */}
         <div
           className={`flex items-center mt-8 ${
             isSidebarCollapsed ? "justify-center" : ""

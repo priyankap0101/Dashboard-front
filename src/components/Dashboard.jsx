@@ -114,7 +114,7 @@ const Dashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  className="absolute right-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12" 
+                  className="absolute right-0 w-40 bg-white border border-gray-300 rounded-lg shadow-lg top-12"
                 >
                   <button
                     onClick={() => handleExport("csv")}
@@ -141,16 +141,18 @@ const Dashboard = () => {
               <section className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-2">
                 {(showAllCharts
                   ? [
-                      { component: IntensityChart, name: "Intensity Chart" },
-                      { component: LikelihoodChart, name: "Likelihood Chart" },
                       { component: RelevanceChart, name: "Relevance Chart" },
+                      { component: LikelihoodChart, name: "Likelihood Chart" },
+                      { component: IntensityChart, name: "Intensity Chart" },
+
                       {
                         component: YearlyTrendsChart,
                         name: "Yearly Trends Chart",
                       },
                     ]
                   : [
-                      { component: IntensityChart, name: "Intensity Chart" },
+                      { component: RelevanceChart, name: "Relevance Chart" },
+                      // { component: IntensityChart, name: "Intensity Chart" },
                       { component: LikelihoodChart, name: "Likelihood Chart" },
                     ]
                 ).map(({ component: ChartComponent, name }, index) => (
