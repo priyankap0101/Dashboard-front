@@ -93,14 +93,18 @@ const App = () => {
                     transition={{ duration: 0.3 }}
                     onClick={scrollToTop}
                   >
-                    <FiArrowUpCircle size={32} className="text-white hover:text-gray-400" />
+                    <FiArrowUpCircle size={32}  className="text-blue-800 hover:text-gray-400 dark:text-gray-800 dark:hover:text-gray-200"  />
                   </motion.div>
                 )}
               </div>
             </div>
           </div>
+
+          
         </div>
+        
       </Router>
+      
     </>
   );
 };

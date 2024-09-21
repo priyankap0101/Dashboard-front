@@ -28,6 +28,7 @@ import {
 import { Line, Pie, Radar, Bar } from "react-chartjs-2";
 import MySlider from "./slider";
 import EarningsReport from "./EarningsReport";
+import Footer from "./Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -739,8 +740,10 @@ const Analytics = () => {
                   ))}
                 </div>
               </motion.div>
+              
             )}
           </motion.div>
+          <Footer /> {/* Add the Footer component here */}
         </motion.main>
       </div>
 
