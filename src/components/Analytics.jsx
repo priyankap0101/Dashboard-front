@@ -391,7 +391,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 border-gray-600"
                       : "bg-gradient-to-br from-white via-gray-100 to-gray-300 border-gray-200"
-                  } h-96 flex flex-col justify-center `}
+                  } h-96 flex flex-col justify-center   transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   {/* Title and Sales Value */}
                   <div className="flex flex-col items-center justify-center mb-6">
@@ -468,10 +468,10 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  }`}
+                  } transition-transform duration-300 ease-in-out hover:scale-105` }
                 >
                   {/* Sales Overview Section */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col ">
                     {/* Sales Overview Text */}
                     <div className="flex items-center justify-between mb-4">
                       <h4
@@ -546,33 +546,33 @@ const Analytics = () => {
 
                 {/* Radar Chart for Skill Analysis */}
                 <div
-                  className={`p-4 rounded-lg shadow-md border ${
+                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  }`}
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <Radar options={chartOptions(true)} data={skillData} />
                 </div>
 
                 {/* Pie Chart */}
                 <div
-                  className={`p-4 shadow-md rounded-lg w-full h-80 md:h-72 lg:h-80 border ${
+                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  }`}
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <Pie options={chartOptions()} data={departmentExpenseData} />
                 </div>
 
                 {/* Line Chart for Expenses */}
                 <div
-                  className={`p-4 rounded-lg shadow-md border ${
+                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  }`}
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <Line options={chartOptions()} data={expenseData} />
                 </div>
@@ -740,17 +740,7 @@ const Analytics = () => {
               </motion.div>
             )}
 
-            {/* Export Buttons */}
-            {/* <div className="absolute top-4 right-4">
-              <CSVLink
-                data={csvData}
-                filename={"chart_data.csv"}
-                className={`p-3 text-white transition-transform transform rounded-full shadow-lg border border-transparent  hover:scale-105`}
-                aria-label="Export options"
-              >
-                <FiDownload size={24} />
-              </CSVLink>
-            </div> */}
+
           </motion.div>
         </motion.main>
       </div>
