@@ -6,11 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { CSVLink } from "react-csv";
-import { jsPDF } from "jspdf";
-import { FiDownload } from "react-icons/fi";
 
-import Slider from "react-slick"; // Import react-slick
+import { jsPDF } from "jspdf";
+
 import "slick-carousel/slick/slick.css"; // Import slick-carousel CSS
 import "slick-carousel/slick/slick-theme.css"; // Import slick-carousel theme
 import html2canvas from "html2canvas";
@@ -352,14 +350,18 @@ const Analytics = () => {
 
   return (
     <motion.div
-    className={`min-h-screen ${
-      darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
-    } transition-colors duration-300 ease-in-out`}
-    initial="hidden"
-    animate="visible"
-    variants={containerVariants}
-  >
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode}  className="relative z-50"/>
+      className={`min-h-screen ${
+        darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
+      } transition-colors duration-300 ease-in-out`}
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <Header
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+        className="relative z-50"
+      />
       <div className="flex">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <motion.main className="flex-1 p-6">
@@ -375,7 +377,6 @@ const Analytics = () => {
                 <ClipLoader color="#4A90E2" loading={loading} size={150} />
               </div>
             ) : (
-              
               <motion.div
                 className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
                 variants={itemVariants}
@@ -468,7 +469,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105` }
+                  } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   {/* Sales Overview Section */}
                   <div className="flex flex-col ">
@@ -739,8 +740,6 @@ const Analytics = () => {
                 </div>
               </motion.div>
             )}
-
-
           </motion.div>
         </motion.main>
       </div>

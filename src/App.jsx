@@ -11,71 +11,80 @@ import UpdateProfile from "./components/UpdateProfile";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import SearchProfile from "./components/SearchProfile";
-import CRM from "./components/CRM"; // Correctly import CRM
+import CRM from "./components/CRM"; 
 import Ecommerce from "./components/Ecommerce";
 import Logistics from "./components/Logistics";
 import ResourceAllocation from "./components/ResourceAllocation";
 
-// Placeholder components for other routes
 const ECommerce = () => <div>E-commerce Content</div>;
 const Academy = () => <div>Academy Content</div>;
 
-const lightningAnimation = {
-  keyframes: [
-    { boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)" },
-    { boxShadow: "0 0 15px rgba(255, 255, 255, 1)" },
-    { boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)" }
-  ],
-  duration: 1000, // Duration of the animation in milliseconds
-  iterations: Infinity // Infinite loop
-};
+const colorChangingAnimation = `
+  @keyframes colorChange {
+    0% { background-color: #14b8a6; } /* Teal */
+    33% { background-color: #3b82f6; } /* Blue */
+    66% { background-color: #ec4899; } /* Pink */
+    100% { background-color: #14b8a6; } /* Teal */
+  }
+
+  @keyframes shadowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+    50% { box-shadow: 0 0 40px rgba(255, 255, 255, 1); }
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .color-changing {
+    background: linear-gradient(270deg, #14b8a6, #3b82f6, #ec4899, #facc15);
+    background-size: 400% 400%;
+    animation: gradientMove 8s ease infinite, shadowPulse 2s infinite;
+    transition: all 0.3s ease-in-out;
+  }
+`;
 
 const App = () => {
   return (
-    <Router>
-      <div className="flex">
-        <div className="flex-1">
-          {/* Ensure Sidebar or Header does not render Dashboard first */}
-          {/* Ensure Routes are rendering correctly */}
-          <Routes>
-            {/* Redirect root to analytics */}
-            <Route path="/" element={<Navigate to="/analytics" replace />} />
-            
-            {/* Your other routes */}
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/crm/*" element={<CRM />} />
-            <Route path="/ecommerce" element={<Ecommerce />} />
-            <Route path="/logistics" element={<Logistics />} />
-            <Route path="/academy" element={<Academy />} />
-            <Route path="/resource" element={<ResourceAllocation />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/saveprofile" element={<SaveProfile />} />
-            <Route path="/updateprofile" element={<UpdateProfile />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/searchprofile/:query" element={<SearchProfile />} />
+    <>
+      <style>{colorChangingAnimation}</style> {/* Inject the keyframes */}
+      <Router>
+        <div className="flex">
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Navigate to="/analytics" replace />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/crm/*" element={<CRM />} />
+              <Route path="/ecommerce" element={<Ecommerce />} />
+              <Route path="/logistics" element={<Logistics />} />
+              <Route path="/academy" element={<Academy />} />
+              <Route path="/resource" element={<ResourceAllocation />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/saveprofile" element={<SaveProfile />} />
+              <Route path="/updateprofile" element={<UpdateProfile />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/searchprofile/:query" element={<SearchProfile />} />
+              <Route path="*" element={<Navigate to="/analytics" replace />} />
+            </Routes>
 
-            {/* Default route: any undefined route redirects to analytics */}
-            <Route path="*" element={<Navigate to="/analytics" replace />} />
-          </Routes>
-
-          {/* Button positioned at bottom-right */}
-          <div className="fixed bottom-6 right-6">
-            <motion.button
-              className="px-6 py-2 font-semibold text-white transition-all duration-200 rounded-lg shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-400 hover:to-blue-400 focus:outline-none"
-              whileHover={{ translateY: -3 }}
-              whileTap={{ scale: 0.98 }}
-              style={{
-                animation: `lightning ${lightningAnimation.duration}ms ${lightningAnimation.iterations} linear`
-              }}
-            >
-              Shop Now
-            </motion.button>
+            {/* Button positioned at bottom-right */}
+            <div className="fixed bottom-6 right-6">
+              <motion.button
+                className="px-6 py-2 font-semibold text-white rounded-lg shadow-lg color-changing focus:outline-none"
+                whileHover={{ scale: 1.1}} 
+                whileTap={{ scale: 0.9 }} /* Stronger tap interaction */
+              >
+                Shop Now
+              </motion.button>
+            </div>
           </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </>
   );
 };
 
