@@ -8,6 +8,7 @@ import {
   FaMoon,
   FaPalette,
   FaLeaf,
+  FaCog,
 } from "react-icons/fa";
 
 const themes = {
@@ -23,7 +24,7 @@ const themes = {
       "rgba(54, 162, 235, 0.8)",
       "rgba(255, 206, 86, 0.8)",
     ],
-    icon: <FaSun size={16} />,
+    icon: <FaSun size={14} />,
     tooltip: "Light Theme",
   },
   dark: {
@@ -38,7 +39,7 @@ const themes = {
       "rgba(54, 162, 235, 0.8)",
       "rgba(255, 206, 86, 0.8)",
     ],
-    icon: <FaMoon size={16} />,
+    icon: <FaMoon size={14} />,
     tooltip: "Dark Theme",
   },
   blue: {
@@ -53,7 +54,7 @@ const themes = {
       "rgba(0, 102, 204, 0.8)",
       "rgba(153, 204, 255, 0.8)",
     ],
-    icon: <FaPalette size={16} />,
+    icon: <FaPalette size={14} />,
     tooltip: "Blue Theme",
   },
   green: {
@@ -68,7 +69,7 @@ const themes = {
       "rgba(23, 162, 184, 0.8)",
       "rgba(75, 192, 192, 0.8)",
     ],
-    icon: <FaLeaf size={16} />,
+    icon: <FaLeaf size={14} />,
     tooltip: "Green Theme",
   },
 };
@@ -81,6 +82,7 @@ const EarningsReport = ({
   theme = "light",
 }) => {
   const [selectedTheme, setSelectedTheme] = useState(theme);
+  const [showIcons, setShowIcons] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -96,18 +98,22 @@ const EarningsReport = ({
 
   const colors = themes[selectedTheme];
 
+  const toggleIcons = () => {
+    setShowIcons(!showIcons);
+  };
+
   const chartOptions = {
     chart: {
       type: "area",
       toolbar: { show: false },
       sparkline: { enabled: true },
     },
-    stroke: { curve: "smooth", width: 2 },
+    stroke: { curve: "smooth", width: 1.5 }, // Reduced stroke width
     xaxis: {
-      categories: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-      labels: { style: { colors: colors.text } },
+      categories: ["M", "T", "W", "T", "F", "S", "S"],
+      labels: { style: { colors: colors.text, fontSize: '0.8rem' } }, // Reduced font size
     },
-    yaxis: { labels: { style: { colors: colors.text } } },
+    yaxis: { labels: { style: { colors: colors.text, fontSize: '0.8rem' } } }, // Reduced font size
     fill: {
       type: "gradient",
       gradient: {
@@ -127,20 +133,24 @@ const EarningsReport = ({
 
   return (
     <div
-      className={`w-full max-w-4xl mx-auto rounded-lg h-96 ${colors.background} ${colors.text}`}
+      className={`w-full max-w-4xl mx-auto rounded-lg p-4 ${colors.background} ${colors.text}`} // Reduced padding
     >
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-1"> {/* Reduced padding */}
         <div className="text-center">
-          <h1 className={` font-extrabold ${colors.text}`}>Earnings Report</h1>
-          <p className={` ${colors.text}`}>Weekly Earnings Overview</p>
+          <h1 className={`font-extrabold text-lg md:text-xl ${colors.text}`}> {/* Reduced font size */}
+            Earnings Report
+          </h1>
+          <p className={`text-xs md:text-sm ${colors.text}`}> {/* Reduced font size */}
+            Weekly Earnings Overview
+          </p>
         </div>
-        <div className="relative">
-          <div className="absolute top-0 right-0 flex space-x-2">
+        <div className="relative hidden sm:block">
+          <div className="absolute top-0 right-0 flex space-x-1 md:space-x-2">
             {["light", "dark", "blue", "green"].map((themeName, index) => (
               <button
                 key={index}
                 onClick={() => applyTheme(themeName)}
-                className="p-1.5 rounded-full focus:outline-none hover:opacity-75 border border-gray-300"
+                className="p-1 border border-gray-300 rounded-full focus:outline-none hover:opacity-75"
                 title={themes[themeName].tooltip}
               >
                 {themes[themeName].icon}
@@ -148,24 +158,52 @@ const EarningsReport = ({
             ))}
           </div>
         </div>
+
+        <div className="relative block sm:hidden">
+          <button
+            onClick={toggleIcons}
+            className="p-1 border border-gray-300 rounded-full focus:outline-none hover:opacity-75"
+            title="Theme Options"
+          >
+            <FaCog size={16} />
+          </button>
+
+          {showIcons && (
+            <div className="absolute right-0 flex flex-col p-1 mt-1 space-y-1 bg-white rounded-lg shadow-md">
+              {["light", "dark", "blue", "green"].map((themeName, index) => (
+                <button
+                  key={index}
+                  onClick={() => applyTheme(themeName)}
+                  className="p-1 border border-gray-300 rounded-full focus:outline-none hover:opacity-75"
+                  title={themes[themeName].tooltip}
+                >
+                  {themes[themeName].icon}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-      <div className="flex flex-col mb-6 md:flex-row md:space-x-6">
+
+      <div className="flex flex-col mb-2 space-y-1 md:flex-row md:space-y-0 md:space-x-2"> {/* Reduced spacing */}
         <div
-          className={`w-full md:w-2/3 ${colors.background} rounded-lg shadow-md p-4`}
+          className={`w-full md:w-2/3 ${colors.background} rounded-lg shadow-md p-1`} // Reduced padding
         >
           <ApexCharts
             options={chartOptions}
             series={chartSeries}
             type="area"
-            height={150}
+            height={170} // Further reduced height
           />
         </div>
         <div
-          className={`w-full md:w-1/3 ${colors.background} rounded-lg shadow-md p-4 flex flex-col items-center`}
+          className={`w-full md:w-1/3 ${colors.background} rounded-lg shadow-md p-1 flex flex-col items-center`} // Reduced padding
         >
-          <div className="text-lg font-bold">${earnings.toLocaleString()}</div>
+          <div className="text-lg font-bold md:text-xl"> {/* Reduced font size */}
+            ${earnings.toLocaleString()}
+          </div>
           <div
-            className={`mt-2 text-xl px-4 py-2 rounded-full ${
+            className={`mt-1 text-sm px-1 py-0.5 rounded-full ${ // Reduced padding
               percentageChange >= 0 ? "bg-green-500" : "bg-red-500"
             } text-white`}
           >
@@ -173,10 +211,13 @@ const EarningsReport = ({
               ? `+${percentageChange.toFixed(1)}%`
               : `${percentageChange.toFixed(1)}%`}
           </div>
-          <p className={`mt-2 text-sm ${colors.text}`}>Compared to last week</p>
+          <p className={`mt-1 text-xs ${colors.text}`}> {/* Reduced font size */}
+            Compared to last week
+          </p>
         </div>
       </div>
-      <div className="grid justify-center grid-cols-1 gap-2 mb-2 md:grid-cols-3">
+
+      <div className="grid justify-center grid-cols-1 gap-1 md:grid-cols-3"> {/* Reduced spacing */}
         {[
           {
             icon: FaDollarSign,
@@ -192,26 +233,18 @@ const EarningsReport = ({
           },
           {
             icon: FaMoneyBillWave,
-            label: "Expense",
+            label: "Expenses",
             value: expense.toFixed(2),
             color: colors.pie[2],
           },
-        ].map(({ icon: Icon, label, value, color }, index) => (
+        ].map((item, index) => (
           <div
             key={index}
-            className={`flex items-center p-2 rounded-md shadow-md transition-transform transform hover:scale-95 ${colors.background} w-auto max-w-xs mx-auto`}
-            style={{ border: `1px solid ${colors.border}` }}
+            className={`flex flex-col items-center p-1 border rounded-lg shadow-md ${colors.border}`} // Reduced padding
           >
-            <div
-              className="flex items-center justify-center p-2 rounded-full"
-              style={{ backgroundColor: color, width: "35px", height: "45px" }}
-            >
-              <Icon size={14} className="text-white" />
-            </div>
-            <div className="ml-3">
-              <p className={`font-semibold ${colors.text}`}>{label}</p>
-              <p className={`font-bold ${colors.text}`}>${value}</p>
-            </div>
+            <item.icon className={`text-xl ${item.color}`} /> {/* Reduced icon size */}
+            <h2 className="text-xs font-bold">{item.label}</h2> {/* Reduced font size */}
+            <p className={`text-sm ${colors.text}`}>${item.value}</p> {/* Reduced font size */}
           </div>
         ))}
       </div>
