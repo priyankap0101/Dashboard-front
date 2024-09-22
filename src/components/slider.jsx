@@ -3,19 +3,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const sliderSettings = {
-  dots: true,
+  // dots: true,
   infinite: true,
   speed: 1000,
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
-  autoplaySpeed: 3000,
+  autoplaySpeed: 4000,
   arrows: false,
   customPaging: (i) => (
     <div
       style={{
         width: "12px",
-        height: "12px",
+        height: "18px",
         borderRadius: "50%",
         background: "#FFFFFF",
         cursor: "pointer",
@@ -25,13 +25,10 @@ const sliderSettings = {
   appendDots: (dots) => (
     <div
       style={{
-        // position: "absolute",
-        top: "39%", // Center vertically
-        right: "-19rem", // Position from right edge
-        transform: "translateY(-50%)", // Center vertically relative to the card
-        // zIndex: 2,
+        top: "40%",
+        right: "-25rem",
+        transform: "translateY(-50%)",
         display: "flex",
-        // flexDirection: "column",
         gap: "10px",
       }}
     >
@@ -76,95 +73,124 @@ const slides = [
   },
 ];
 
-const SlideCard = ({ subtitle, description, revenueSources, imageSrc }) => (
-  <div
-    style={{
-      position: "relative",
-      display: "flex",
-      flexDirection: "column",
-      padding: "20px",
-      background: "linear-gradient(135deg, #8A2BE2, #5A4FCF)",
-      borderRadius: "15px",
-      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-      width: "100%",
-      maxWidth: "600px",
-      margin: "0 auto",
-      color: "#FFFFFF",
-      textAlign: "left",
-      overflow: "hidden",
-    }}
-    className="slide-card"
-  >
-    {/* Image positioned slightly below the top-right corner */}
-    <img
-      src={imageSrc}
-      alt="3D Shape"
-      style={{
-        width: "120px",
-        height: "120px",
+const SlideCard = ({ subtitle, description, revenueSources, imageSrc }) => {
+  // Dynamic styles for responsiveness
+  const getResponsiveStyles = () => {
+    const isMobile = window.innerWidth < 768;
+    return {
+      cardContainer: {
+        display: "flex",
+        flexDirection: "column",
+        padding: isMobile ? "15px" : "20px",
+        background: "linear-gradient(135deg, #8A2BE2, #5A4FCF)",
+        borderRadius: "15px",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+        width: "100%",
+        maxWidth: "600px",
+        margin: "0 auto",
+        color: "#FFFFFF",
+        textAlign: "left",
+        overflow: "hidden",
+        position: "relative",
+      },
+      imageStyle: {
+        width: isMobile ? "50px" : "120px",
+        height: isMobile ? "60px" : "120px",
         borderRadius: "15px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         position: "absolute",
-        top: "70px", // Slightly below the top
+        top: isMobile ? "30px" : "70px",
         right: "20px",
         objectFit: "cover",
         zIndex: 1,
-      }}
-    />
+      },
+      contentStyle: {
+        paddingRight: isMobile ? "100px" : "140px",
+        position: "relative",
+      },
+      titleStyle: {
+        fontSize: isMobile ? "10px" : "22px",
+        fontWeight: "bold",
+        marginBottom: "10px",
+      },
+      descriptionStyle: {
+        fontSize: isMobile ? "12px" : "16px",
+        marginBottom: "20px",
+      },
+      subtitleStyle: {
+        fontSize: isMobile ? "14px" : "20px",
+        fontWeight: "600",
+        marginBottom: "10px",
+      },
+      revenueSourceContainer: {
+        marginBottom: "20px",
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+        gap: isMobile ? "8px" : "15px",
+      },
+      revenueSourceBox: {
+        backgroundColor: "rgba(255, 255, 255, 0.15)",
+        padding: isMobile ? "10px" : "15px",
+        borderRadius: "10px",
+        textAlign: "center",
+        transition: "background-color 0.3s ease, transform 0.3s ease",
+        cursor: "pointer",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        // Add fixed height and width for uniform size
+        width: isMobile ? "100%" : "180px",
+        height: isMobile ? "80px" : "70px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      },
+      revenueValueStyle: {
+        margin: "0",
+        fontWeight: "bold",
+        fontSize: isMobile ? "14px" : "16px",
+      },
+      revenueLabelStyle: {
+        margin: "0",
+        fontSize: isMobile ? "14px" : "16px",
+      },
+    };
+  };
+  
+  const styles = getResponsiveStyles();
 
-    {/* Content */}
-    <div style={{ paddingRight: "140px", position: "relative" }}>
-      {/* Main Title */}
-      <h3 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "10px" }}>
-        Website Analytics
-      </h3>
+  const handleMouseEnter = (e) => {
+    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.25)";
+    e.currentTarget.style.transform = "scale(1.05)";
+  };
 
-       {/* Description */}
-       <p style={{ fontSize: "16px", marginBottom: "20px" }}>{description}</p>
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+    e.currentTarget.style.transform = "scale(1)";
+  };
 
-
-      {/* Subtitle */}
-      <h4 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "10px" }}>
-        {subtitle}
-      </h4>
-
-     
-
-      {/* Revenue Sources */}
-      <div style={{ marginBottom: "20px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "15px" }}>
+  return (
+    <div style={styles.cardContainer}>
+      <img src={imageSrc} alt="3D Shape" style={styles.imageStyle} />
+      <div style={styles.contentStyle}>
+        <h3 style={styles.titleStyle}>Website Analytics</h3>
+        <p style={styles.descriptionStyle}>{description}</p>
+        <h4 style={styles.subtitleStyle}>{subtitle}</h4>
+        <div style={styles.revenueSourceContainer}>
           {revenueSources.map((source) => (
             <div
               key={source.label}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.15)",
-                padding: "15px",
-                borderRadius: "10px",
-                textAlign: "center",
-                transition: "background-color 0.3s ease, transform 0.3s ease",
-                cursor: "pointer",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.25)";
-                e.currentTarget.style.transform = "scale(1.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
-                e.currentTarget.style.transform = "scale(1)";
-              }}
+              style={styles.revenueSourceBox}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              <p style={{ margin: "0", fontWeight: "bold", fontSize: "10px" }}>
-                {source.value}
-              </p>
-              <p style={{ margin: "0", fontSize: "10px" }}>{source.label}</p>
+              <p style={styles.revenueValueStyle}>{source.value}</p>
+              <p style={styles.revenueLabelStyle}>{source.label}</p>
             </div>
           ))}
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const MySlider = () => (
   <Slider {...sliderSettings}>

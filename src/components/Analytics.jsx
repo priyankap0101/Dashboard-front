@@ -351,9 +351,9 @@ const Analytics = () => {
 
   return (
     <motion.div
-      className={`min-h-screen ${
-        darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
-      } transition-colors duration-300 ease-in-out`}
+    className={`min-h-screen w-full ${
+      darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
+    } transition-colors duration-300 ease-in-out`}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
