@@ -133,7 +133,7 @@ const EarningsReport = ({
 
   return (
     <div
-      className={`w-full max-w-4xl mx-auto rounded-lg p-4 ${colors.background} ${colors.text}`} // Reduced padding
+      className={`w-full max-w-4xl mx-auto rounded-lg p-1 ${colors.background} ${colors.text}`} // Reduced padding
     >
       <div className="flex items-center justify-between p-1"> {/* Reduced padding */}
         <div className="text-center">
@@ -193,7 +193,7 @@ const EarningsReport = ({
             options={chartOptions}
             series={chartSeries}
             type="area"
-            height={170} // Further reduced height
+            height={160} // Further reduced height
           />
         </div>
         <div
@@ -240,7 +240,7 @@ const EarningsReport = ({
         ].map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col items-center p-1 border rounded-lg shadow-md ${colors.border}`} // Reduced padding
+            className={`flex flex-col items-center p-1 border rounded-lg shadow-md ${colors.border}      transition duration-500 ease-in-out transform hover:scale-95 hover:shadow-xl hover:bg-gradient-to-r hover:from-${item.color}-400 hover:to-${item.color}-600`} // Reduced padding
           >
             <item.icon className={`text-xl ${item.color}`} /> {/* Reduced icon size */}
             <h2 className="text-xs font-bold">{item.label}</h2> {/* Reduced font size */}
