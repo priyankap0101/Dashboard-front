@@ -251,18 +251,82 @@ const Analytics = () => {
   };
 
   const expenseData = {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
     datasets: [
       {
         label: "Monthly Expenses ($)",
-        data: [600, 700, 800, 900, 950, 1100],
+        data: [
+          1200, 8500, 1800, 2200, 25000, 2800, 3000, 3200, 3300, 3100, 2900,
+          2700, 6000,
+        ],
         borderColor: colors.line,
         backgroundColor: colors.chartBackground,
-        fill: true,
-        tension: 0.3,
+        fill: false,
+        // tension: 0.3,
       },
     ],
   };
+
+  const LinechartOptions = (darkMode) => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    // Remove height here and control it through CSS or parent container
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 100, // Add ticks every 10,000 on Y-axis
+          callback: function (value) {
+            return "$" + value.toLocaleString(); // Format Y-axis labels as $ amounts
+          },
+        },
+        grid: {
+          display: false,
+          color: darkMode ? "#4A5568" : "#E2E8F0", // Grid color for dark and light modes
+          lineWidth: 1, // Optional: Adjust grid line width
+        },
+      },
+      x: {
+        ticks: {
+          autoSkip: true, // Automatically skip ticks to avoid overlap
+          maxTicksLimit: 10, // Limit the number of ticks on the X-axis
+        },
+        grid: {
+          display: false, // Optional: Hide X-axis gridlines
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: "top", // Optional: Position the legend at the top
+        labels: {
+          color: darkMode ? "#2D3748" : "#FFFFFF", // Label color based on dark mode
+          boxWidth: 15, // Adjust legend box width
+        },
+      },
+      tooltip: {
+        backgroundColor: darkMode ? "#2D3748" : "#FFFFFF", // Tooltip background color
+        titleColor: darkMode ? "white" : "black", // Tooltip title color
+        bodyColor: darkMode ? "white" : "black", // Tooltip body color
+        borderColor: darkMode ? "#4A5568" : "#E2E8F0", // Tooltip border color
+        borderWidth: 1, // Tooltip border width
+      },
+    },
+  });
 
   const earnings = 468; // Example earnings data
   const percentageChange = 4.2; // Example percentage change data
@@ -285,11 +349,11 @@ const Analytics = () => {
       answer:
         "User behavior can be tracked using various analytics tools like Google Analytics or custom tracking scripts.",
     },
-    {
-      question: "What are key performance indicators (KPIs)?",
-      answer:
-        "KPIs are measurable values that demonstrate how effectively a company is achieving its objectives.",
-    },
+    // {
+    //   question: "What are key performance indicators (KPIs)?",
+    //   answer:
+    //     "KPIs are measurable values that demonstrate how effectively a company is achieving its objectives.",
+    // },
     // { question: 'How does data visualization help?', answer: 'Data visualization helps make complex data more accessible and understandable through graphical representation.' },
     // { question: 'What is real-time analytics?', answer: 'Real-time analytics provides insights and data analysis as events happen, allowing for immediate decision-making.' }
   ];
@@ -351,9 +415,9 @@ const Analytics = () => {
 
   return (
     <motion.div
-    className={`min-h-screen w-full ${
-      darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
-    } transition-colors duration-300 ease-in-out`}
+      className={`min-h-screen w-full ${
+        darkMode ? "bg-gray-900 text-gray-200" : "bg-white text-gray-900"
+      } transition-colors duration-300 ease-in-out`}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -548,40 +612,63 @@ const Analytics = () => {
 
                 {/* Radar Chart for Skill Analysis */}
                 <div
-                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`p-4 sm:p-6 lg:p-8 w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
-                  <Radar options={chartOptions(true)} data={skillData} />
+                  <div className="w-full">
+                    <div className="relative pb-[95%]">
+                      {" "}
+                      {/* Responsive aspect ratio */}
+                      <Radar
+                        options={chartOptions(true)}
+                        data={skillData}
+                        className="absolute inset-0"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Pie Chart */}
                 <div
-                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
-                  <Pie options={chartOptions()} data={departmentExpenseData} />
+                  <div className="w-full">
+                    <div className="relative ">
+                      {" "}
+                      <Pie
+                        options={chartOptions()}
+                        data={departmentExpenseData}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Line Chart for Expenses */}
                 <div
-                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`  w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
-                  <Line options={chartOptions()} data={expenseData} />
+                  <div className="w-full mt-10 ">
+                    <div className="relative ">
+                      {" "}
+                      <Line options={LinechartOptions()} data={expenseData} />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Bar Chart for Project Timeline */}
                 <div
-                  className={`relative p-4   mx-auto rounded-lg shadow-lg border ${
+                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl    relative p-4   mx-auto rounded-lg shadow-lg border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
@@ -622,7 +709,7 @@ const Analytics = () => {
                   </div>
 
                   {/* Chart */}
-                  <div className="relative h-48 overflow-hidden shadow-inner rounded-2xl">
+                  <div className="relative overflow-hidden shadow-inner h-42 rounded-2xl">
                     <Bar options={chartOptions()} data={projectTimelineData} />
                     <div
                       className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-100 pointer-events-none ${
@@ -634,9 +721,9 @@ const Analytics = () => {
                   </div>
 
                   {/* Button */}
-                  <div className="flex justify-start mt-8">
+                  <div className="flex justify-start mt-6">
                     <button
-                      className={` px-4 py-2 mt-4 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
+                      className={` px-4 py-2  rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
                         darkMode
                           ? "bg-gray-600 text-gray-100 hover:bg-gray-500"
                           : "bg-blue-600 text-white hover:bg-blue-500"
@@ -646,8 +733,6 @@ const Analytics = () => {
                     </button>
                   </div>
                 </div>
-
-                {/* Feedback Section */}
 
                 {/* Feedback Section */}
                 <div
@@ -673,7 +758,7 @@ const Analytics = () => {
                         ? "bg-gray-900 text-gray-200 border-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-900"
                         : "bg-white text-gray-900 border-gray-300 placeholder-gray-600 focus:ring-2 focus:ring-blue-500"
                     }`}
-                    rows="8"
+                    rows="4"
                   />
                   <button
                     onClick={handleFeedbackSubmit}
@@ -740,10 +825,9 @@ const Analytics = () => {
                   ))}
                 </div>
               </motion.div>
-              
             )}
           </motion.div>
-          <Footer /> {/* Add the Footer component here */}
+          <Footer />
         </motion.main>
       </div>
 

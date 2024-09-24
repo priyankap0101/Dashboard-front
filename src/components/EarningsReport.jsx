@@ -196,7 +196,25 @@ const EarningsReport = ({
             height={160} // Further reduced height
           />
         </div>
-        
+        <div
+          className={` w-full md:w-1/3 ${colors.background}  p-1 flex flex-col items-center`} // Reduced padding
+        >
+          <div className="mt-8 text-lg font-bold md:text-xl"> {/* Reduced font size */}
+            ${earnings.toLocaleString()}
+          </div>
+          <div
+            className={` text-lg px-1 py-0.5 rounded-full p-4 mt-1 ${ // Reduced padding
+              percentageChange >= 0 ? "bg-green-500" : "bg-red-500"
+            } text-white`}
+          >
+            {percentageChange >= 0
+              ? `+${percentageChange.toFixed(1)}%`
+              : `${percentageChange.toFixed(1)}%`}
+          </div>
+          <p className={`mt-1 text-xs ${colors.text}`}> {/* Reduced font size */}
+            Compared to last week
+          </p>
+        </div>
       </div>
 
       <div className="grid justify-center grid-cols-1 gap-1 md:grid-cols-3"> {/* Reduced spacing */}
