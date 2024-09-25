@@ -379,9 +379,11 @@ const Ecommerce = () => {
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
         <motion.main
-          className={`p-8 ${darkMode ? "text-gray-200" : "text-gray-900"}`}
+          className={` flex-1 p-6 ${
+            darkMode ? "text-gray-200" : "text-gray-900"
+          }`}
           variants={containerVariants}
-          initial="hidden"
+          // initial="hidden"
           animate="visible"
         >
           <div
@@ -395,7 +397,7 @@ const Ecommerce = () => {
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 ">
                 <motion.div
                   className={`flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform ${
                     darkMode
@@ -657,7 +659,7 @@ const Ecommerce = () => {
                 {data.map((item, index) => (
                   <motion.div
                     key={index}
-                    className={`p-6 border rounded-lg shadow-md transition-all duration-300 ${
+                    className={`md:grid-cols-3 w-full  gap-4  p-6 border rounded-lg shadow-md transition-all duration-300 ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
                     whileHover={{
@@ -699,7 +701,7 @@ const Ecommerce = () => {
               </div>
             )}
 
-            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">Sales Overview</h2>
                 <Line data={salesData} options={salesOptions} />
