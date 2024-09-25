@@ -940,7 +940,7 @@ const Ecommerce = () => {
                   <MapContainer
                     center={[19.076, 72.8777]} // Coordinates for Mumbai
                     zoom={13} // Zoom level for a closer view of Mumbai
-                    style={{ height: "500px", width: "100%" }}
+                    style={{ height: "500px" }}
                     className="rounded-lg"
                   >
                     <TileLayer

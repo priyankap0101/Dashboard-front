@@ -14,6 +14,7 @@ import CRM from "./components/CRM";
 import Ecommerce from "./components/Ecommerce";
 import Logistics from "./components/Logistics";
 import ResourceAllocation from "./components/ResourceAllocation";
+import Dashboard1 from "./components/dashboard1";
 
 const colorChangingAnimation = `
   @keyframes gradientMove {
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="/" element={<Navigate to="/analytics" replace />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard1" element={<Dashboard1 />} /> {/* Dashboard1 route */}
               <Route path="/crm/*" element={<CRM />} />
               <Route path="/ecommerce" element={<Ecommerce />} />
               <Route path="/logistics" element={<Logistics />} />

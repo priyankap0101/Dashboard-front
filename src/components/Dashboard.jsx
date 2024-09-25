@@ -17,6 +17,8 @@ import { FiDownload } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Dashboard1 from "./dashboard1";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -26,6 +28,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showAllCharts, setShowAllCharts] = useState(false);
+  const [error, setError] = useState(null); // Error state
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +40,7 @@ const Dashboard = () => {
         setData(result);
         setFilteredData(result);
       } catch (error) {
+        setError("Error fetching data"); // Set error message
         toast.error("Error fetching data");
       }
       setLoading(false);
@@ -42,6 +48,12 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/Dashboard1"); // Redirect to Dashboard1 if error occurs
+    }
+  }, [error, navigate]); // Add error and navigate as dependencies
 
   useEffect(() => {
     const applyFiltersAndSort = () => {
@@ -144,7 +156,6 @@ const Dashboard = () => {
                       { component: RelevanceChart, name: "Relevance Chart" },
                       { component: LikelihoodChart, name: "Likelihood Chart" },
                       { component: IntensityChart, name: "Intensity Chart" },
-
                       {
                         component: YearlyTrendsChart,
                         name: "Yearly Trends Chart",
@@ -152,7 +163,6 @@ const Dashboard = () => {
                     ]
                   : [
                       { component: RelevanceChart, name: "Relevance Chart" },
-                      // { component: IntensityChart, name: "Intensity Chart" },
                       { component: LikelihoodChart, name: "Likelihood Chart" },
                     ]
                 ).map(({ component: ChartComponent, name }, index) => (
