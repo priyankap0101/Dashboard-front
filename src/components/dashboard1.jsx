@@ -206,13 +206,21 @@ const Dashboard1 = () => {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                 {/* Earning Reports */}
-                <div className="p-6 transition-shadow duration-300 ease-in-out bg-white rounded-lg shadow-lg dark:bg-gray-800 hover:shadow-xl">
-                  <h3 className="mb-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
-                    Earning Reports
+                <div className='p-6 transition-shadow duration-300 ease-in-out rounded-lg shadow-lg hover:shadow-xl ${
+                    darkMode
+                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
+                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-200 hover:via-gray-100 hover:to-white"
+                  }'>
+                  <h3 className='mb-6 text-xl font-semibold {
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
+                    Revenue Overview
                   </h3>
 
                   <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+                    <h2 className='text-4xl font-extrabold {
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
                       $743
                     </h2>
                     <span className="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full dark:bg-green-800 dark:text-green-200">
@@ -231,24 +239,34 @@ const Dashboard1 = () => {
                   {/* Earnings, Profit, Expense */}
                   <div className="grid grid-cols-3 gap-6">
                     <div className="text-sm">
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <p className='{
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
                         Earnings
                       </p>
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      <p className='font-semibold {
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
                         $545.69
                       </p>
                     </div>
                     <div className="text-sm">
-                      <p className="text-gray-500 dark:text-gray-400">Profit</p>
+                      <p className='{
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>Profit</p>
                       <p className="font-semibold text-gray-900 dark:text-gray-100">
                         $256.34
                       </p>
                     </div>
                     <div className="text-sm">
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <p className='{
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
                         Expense
                       </p>
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      <p className='font-semibold   {
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'>
                         $74.19
                       </p>
                     </div>
