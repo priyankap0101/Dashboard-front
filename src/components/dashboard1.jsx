@@ -391,10 +391,10 @@ const Dashboard1 = () => {
                 </div>
 
                 {/* Second Row: Two Charts */}
-                <div className="grid grid-cols-1 mt-6 md:grid-cols-[40%,60%] gap-x-2   ">
+                <div className="   grid grid-cols-1 mt-4 md:grid-cols-[40%,60%] gap-x-2 gap-y-4 ">
                   {/* Chart 4: Monthly Campaign */}
                   <div
-                    className={`p-6 rounded-lg shadow-lg ${
+                    className={`  p-6 rounded-lg shadow-lg ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -425,7 +425,7 @@ const Dashboard1 = () => {
                   {/* Chart 5: Support Tracker */}
 
                   <div
-                    className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
+                    className={` p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -438,7 +438,7 @@ const Dashboard1 = () => {
                     </h2>
                     <div className="flex flex-col justify-between w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4">
                       {/* Tickets Data */}
-                      <div className="flex flex-col w-full space-y-4 md:w-1/2">
+                      <div className="flex flex-col w-1/2 ml-2 space-y-4">
                         <div>
                           <h3 className='text-5xl font-bold ${darkMode ? "text-white" : "text-gray-800"}'>
                             164
@@ -472,7 +472,7 @@ const Dashboard1 = () => {
                         ].map((ticket, index) => (
                           <div
                             key={index}
-                            className="flex items-center p-4 space-x-3 transition-shadow border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg"
+                            className="flex items-center p-4 space-x-3 transition-shadow border border-gray-500 rounded-lg shadow-sm hover:shadow-lg dark:hover:bg-gray-700"
                           >
                             {ticket.icon}
                             <div>
@@ -492,40 +492,38 @@ const Dashboard1 = () => {
                       </div>
 
                       {/* Donut Chart */}
-                      <div className="relative w-full p-6 transition-all duration-300 ease-in-out md:w-1/2 ">
+                      <div className="relative w-full p-2 transition-all duration-300 ease-in-out md:w-1/2">
                         <Doughnut
                           ref={chartRef}
                           data={{
                             ...supportData,
-                            // Ensure background is transparent
                             datasets: supportData.datasets.map((dataset) => ({
                               ...dataset,
                               backgroundColor: [
                                 "rgba(255, 99, 132, 0.6)",
                                 "rgba(54, 162, 235, 0.6)",
                                 "rgba(255, 206, 86, 0.6)",
-                              ], // Add your desired colors
+                              ],
                             })),
                           }}
                           options={{
-                            cutout: "75%", // Larger cutout for more focus on the central text
+                            cutout: "75%",
                             maintainAspectRatio: false,
                             plugins: {
-                              tooltip: { enabled: false }, // Tooltips disabled for clean display
+                              tooltip: { enabled: false },
                             },
                             animation: {
                               animateScale: true,
                               animateRotate: true,
-                              duration: 1200, // Smooth loading animation
-                              easing: "easeInOutCubic", // Smooth easing for modern feel
+                              duration: 1200,
+                              easing: "easeInOutCubic",
                             },
-                            // Set chart background color to transparent
                             layout: {
                               padding: 0,
                             },
                             elements: {
                               arc: {
-                                backgroundColor: "rgba(0,0,0,0)", // Transparent background for arcs
+                                backgroundColor: "rgba(0,0,0,0)",
                               },
                             },
                           }}
@@ -534,16 +532,16 @@ const Dashboard1 = () => {
                         {/* Centered content */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <p
-                            className='mt-10 mb-1 text-xs font-semibold tracking-widest ${
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'
+                            className={`mt-10 mb-1 text-xs font-semibold tracking-widest ${
+                              darkMode ? "text-white" : "text-gray-800"
+                            } sm:text-sm md:text-base lg:text-lg`} // Responsive text size for "Completed Task"
                           >
                             Completed Task
                           </p>
                           <p
-                            className='text-5xl font-extrabold  transition-all duration-200 ease-in-out transform ${
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'
+                            className={`text-3xl font-extrabold transition-all duration-200 ease-in-out transform ${
+                              darkMode ? "text-white" : "text-gray-800"
+                            } sm:text-4xl md:text-4xl lg:text-4xl`} // Responsive text size for percentage
                           >
                             85%
                           </p>
