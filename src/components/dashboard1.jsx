@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { FaTicketAlt, FaCheckCircle, FaClock } from "react-icons/fa"; // Example icons
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { CSVLink } from "react-csv";
@@ -204,151 +205,291 @@ const Dashboard1 = () => {
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                {/* Earning Reports */}
-                <div className='p-6 transition-shadow duration-300 ease-in-out rounded-lg shadow-lg hover:shadow-xl ${
-                    darkMode
-                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
-                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-200 hover:via-gray-100 hover:to-white"
-                  }'>
-                  <h3 className='mb-6 text-xl font-semibold {
+              <div className="container p-4 mx-auto">
+                {/* First Row: Three Charts */}
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {/* Chart 1: Revenue Overview */}
+                  <div
+                    className={`p-6 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h3
+                      className={`mb-6 text-xl font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                    Revenue Overview
-                  </h3>
-
-                  <div className="flex items-center justify-between mb-8">
-                    <h2 className='text-4xl font-extrabold {
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                      $743
-                    </h2>
-                    <span className="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full dark:bg-green-800 dark:text-green-200">
-                      +7.2%
-                    </span>
-                  </div>
-
-                  {/* Bar Chart */}
-                  <div className="mb-8">
-                    <Bar
-                      data={earningData}
-                      options={{ maintainAspectRatio: false }}
-                    />
-                  </div>
-
-                  {/* Earnings, Profit, Expense */}
-                  <div className="grid grid-cols-3 gap-6">
-                    <div className="text-sm">
-                      <p className='{
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                        Earnings
-                      </p>
-                      <p className='font-semibold {
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                        $545.69
-                      </p>
+                      }`}
+                    >
+                      Revenue Overview
+                    </h3>
+                    <div className="flex items-center justify-between mb-8">
+                      <h2
+                        className={`text-4xl font-extrabold ${
+                          darkMode ? "text-white" : "text-gray-800"
+                        }`}
+                      >
+                        $743
+                      </h2>
+                      <span className="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full">
+                        +7.2%
+                      </span>
                     </div>
-                    <div className="text-sm">
-                      <p className='{
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>Profit</p>
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">
-                        $256.34
-                      </p>
-                    </div>
-                    <div className="text-sm">
-                      <p className='{
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                        Expense
-                      </p>
-                      <p className='font-semibold   {
-                        darkMode ? "text-white" : "text-gray-800"
-                      }'>
-                        $74.19
-                      </p>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Support Tracker */}
-                <div className="p-4 bg-white rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold">Support Tracker</h3>
-                  <p>Total Tickets: 164</p>
-                  <p>New Tickets: 142</p>
-                  <p>Open Tickets: 28</p>
-                  <p>Response Time: 1 Day</p>
-                  <Doughnut data={supportData} />
-                  <p className="mt-4 font-bold text-center">85% Completed</p>
-                </div>
+                    {/* Set a fixed height for the chart */}
+                    <div
+                      style={{ height: "300px" }}
+                      className="overflow-hidden"
+                    >
+                      <Bar
+                        data={earningData}
+                        options={{ maintainAspectRatio: false }}
+                      />
+                    </div>
 
-                {/* Sales by Countries */}
-                <div className="p-4 bg-white rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold">Sales by Countries</h3>
-                  <ul>
-                    {salesByCountry.map((item, index) => (
-                      <li key={index} className="flex justify-between mt-4">
-                        <span>{item.country}</span>
-                        <span className="font-semibold">{item.sales}</span>
-                        <span
-                          className={`flex items-center ${
-                            item.trend === "up"
-                              ? "text-green-500"
-                              : "text-red-500"
+                    <div className="grid grid-cols-3 gap-6 mt-4">
+                      <div className="text-center">
+                        <p
+                          className={`text-sm ${
+                            darkMode ? "text-white" : "text-gray-800"
                           }`}
                         >
-                          {item.trend === "up" ? (
-                            <FaArrowUp />
-                          ) : (
-                            <FaArrowDown />
-                          )}
-                          {item.percent}%
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Total Earning */}
-                <div className="p-4 bg-white rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold">Total Earning</h3>
-                  <div className="flex items-center justify-between mt-4">
-                    <h2 className="text-3xl font-bold">87%</h2>
-                    <span className="text-sm text-green-500">+25.8%</span>
-                  </div>
-                  <Bar data={totalEarningData} />
-                  <div className="flex justify-between mt-4">
-                    <div className="text-sm">
-                      <p>Total Revenue</p>
-                      <p className="font-semibold">+$126</p>
-                    </div>
-                    <div className="text-sm">
-                      <p>Total Sales</p>
-                      <p className="font-semibold">+$98</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Monthly Campaign */}
-                <div className="p-4 bg-white rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold">Monthly Campaign</h3>
-                  <ul>
-                    {monthlyCampaignData.map((item, index) => (
-                      <li key={index} className="flex justify-between mt-4">
-                        <span>{item.label}</span>
-                        <span className="font-semibold">{item.value}</span>
-                        <span
-                          className={`text-${
-                            item.percent >= 0 ? "green" : "red"
-                          }-500`}
+                          Earnings
+                        </p>
+                        <p
+                          className={`font-semibold ${
+                            darkMode ? "text-white" : "text-gray-800"
+                          }`}
                         >
-                          {item.percent}%
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                          $545.69
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <p
+                          className={`text-sm ${
+                            darkMode ? "text-white" : "text-gray-800"
+                          }`}
+                        >
+                          Profit
+                        </p>
+                        <p
+                          className={`font-semibold ${
+                            darkMode ? "text-white" : "text-gray-800"
+                          }`}
+                        >
+                          $256.34
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <p
+                          className={`text-sm ${
+                            darkMode ? "text-white" : "text-gray-800"
+                          }`}
+                        >
+                          Expense
+                        </p>
+                        <p
+                          className={`font-semibold ${
+                            darkMode ? "text-white" : "text-gray-800"
+                          }`}
+                        >
+                          $74.19
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Chart 2: Sales by Countries */}
+                  <div
+                    className={`p-6 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h3
+                      className={`text-xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Sales by Countries
+                    </h3>
+                    <ul>
+                      {salesByCountry.map((item, index) => (
+                        <li key={index} className="flex justify-between mt-4">
+                          <span>{item.country}</span>
+                          <span className="font-semibold">{item.sales}</span>
+                          <span
+                            className={`flex items-center ${
+                              item.trend === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {item.trend === "up" ? (
+                              <FaArrowUp />
+                            ) : (
+                              <FaArrowDown />
+                            )}
+                            {item.percent}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Chart 3: Total Earning */}
+                  <div
+                    className={`p-6 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h3
+                      className={`text-xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Total Earning
+                    </h3>
+                    <div className="flex items-center justify-between mt-4">
+                      <h2
+                        className={`text-3xl font-bold ${
+                          darkMode ? "text-white" : "text-gray-800"
+                        }`}
+                      >
+                        87%
+                      </h2>
+                      <span className="text-sm text-green-500">+25.8%</span>
+                    </div>
+                    <Bar data={totalEarningData} />
+                    <div className="flex justify-between mt-4">
+                      <div className="text-sm">
+                        <p>Total Revenue</p>
+                        <p className="font-semibold">+$126</p>
+                      </div>
+                      <div className="text-sm">
+                        <p>Total Sales</p>
+                        <p className="font-semibold">+$98</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Second Row: Two Charts */}
+                <div className="grid grid-cols-1 mt-6 md:grid-cols-[40%,60%] gap-x-2">
+                  {/* Chart 4: Monthly Campaign */}
+                  <div
+                    className={`p-6 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h3
+                      className={`text-xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Monthly Campaign
+                    </h3>
+                    <ul>
+                      {monthlyCampaignData.map((item, index) => (
+                        <li key={index} className="flex justify-between mt-4">
+                          <span>{item.label}</span>
+                          <span className="font-semibold">{item.value}</span>
+                          <span
+                            className={`text-${
+                              item.percent >= 0 ? "green" : "red"
+                            }-500`}
+                          >
+                            {item.percent}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Chart 5: Support Tracker */}
+                  <div
+                    className={`p-6 rounded-lg shadow-lg ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h2
+                      className={`mb-4 text-3xl font-bold ${
+                        darkMode ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      Support Tracker
+                    </h2>
+                    <div className="flex flex-col justify-between w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+                      {/* Tickets Data */}
+                      <div className="flex flex-col w-full space-y-4 md:w-1/2">
+                        <div>
+                          <h3 className="text-5xl font-bold text-gray-900 dark:text-white">
+                            164
+                          </h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Total Tickets
+                          </p>
+                        </div>
+                        {[
+                          {
+                            icon: (
+                              <FaTicketAlt className="w-6 h-6 text-violet-500" />
+                            ),
+                            title: "New Tickets",
+                            count: 142,
+                          },
+                          {
+                            icon: (
+                              <FaCheckCircle className="w-6 h-6 text-teal-400" />
+                            ),
+                            title: "Open Tickets",
+                            count: 28,
+                          },
+                          {
+                            icon: (
+                              <FaClock className="w-6 h-6 text-orange-400" />
+                            ),
+                            title: "Response Time",
+                            count: "1 Day",
+                          },
+                        ].map((ticket, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center p-4 space-x-3 transition-shadow border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg"
+                          >
+                            {ticket.icon}
+                            <div>
+                              <p className="font-semibold text-gray-900 dark:text-white">
+                                {ticket.title}
+                              </p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                {ticket.count}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Donut Chart */}
+                      <div className="relative w-full md:w-1/2">
+                        <Doughnut
+                          data={supportData}
+                          options={{
+                            cutout: "80%",
+                            maintainAspectRatio: false,
+                            plugins: {
+                              tooltip: { enabled: false },
+                            },
+                          }}
+                        />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Completed Task
+                          </p>
+                          <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                            85%
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
