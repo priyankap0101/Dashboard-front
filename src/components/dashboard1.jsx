@@ -255,7 +255,7 @@ const Dashboard1 = () => {
 
                     {/* Set a fixed height for the chart */}
                     <div
-                      style={{ height: "300px" }}
+                      style={{ height: "150px" }}
                       className="overflow-hidden"
                     >
                       <Bar
