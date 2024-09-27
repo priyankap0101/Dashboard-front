@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ToastContainer } from "react-toastify";
@@ -125,15 +125,34 @@ const Dashboard1 = () => {
     },
   };
 
+  const gradient = (ctx) => {
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "#4c83ff");
+    gradient.addColorStop(1, "#00d4ff");
+    return gradient;
+  };
+
+  const chartRef = useRef(null);
+
   const supportData = {
-    labels: ["Completed Task"],
+    labels: ["Completed", "Remaining"],
     datasets: [
       {
         data: [85, 15],
-        backgroundColor: ["#42A5F5", "#ddd"],
+        backgroundColor: ["#4c83ff", "#ff4d4d"], // Define your colors here
       },
     ],
   };
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    // Set canvas background color
+    const ctx = chart.ctx;
+    ctx.fillStyle = darkMode ? "#1a1a1a" : "#ffffff"; // Set the background color based on dark mode
+    ctx.fillRect(0, 0, chart.width, chart.height);
+  }, [darkMode]);
 
   const salesByCountry = [
     { country: "United States", sales: "$8,567k", trend: "up", percent: 25.8 },
@@ -372,7 +391,7 @@ const Dashboard1 = () => {
                 </div>
 
                 {/* Second Row: Two Charts */}
-                <div className="grid grid-cols-1 mt-6 md:grid-cols-[40%,60%] gap-x-2">
+                <div className="grid grid-cols-1 mt-6 md:grid-cols-[40%,60%] gap-x-2   ">
                   {/* Chart 4: Monthly Campaign */}
                   <div
                     className={`p-6 rounded-lg shadow-lg ${
@@ -404,8 +423,9 @@ const Dashboard1 = () => {
                   </div>
 
                   {/* Chart 5: Support Tracker */}
+
                   <div
-                    className={`p-6 rounded-lg shadow-lg ${
+                    className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -420,7 +440,7 @@ const Dashboard1 = () => {
                       {/* Tickets Data */}
                       <div className="flex flex-col w-full space-y-4 md:w-1/2">
                         <div>
-                          <h3 className="text-5xl font-bold text-gray-900 dark:text-white">
+                          <h3 className='text-5xl font-bold ${darkMode ? "text-white" : "text-gray-800"}'>
                             164
                           </h3>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -456,10 +476,14 @@ const Dashboard1 = () => {
                           >
                             {ticket.icon}
                             <div>
-                              <p className="font-semibold text-gray-900 dark:text-white">
+                              <p
+                                className='font-semibold     ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'
+                              >
                                 {ticket.title}
                               </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                              <p className='text-sm ${ darkMode ? "text-white" : "text-gray-800"}'>
                                 {ticket.count}
                               </p>
                             </div>
@@ -468,22 +492,59 @@ const Dashboard1 = () => {
                       </div>
 
                       {/* Donut Chart */}
-                      <div className="relative w-full md:w-1/2">
+                      <div className="relative w-full p-6 transition-all duration-300 ease-in-out md:w-1/2 ">
                         <Doughnut
-                          data={supportData}
+                          ref={chartRef}
+                          data={{
+                            ...supportData,
+                            // Ensure background is transparent
+                            datasets: supportData.datasets.map((dataset) => ({
+                              ...dataset,
+                              backgroundColor: [
+                                "rgba(255, 99, 132, 0.6)",
+                                "rgba(54, 162, 235, 0.6)",
+                                "rgba(255, 206, 86, 0.6)",
+                              ], // Add your desired colors
+                            })),
+                          }}
                           options={{
-                            cutout: "80%",
+                            cutout: "75%", // Larger cutout for more focus on the central text
                             maintainAspectRatio: false,
                             plugins: {
-                              tooltip: { enabled: false },
+                              tooltip: { enabled: false }, // Tooltips disabled for clean display
+                            },
+                            animation: {
+                              animateScale: true,
+                              animateRotate: true,
+                              duration: 1200, // Smooth loading animation
+                              easing: "easeInOutCubic", // Smooth easing for modern feel
+                            },
+                            // Set chart background color to transparent
+                            layout: {
+                              padding: 0,
+                            },
+                            elements: {
+                              arc: {
+                                backgroundColor: "rgba(0,0,0,0)", // Transparent background for arcs
+                              },
                             },
                           }}
                         />
+
+                        {/* Centered content */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                          <p
+                            className='mt-10 mb-1 text-xs font-semibold tracking-widest ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'
+                          >
                             Completed Task
                           </p>
-                          <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                          <p
+                            className='text-5xl font-extrabold  transition-all duration-200 ease-in-out transform ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }'
+                          >
                             85%
                           </p>
                         </div>
