@@ -15,7 +15,9 @@ import {
   FaUserPlus,
   FaExclamationCircle,
   FaBan,
-} from "react-icons/fa"; // Example icons
+  FaFlag,
+} from "react-icons/fa";
+import ReactCountryFlag from "react-country-flag";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { CSVLink } from "react-csv";
@@ -165,12 +167,48 @@ const Dashboard1 = () => {
   }, [darkMode]);
 
   const salesByCountry = [
-    { country: "U.S", sales: "$8,567k", trend: "up", percent: 25.8 },
-    { country: "Brazil", sales: "$2,415k", trend: "down", percent: 6.2 },
-    { country: "India", sales: "$865k", trend: "up", percent: 12.4 },
-    { country: "Australia", sales: "$745k", trend: "down", percent: 11.9 },
-    { country: "France", sales: "$45k", trend: "up", percent: 16.2 },
-    { country: "China", sales: "$12k", trend: "up", percent: 14.8 },
+    {
+      country: "U.S",
+      countryCode: "US",
+      sales: "$8,567k",
+      trend: "up",
+      percent: 25.8,
+    },
+    {
+      country: "Brazil",
+      countryCode: "BR",
+      sales: "$2,415k",
+      trend: "down",
+      percent: 6.2,
+    },
+    {
+      country: "India",
+      countryCode: "IN",
+      sales: "$865k",
+      trend: "up",
+      percent: 12.4,
+    },
+    {
+      country: "Australia",
+      countryCode: "AU",
+      sales: "$745k",
+      trend: "down",
+      percent: 11.9,
+    },
+    {
+      country: "France",
+      countryCode: "FR",
+      sales: "$45k",
+      trend: "up",
+      percent: 16.2,
+    },
+    {
+      country: "China",
+      countryCode: "CN",
+      sales: "$12k",
+      trend: "up",
+      percent: 14.8,
+    },
   ];
 
   const totalEarningData = {
@@ -328,11 +366,13 @@ const Dashboard1 = () => {
                   {/* Chart 2: Sales by Countries */}
                   <div
                     className={`p-6 border rounded-lg shadow-lg hover:scale-100 hover:border-blue-500 ${
-                      darkMode ? "bg-gray-900" : "bg-white"
+                      darkMode
+                        ? "bg-gradient-to-r from-gray-800 to-gray-900"
+                        : "bg-gradient-to-r from-white to-gray-100"
                     }`}
                   >
                     <h3
-                      className={`text-xl font-semibold ${
+                      className={`text-2xl font-bold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -340,14 +380,29 @@ const Dashboard1 = () => {
                     </h3>
                     <ul>
                       {salesByCountry.map((item, index) => (
-                        <li key={index} className="flex justify-between mt-4">
-                          <span>{item.country}</span>
+                        <li
+                          key={index}
+                          className="flex items-center justify-between py-2 mt-4 border-b border-gray-200"
+                        >
+                          <span className="flex items-center">
+                            <ReactCountryFlag
+                              countryCode={item.countryCode} // Use ISO 3166-1 alpha-2 code
+                              svg
+                              style={{
+                                width: "2em",
+                                height: "2em",
+                                marginRight: "0.5em",
+                              }}
+                              title={item.country}
+                            />
+                            {item.country}
+                          </span>
                           <span className="font-semibold">{item.sales}</span>
                           <span
-                            className={`flex items-center ${
+                            className={`flex items-center px-2 py-1 rounded-full text-xs font-bold ${
                               item.trend === "up"
-                                ? "text-green-500"
-                                : "text-red-500"
+                                ? "bg-green-200 text-green-600"
+                                : "bg-red-200 text-red-600"
                             }`}
                           >
                             {item.trend === "up" ? (
@@ -403,7 +458,7 @@ const Dashboard1 = () => {
                 <div className="   grid grid-cols-1 mt-4 md:grid-cols-[40%,60%] gap-x-2 gap-y-4 ">
                   {/* Chart 4: Monthly Campaign */}
                   <div
-                    className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:shadow-xl hover:border-blue-500 ${
+                    className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:shadow-xl hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
