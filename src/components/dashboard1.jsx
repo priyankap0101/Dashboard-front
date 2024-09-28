@@ -5,7 +5,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { FaTicketAlt, FaCheckCircle, FaClock , FaEnvelope, FaThumbsUp, FaRegSmile, FaUserPlus, FaExclamationCircle, FaBan } from "react-icons/fa"; // Example icons
+import {
+  FaTicketAlt,
+  FaCheckCircle,
+  FaClock,
+  FaEnvelope,
+  FaThumbsUp,
+  FaRegSmile,
+  FaUserPlus,
+  FaExclamationCircle,
+  FaBan,
+} from "react-icons/fa"; // Example icons
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { CSVLink } from "react-csv";
@@ -392,51 +402,64 @@ const Dashboard1 = () => {
                 {/* Second Row: Two Charts */}
                 <div className="   grid grid-cols-1 mt-4 md:grid-cols-[40%,60%] gap-x-2 gap-y-4 ">
                   {/* Chart 4: Monthly Campaign */}
-                  <div 
-  className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
-    darkMode ? "bg-gray-900" : "bg-white"
-  }`}
->
-  <h3
-    className={`text-xl font-semibold ${
-      darkMode ? "text-white" : "text-gray-800"
-    }`}
-  >
-    Monthly Campaign
-  </h3>
-  <ul>
-    {monthlyCampaignData.map((item, index) => (
-      <li key={index} className="flex items-center justify-between mt-4">
-        {/* Icon next to the label */}
-        <div className="flex items-center space-x-2">
-          {/* Conditional rendering of icons based on label */}
-          {item.label === "Emails" && <FaEnvelope className="text-gray-500 dark:text-gray-400" />}
-          {item.label === "Opened" && <FaThumbsUp className="text-blue-600" />}
-          {item.label === "Clicked" && <FaRegSmile className="text-green-500" />}
-          {item.label === "Subscribe" && <FaUserPlus className="text-green-600" />}
-          {item.label === "Complaints" && <FaExclamationCircle className="text-red-600" />}
-          {item.label === "Unsubscribe" && <FaBan className="text-red-500" />}
-          
-          <span>{item.label}</span>
-        </div>
+                  <div
+                    className={`p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:shadow-xl hover:border-blue-500 ${
+                      darkMode ? "bg-gray-900" : "bg-white"
+                    }`}
+                  >
+                    <h3
+                      className={`text-xl font-semibold mb-4 ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Monthly Campaign
+                    </h3>
+                    <ul>
+                      {monthlyCampaignData.map((item, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center justify-between mt-7"
+                        >
+                          <div className="flex items-center space-x-4">
+                            {item.label === "Emails" && (
+                              <FaEnvelope className="text-xl text-gray-500 dark:text-gray-400" />
+                            )}
+                            {item.label === "Opened" && (
+                              <FaThumbsUp className="text-xl text-blue-600" />
+                            )}
+                            {item.label === "Clicked" && (
+                              <FaRegSmile className="text-xl text-green-500" />
+                            )}
+                            {item.label === "Subscribe" && (
+                              <FaUserPlus className="text-xl text-green-600" />
+                            )}
+                            {item.label === "Complaints" && (
+                              <FaExclamationCircle className="text-xl text-red-600" />
+                            )}
+                            {item.label === "Unsubscribe" && (
+                              <FaBan className="text-xl text-red-500" />
+                            )}
 
-        {/* Value */}
-        <span className="font-semibold text-gray-700 dark:text-gray-200">
-          {item.value}
-        </span>
+                            <span className="font-medium">{item.label}</span>
+                          </div>
 
-        {/* Percentage with color indication */}
-        <span
-          className={`font-semibold text-${
-            item.percent >= 0 ? "green" : "red"
-          }-500`}
-        >
-          {item.percent}%
-        </span>
-      </li>
-    ))}
-  </ul>
-</div>
+                          <span className="font-semibold text-gray-700 dark:text-gray-200">
+                            {item.value}
+                          </span>
+
+                          <span
+                            className={`font-semibold text-${
+                              item.percent >= 0 ? "green" : "red"
+                            }-500 bg-${
+                              item.percent >= 0 ? "green" : "red"
+                            }-100 px-2 py-1 rounded-md`}
+                          >
+                            {item.percent}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                   {/* Chart 5: Support Tracker */}
 
