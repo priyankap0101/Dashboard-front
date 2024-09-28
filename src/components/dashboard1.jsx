@@ -229,7 +229,7 @@ const Dashboard1 = () => {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {/* Chart 1: Revenue Overview */}
                   <div
-                    className={`p-6 rounded-lg shadow-lg ${
+                    className={`p-6 border rounded-lg shadow-lg hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -318,7 +318,7 @@ const Dashboard1 = () => {
 
                   {/* Chart 2: Sales by Countries */}
                   <div
-                    className={`p-6 rounded-lg shadow-lg ${
+                    className={`p-6 border rounded-lg shadow-lg hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -355,7 +355,7 @@ const Dashboard1 = () => {
 
                   {/* Chart 3: Total Earning */}
                   <div
-                    className={`p-6 rounded-lg shadow-lg ${
+                    className={`p-6 border rounded-lg shadow-lg   lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
@@ -394,7 +394,7 @@ const Dashboard1 = () => {
                 <div className="   grid grid-cols-1 mt-4 md:grid-cols-[40%,60%] gap-x-2 gap-y-4 ">
                   {/* Chart 4: Monthly Campaign */}
                   <div
-                    className={`  p-6 rounded-lg shadow-lg ${
+                    className={`  p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
