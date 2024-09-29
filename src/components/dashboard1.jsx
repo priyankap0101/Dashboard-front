@@ -184,7 +184,7 @@ const Dashboard1 = () => {
     {
       country: "India",
       countryCode: "IN",
-      sales: "$865k",
+      sales: "$9865k",
       trend: "up",
       percent: 12.4,
     },
@@ -230,6 +230,46 @@ const Dashboard1 = () => {
     { label: "Complaints", value: 10, percent: -1.5 },
     { label: "Unsubscribe", value: 86, percent: 0.8 },
   ];
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: darkMode ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)",
+        },
+      },
+      y: {
+        grid: {
+          color: darkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+        },
+        ticks: {
+          color: darkMode ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)",
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        backgroundColor: darkMode
+          ? "rgba(255, 255, 255, 0.8)"
+          : "rgba(0, 0, 0, 0.8)",
+        titleColor: darkMode ? "black" : "white",
+        bodyColor: darkMode ? "black" : "white",
+      },
+      legend: {
+        display: false,
+      },
+    },
+    animation: {
+      easing: "easeInOutQuad",
+      duration: 1000,
+    },
+  };
+
   useEffect(() => {
     // Simulate loading data
     const timeout = setTimeout(() => {
@@ -365,14 +405,12 @@ const Dashboard1 = () => {
 
                   {/* Chart 2: Sales by Countries */}
                   <div
-                    className={`p-6 border rounded-lg shadow-lg hover:scale-100 hover:border-blue-500 ${
-                      darkMode
-                        ? "bg-gradient-to-r from-gray-800 to-gray-900"
-                        : "bg-gradient-to-r from-white to-gray-100"
+                    className={`p-4 border rounded-lg shadow hover:scale-100 transition-transform hover:border-blue-500 ${
+                      darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
                     <h3
-                      className={`text-2xl font-bold ${
+                      className={`text-xl font-bold mb-2 ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -382,11 +420,11 @@ const Dashboard1 = () => {
                       {salesByCountry.map((item, index) => (
                         <li
                           key={index}
-                          className="flex items-center justify-between py-2 mt-4 border-b border-gray-200"
+                          className="flex items-center justify-between py-2" // Removed the border-b class
                         >
-                          <span className="flex items-center">
+                          <span className="flex items-center mt-2 text-sm ">
                             <ReactCountryFlag
-                              countryCode={item.countryCode} // Use ISO 3166-1 alpha-2 code
+                              countryCode={item.countryCode}
                               svg
                               style={{
                                 width: "2em",
@@ -397,18 +435,24 @@ const Dashboard1 = () => {
                             />
                             {item.country}
                           </span>
-                          <span className="font-semibold">{item.sales}</span>
+                          <span
+                            className={` text-sm font-semibold ${
+                              darkMode ? "text-gray-100" : "text-gray-700"
+                            }`}
+                          >
+                            {item.sales}
+                          </span>
                           <span
                             className={`flex items-center px-2 py-1 rounded-full text-xs font-bold ${
                               item.trend === "up"
-                                ? "bg-green-200 text-green-600"
-                                : "bg-red-200 text-red-600"
+                                ? "bg-green-300 text-green-800"
+                                : "bg-red-300 text-red-800"
                             }`}
                           >
                             {item.trend === "up" ? (
-                              <FaArrowUp />
+                              <FaArrowUp className="mr-1" />
                             ) : (
-                              <FaArrowDown />
+                              <FaArrowDown className="mr-1" />
                             )}
                             {item.percent}%
                           </span>
@@ -419,36 +463,55 @@ const Dashboard1 = () => {
 
                   {/* Chart 3: Total Earning */}
                   <div
-                    className={`p-6 border rounded-lg shadow-lg   lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
+                    className={`p-6 border rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-100 hover:border-blue-500 lg:col-span-1 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
                     <h3
-                      className={`text-xl font-semibold ${
-                        darkMode ? "text-white" : "text-gray-800"
+                      className={`text-2xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-900"
                       }`}
                     >
                       Total Earning
                     </h3>
-                    <div className="flex items-center justify-between mt-4">
+
+                    <div className="flex items-center justify-between mt-6">
                       <h2
-                        className={`text-3xl font-bold ${
-                          darkMode ? "text-white" : "text-gray-800"
+                        className={`text-4xl font-extrabold ${
+                          darkMode ? "text-white" : "text-gray-900"
                         }`}
                       >
                         87%
                       </h2>
                       <span className="text-sm text-green-500">+25.8%</span>
                     </div>
-                    <Bar data={totalEarningData} />
-                    <div className="flex justify-between mt-4">
-                      <div className="text-sm">
-                        <p>Total Revenue</p>
-                        <p className="font-semibold">+$126</p>
+
+                    <div className="pt-4 mt-4 border-t">
+                      <Bar data={totalEarningData} options={chartOptions} />
+                    </div>
+
+                    <div className="flex justify-between mt-6 space-x-4">
+                      <div className="flex flex-col items-center text-sm">
+                        <p
+                          className={`${
+                            darkMode ? "text-gray-300" : "text-gray-600"
+                          } text-center`}
+                        >
+                          Total Revenue
+                        </p>
+                        <p className="text-lg font-bold text-green-500">
+                          +$126
+                        </p>
                       </div>
-                      <div className="text-sm">
-                        <p>Total Sales</p>
-                        <p className="font-semibold">+$98</p>
+                      <div className="flex flex-col items-center text-sm">
+                        <p
+                          className={`${
+                            darkMode ? "text-gray-300" : "text-gray-600"
+                          } text-center`}
+                        >
+                          Total Sales
+                        </p>
+                        <p className="text-lg font-bold text-blue-500">+$98</p>
                       </div>
                     </div>
                   </div>
@@ -498,7 +561,7 @@ const Dashboard1 = () => {
                             <span className="font-medium">{item.label}</span>
                           </div>
 
-                          <span className="font-semibold text-gray-700 dark:text-gray-200">
+                          <span className='font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}'>
                             {item.value}
                           </span>
 
