@@ -411,7 +411,7 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h3
-                      className={`text-xl font-bold mb-2 ${
+                      className={`mb-6 text-xl font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -470,8 +470,8 @@ const Dashboard1 = () => {
                   >
                     <div className="flex items-center justify-between">
                       <h3
-                        className={`text-lg font-semibold ${
-                          darkMode ? "text-white" : "text-gray-900"
+                        className={`mb-6 text-xl font-semibold ${
+                          darkMode ? "text-white" : "text-gray-800"
                         }`}
                       >
                         Total Earning
@@ -490,6 +490,10 @@ const Dashboard1 = () => {
                         {/* Up arrow */}
                       </div>
 
+                      {/* +25.8% with Background */}
+                      {/* <span className="px-2 py-1 text-sm font-bold text-green-600 bg-green-100 border border-green-400 rounded-lg">
+    +25.8%
+  </span> */}
                     </div>
 
                     <div className="pt-4 mt-4">
@@ -553,7 +557,7 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h3
-                      className={`text-xl font-semibold mb-4 ${
+                      className={`mb-6 text-xl font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -614,8 +618,8 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h2
-                      className={`mb-4 text-3xl font-bold ${
-                        darkMode ? "text-white" : "text-gray-900"
+                      className={`mb-6 text-xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
                       Support Tracker
