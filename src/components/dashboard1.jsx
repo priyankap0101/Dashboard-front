@@ -468,7 +468,7 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h3
-                      className={`text-2xl font-semibold ${
+                      className={`text-3xl font-semibold ${
                         darkMode ? "text-white" : "text-gray-900"
                       }`}
                     >
@@ -477,16 +477,17 @@ const Dashboard1 = () => {
 
                     <div className="flex items-center justify-between mt-6">
                       <h2
-                        className={`text-4xl font-extrabold ${
+                        className={`text-3xl font-extrabold ${
                           darkMode ? "text-white" : "text-gray-900"
                         }`}
                       >
                         87%
                       </h2>
-                      <span className="text-sm text-green-500">+25.8%</span>
+                      <span className="px-2 py-1 text-sm font-bold text-green-600 bg-green-100 border border-green-400 rounded-lg">
+                        +25.8%
+                      </span>
                     </div>
 
-                    {/* Removed the border-t class to eliminate the horizontal line */}
                     <div className="pt-4 mt-4">
                       <Bar data={totalEarningData} options={chartOptions} />
                     </div>
@@ -500,7 +501,7 @@ const Dashboard1 = () => {
                         >
                           Total Revenue
                         </p>
-                        <p className="text-lg font-bold text-green-500">
+                        <p className="text-2xl font-bold text-green-500">
                           +$126
                         </p>
                       </div>
@@ -512,7 +513,7 @@ const Dashboard1 = () => {
                         >
                           Total Sales
                         </p>
-                        <p className="text-lg font-bold text-blue-500">+$98</p>
+                        <p className="text-2xl font-bold text-blue-500">+$98</p>
                       </div>
                     </div>
                   </div>
