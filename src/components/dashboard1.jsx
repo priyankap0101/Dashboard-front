@@ -486,7 +486,8 @@ const Dashboard1 = () => {
                       <span className="text-sm text-green-500">+25.8%</span>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t">
+                    {/* Removed the border-t class to eliminate the horizontal line */}
+                    <div className="pt-4 mt-4">
                       <Bar data={totalEarningData} options={chartOptions} />
                     </div>
 
