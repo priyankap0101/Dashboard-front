@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { FaPaypal, FaDollarSign } from "react-icons/fa";
 import {
   FaTicketAlt,
   FaCheckCircle,
@@ -463,57 +464,81 @@ const Dashboard1 = () => {
 
                   {/* Chart 3: Total Earning */}
                   <div
-                    className={`p-6 border rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-100 hover:border-blue-500 lg:col-span-1 ${
+                    className={`p-4 border rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-100 hover:border-blue-500 lg:col-span-1 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
-                    <h3
-                      className={`text-3xl font-semibold ${
-                        darkMode ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      Total Earning
-                    </h3>
-
-                    <div className="flex items-center justify-between mt-6">
-                      <h2
-                        className={`text-3xl font-extrabold ${
+                    <div className="flex items-center justify-between">
+                      <h3
+                        className={`text-lg font-semibold ${
                           darkMode ? "text-white" : "text-gray-900"
                         }`}
                       >
-                        87%
-                      </h2>
-                      <span className="px-2 py-1 text-sm font-bold text-green-600 bg-green-100 border border-green-400 rounded-lg">
-                        +25.8%
-                      </span>
+                        Total Earning
+                      </h3>
+
+                      {/* 87% with Up Arrow */}
+                      <div className="flex items-center space-x-2">
+                        <h2
+                          className={`text-3xl font-semibold leading-tight text-center ${
+                            darkMode ? "text-gray-300" : "text-gray-900"
+                          } font-sans tracking-normal`}
+                        >
+                          87%
+                        </h2>
+                        <FaArrowUp className="w-4 h-4 text-green-500" />{" "}
+                        {/* Up arrow */}
+                      </div>
+
                     </div>
 
                     <div className="pt-4 mt-4">
                       <Bar data={totalEarningData} options={chartOptions} />
                     </div>
 
-                    <div className="flex justify-between mt-6 space-x-4">
-                      <div className="flex flex-col items-center text-sm">
-                        <p
-                          className={`${
-                            darkMode ? "text-gray-300" : "text-gray-600"
-                          } text-center`}
-                        >
-                          Total Revenue
-                        </p>
-                        <p className="text-2xl font-bold text-green-500">
+                    <div className="flex flex-col mt-2 ">
+                      {/* Total Revenue Card */}
+                      <div className="flex items-center justify-between p-2 duration-300 ease-in-out ">
+                        <div className="flex items-center space-x-4">
+                          {/* Icon */}
+                          <div className={`p-4 `}>
+                            <FaPaypal className="w-4 h-6 text-purple-600" />
+                          </div>
+                          {/* Text */}
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold ${text-gray-900 dark:text-gray-100}">
+                              Total Revenue
+                            </span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              Client Payment
+                            </span>
+                          </div>
+                        </div>
+                        {/* Amount */}
+                        <p className="text-sm font-bold text-green-500">
                           +$126
                         </p>
                       </div>
-                      <div className="flex flex-col items-center text-sm">
-                        <p
-                          className={`${
-                            darkMode ? "text-gray-300" : "text-gray-600"
-                          } text-center`}
-                        >
-                          Total Sales
-                        </p>
-                        <p className="text-2xl font-bold text-blue-500">+$98</p>
+
+                      {/* Total Sales Card */}
+                      <div className="flex items-center justify-between p-2 ">
+                        <div className="flex items-center space-x-4">
+                          {/* Icon */}
+                          <div className={`p-4  `}>
+                            <FaDollarSign className="w-4 h-6 text-orange-500" />
+                          </div>
+                          {/* Text */}
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold ${text-gray-900 dark:text-gray-100}">
+                              Total Sales
+                            </span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              Total Sales
+                            </span>
+                          </div>
+                        </div>
+                        {/* Amount */}
+                        <p className="text-sm font-bold text-blue-500">+$98</p>
                       </div>
                     </div>
                   </div>
