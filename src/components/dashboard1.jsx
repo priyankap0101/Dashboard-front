@@ -468,9 +468,9 @@ const Dashboard1 = () => {
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-6 ">
                       <h3
-                        className={`mb-6 text-xl font-semibold ${
+                        className={` text-xl font-semibold ${
                           darkMode ? "text-white" : "text-gray-800"
                         }`}
                       >
@@ -496,11 +496,11 @@ const Dashboard1 = () => {
   </span> */}
                     </div>
 
-                    <div className="pt-4 mt-4">
+                    <div className="">
                       <Bar data={totalEarningData} options={chartOptions} />
                     </div>
 
-                    <div className="flex flex-col mt-2 ">
+                    <div className="flex flex-col ">
                       {/* Total Revenue Card */}
                       <div className="flex items-center justify-between p-2 duration-300 ease-in-out ">
                         <div className="flex items-center space-x-4">
