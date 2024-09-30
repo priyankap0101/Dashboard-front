@@ -668,7 +668,7 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h2
-                      className={`mb-6 text-xl font-semibold ${
+                      className={`mb-4 text-xl font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
@@ -678,7 +678,7 @@ const Dashboard1 = () => {
                       {/* Tickets Data */}
                       <div className="flex flex-col w-1/2 ml-2 space-y-4">
                         <div>
-                          <h3 className='text-5xl font-bold ${darkMode ? "text-white" : "text-gray-800"}'>
+                          <h3 className='text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}'>
                             164
                           </h3>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -715,7 +715,7 @@ const Dashboard1 = () => {
                             {ticket.icon}
                             <div>
                               <p
-                                className='font-semibold     ${
+                                className='font-semibold   text-xl  ${
                         darkMode ? "text-white" : "text-gray-800"
                       }'
                               >
@@ -770,7 +770,7 @@ const Dashboard1 = () => {
                         {/* Centered content */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <p
-                            className={`mt-10 mb-1 text-xs font-semibold tracking-widest ${
+                            className={`mt-14 mb-1  font-semibold tracking-widest ${
                               darkMode ? "text-white" : "text-gray-800"
                             } sm:text-sm md:text-base lg:text-lg`} // Responsive text size for "Completed Task"
                           >
