@@ -330,7 +330,7 @@ const Dashboard1 = () => {
                     </h3>
                     <div className="flex items-center justify-between mb-8">
                       <h2
-                        className={`text-4xl font-extrabold ${
+                        className={`text-2xl font-extrabold ${
                           darkMode ? "text-white" : "text-gray-800"
                         }`}
                       >
@@ -352,50 +352,100 @@ const Dashboard1 = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-6 mt-4">
-                      <div className="text-center">
+                    <div className="grid grid-cols-3 gap-2 mt-4">
+                      {/* Earnings Block */}
+                      <div
+                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                          darkMode
+                            ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
+                            : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
+                        } shadow-2xl`}
+                        style={{
+                          boxShadow: darkMode
+                            ? "-5px 0 8px -5px rgba(16, 185, 129, 0.5)"
+                            : "none", // Shadow only in dark mode
+                        }}
+                      >
                         <p
-                          className={`text-sm ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-gray-400 hover:text-gray-200"
+                              : "text-gray-600 hover:text-blue-800"
                           }`}
                         >
                           Earnings
                         </p>
                         <p
-                          className={`font-semibold ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`font-semibold text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-white hover:text-gray-100"
+                              : "text-gray-800 hover:text-blue-900"
                           }`}
                         >
                           $545.69
                         </p>
                       </div>
-                      <div className="text-center">
+
+                      {/* Profit Block */}
+                      <div
+                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                          darkMode
+                            ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
+                            : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
+                        } shadow-2xl`}
+                        style={{
+                          boxShadow: darkMode
+                            ? "-5px 0 8px -5px rgba(16, 185, 129, 0.5)"
+                            : "none", // Shadow only in dark mode
+                        }}
+                      >
                         <p
-                          className={`text-sm ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-gray-400 hover:text-gray-200"
+                              : "text-gray-600 hover:text-blue-800"
                           }`}
                         >
                           Profit
                         </p>
                         <p
-                          className={`font-semibold ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`font-semibold text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-white hover:text-gray-100"
+                              : "text-gray-800 hover:text-blue-900"
                           }`}
                         >
                           $256.34
                         </p>
                       </div>
-                      <div className="text-center">
+
+                      {/* Expense Block */}
+                      <div
+                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                          darkMode
+                            ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
+                            : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
+                        } shadow-2xl`}
+                        style={{
+                          boxShadow: darkMode
+                            ? "-5px 0 8px -5px rgba(16, 185, 129, 0.5)"
+                            : "none", // Shadow only in dark mode
+                        }}
+                      >
                         <p
-                          className={`text-sm ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-gray-400 hover:text-gray-200"
+                              : "text-gray-600 hover:text-blue-800"
                           }`}
                         >
                           Expense
                         </p>
                         <p
-                          className={`font-semibold ${
-                            darkMode ? "text-white" : "text-gray-800"
+                          className={`font-semibold text-sm transition-colors duration-300 ${
+                            darkMode
+                              ? "text-white hover:text-gray-100"
+                              : "text-gray-800 hover:text-blue-500"
                           }`}
                         >
                           $74.19
