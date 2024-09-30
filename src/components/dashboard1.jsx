@@ -688,21 +688,21 @@ const Dashboard1 = () => {
                         {[
                           {
                             icon: (
-                              <FaTicketAlt className="w-6 h-6 text-violet-500" />
+                              <FaTicketAlt className="w-6 h-6 sm:w-8 sm:h-8 text-violet-500" />
                             ),
                             title: "New Tickets",
                             count: 142,
                           },
                           {
                             icon: (
-                              <FaCheckCircle className="w-6 h-6 text-teal-400" />
+                              <FaCheckCircle className="w-6 h-6 text-teal-400 sm:w-8 sm:h-8 " />
                             ),
                             title: "Open Tickets",
                             count: 28,
                           },
                           {
                             icon: (
-                              <FaClock className="w-6 h-6 text-orange-400" />
+                              <FaClock className="w-6 h-6 text-orange-400 sm:w-8 sm:h-8 " />
                             ),
                             title: "Response Time",
                             count: "1 Day",
