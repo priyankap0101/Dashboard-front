@@ -19,9 +19,7 @@ import {
   FaFlag,
 } from "react-icons/fa";
 import ReactCountryFlag from "react-country-flag";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { CSVLink } from "react-csv";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -35,7 +33,7 @@ import {
   ArcElement,
   RadialLinearScale,
 } from "chart.js";
-import { Line, Pie, Radar, Bar, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 ChartJS.register(
@@ -131,7 +129,7 @@ const Dashboard1 = () => {
           label: function (context) {
             const label = context.dataset.label || "";
             const value = context.raw || 0;
-            return `${label}: $${value.toFixed(2)}`; // Display values as currency
+            return `${label}: $${value.toFixed(2)}`;
           },
         },
       },
@@ -152,7 +150,7 @@ const Dashboard1 = () => {
     datasets: [
       {
         data: [85, 15],
-        backgroundColor: ["#4c83ff", "#ff4d4d"], // Define your colors here
+        backgroundColor: ["#4c83ff", "#ff4d4d"],
       },
     ],
   };
@@ -539,11 +537,6 @@ const Dashboard1 = () => {
                         <FaArrowUp className="w-4 h-4 text-green-500" />{" "}
                         {/* Up arrow */}
                       </div>
-
-                      {/* +25.8% with Background */}
-                      {/* <span className="px-2 py-1 text-sm font-bold text-green-600 bg-green-100 border border-green-400 rounded-lg">
-    +25.8%
-  </span> */}
                     </div>
 
                     <div className="">
@@ -661,7 +654,6 @@ const Dashboard1 = () => {
                   </div>
 
                   {/* Chart 5: Support Tracker */}
-
                   <div
                     className={` p-6 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
@@ -676,7 +668,7 @@ const Dashboard1 = () => {
                     </h2>
                     <div className="flex flex-col justify-between w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4">
                       {/* Tickets Data */}
-                      <div className="flex flex-col w-1/2 ml-2 space-y-4">
+                      <div className="flex flex-col ml-2 space-y-4">
                         <div>
                           <h3 className='text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}'>
                             164
@@ -715,7 +707,7 @@ const Dashboard1 = () => {
                             {ticket.icon}
                             <div>
                               <p
-                                className='font-semibold   text-xl  ${
+                                className='font-semibold   text-lg  ${
                         darkMode ? "text-white" : "text-gray-800"
                       }'
                               >
