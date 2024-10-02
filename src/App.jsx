@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion"; 
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { FiArrowUpCircle } from "react-icons/fi"; 
+import { motion } from "framer-motion";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { FiArrowUpCircle } from "react-icons/fi";
 import Dashboard from "./components/Dashboard";
 import Analytics from "./components/Analytics";
 import Profile from "./components/Profile";
@@ -10,7 +15,7 @@ import UpdateProfile from "./components/UpdateProfile";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import SearchProfile from "./components/SearchProfile";
-import CRM from "./components/CRM"; 
+import CRM from "./components/CRM";
 import Ecommerce from "./components/Ecommerce";
 import Logistics from "./components/Logistics";
 import ResourceAllocation from "./components/ResourceAllocation";
@@ -48,7 +53,7 @@ const App = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
 
@@ -62,7 +67,8 @@ const App = () => {
               <Route path="/" element={<Navigate to="/analytics" replace />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard1" element={<Dashboard1 />} /> {/* Dashboard1 route */}
+              <Route path="/dashboard1" element={<Dashboard1 />} />{" "}
+              {/* Dashboard1 route */}
               <Route path="/crm/*" element={<CRM />} />
               <Route path="/ecommerce" element={<Ecommerce />} />
               <Route path="/logistics" element={<Logistics />} />
@@ -81,7 +87,10 @@ const App = () => {
               <div className="flex items-center">
                 <motion.button
                   className="px-6 py-2 font-semibold text-white rounded-lg shadow-lg color-changing focus:outline-none"
-                  whileHover={{ scale: 1.1, boxShadow: "0 0 30px rgba(255, 255, 255, 1)" }}
+                  whileHover={{
+                    scale: 1.1,
+                    boxShadow: "0 0 30px rgba(255, 255, 255, 1)",
+                  }}
                   whileTap={{ scale: 0.9 }}
                 >
                   Shop Now
@@ -95,18 +104,17 @@ const App = () => {
                     transition={{ duration: 0.3 }}
                     onClick={scrollToTop}
                   >
-                    <FiArrowUpCircle size={32}  className="text-blue-800 hover:text-gray-400 dark:text-gray-800 dark:hover:text-gray-200"  />
+                    <FiArrowUpCircle
+                      size={32}
+                      className="text-blue-800 hover:text-gray-400 dark:text-gray-800 dark:hover:text-gray-200"
+                    />
                   </motion.div>
                 )}
               </div>
             </div>
           </div>
-
-          
         </div>
-        
       </Router>
-      
     </>
   );
 };

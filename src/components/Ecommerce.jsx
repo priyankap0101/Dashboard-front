@@ -30,15 +30,11 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import { Timeline } from "react-twitter-widgets";
 import { FaThumbsUp } from "react-icons/fa";
 import {
-  FaMobileAlt,
-  FaShoePrints,
-  FaHeadphonesAlt,
-  FaApple,
-  FaDotCircle,
-  FaShoppingBag,
   FaHeadphones,
-  FaWatchmanMonitoring,
-  FaAmazon,
+  FaClock,
+  FaBatteryHalf,
+  FaLaptop,
+  FaVolumeUp,
 } from "react-icons/fa";
 
 ChartJS.register(
@@ -262,41 +258,62 @@ const Ecommerce = () => {
     ],
   };
 
+  const lightModeColors = {
+    product1: "text-red-400",
+    product2: "text-green-400",
+    product3: "text-blue-400",
+    product4: "text-yellow-400",
+    product5: "text-purple-400",
+  };
+
+  const darkModeColors = {
+    product1: "text-orange-400",
+    product2: "text-teal-400",
+    product3: "text-pink-400",
+    product4: "text-indigo-400",
+    product5: "text-lime-400",
+  };
+
   const products = [
     {
-      id: 1,
-      name: "Apple iPhone 13",
-      icon: <FaApple className="w-6 h-6 text-red-500" />,
-      itemNumber: "#FXZ-4567",
-      price: "$999.29",
+      id: "product1",
+      name: "Wireless Bluetooth Headphones",
+      originalName: "Bluetooth Over-Ear Headphones",
+      itemNumber: "001",
+      price: "$20",
+      icon: <FaHeadphones />, // Updated Icon
     },
     {
-      id: 2,
-      name: "Nike Air Jordan",
-      icon: <FaShoppingBag className="w-6 h-6 text-blue-500" />,
-      itemNumber: "#FXZ-3456",
-      price: "$72.40",
+      id: "product2",
+      name: "Smart Fitness Watch",
+      originalName: "Fitness Tracker with Heart Rate Monitor",
+      itemNumber: "002",
+      price: "$30",
+      icon: <FaClock />, // Updated Icon
     },
     {
-      id: 3,
-      name: "Beats Studio 2",
-      icon: <FaHeadphones className="w-6 h-6 text-gray-600" />,
-      itemNumber: "#FXZ-9485",
-      price: "$99",
+      id: "product3",
+      name: "Portable Power Bank",
+      originalName: "20000mAh Power Bank",
+      itemNumber: "003",
+      price: "$40",
+      icon: <FaBatteryHalf />, // Existing Icon
     },
     {
-      id: 4,
-      name: "Apple Watch",
-      icon: <FaWatchmanMonitoring className="w-6 h-6 text-black" />,
-      itemNumber: "#FXZ-2345",
-      price: "$249.99",
+      id: "product4",
+      name: "Stylish Backpack",
+      originalName: "Travel Backpack with USB Charging Port",
+      itemNumber: "004",
+      price: "$50",
+      icon: <FaLaptop />, // Existing Icon
     },
     {
-      id: 5,
-      name: "Amazon Echo Dot",
-      icon: <FaAmazon className="w-6 h-6 text-gray-900" />,
-      itemNumber: "#FXZ-8959",
-      price: "$79.40",
+      id: "product5",
+      name: "Wireless Smart Speaker",
+      originalName: "Voice Control Smart Speaker",
+      itemNumber: "005",
+      price: "$60",
+      icon: <FaVolumeUp />, // Existing Icon
     },
   ];
 
@@ -763,54 +780,11 @@ const Ecommerce = () => {
                 <Radar data={feedbackData} options={feedbackOptions} />
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-4 text-lg font-semibold">
+              <div className="col-span-2 p-4 transition-transform duration-300 ease-in-out border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
+                <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
                   Product Categories
                 </h2>
                 <Pie data={categoryData} options={categoryOptions} />
-              </div>
-
-              <div className="w-full max-w-xs p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800 md:max-w-sm lg:max-w-md">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                    Popular Products
-                  </h2>
-                  <button className="text-gray-500 dark:text-gray-400">
-                    <svg
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 7a2 2 0 110-4 2 2 0 010 4zM12 14a2 2 0 110-4 2 2 0 010 4zM12 21a2 2 0 110-4 2 2 0 010 4z" />
-                    </svg>
-                  </button>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Total 10.4k Visitors
-                </p>
-                <div className="mt-4 space-y-4">
-                  {products.map((product) => (
-                    <div
-                      key={product.id}
-                      className="flex items-center justify-between p-2 transition-colors duration-300 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    >
-                      <div className="flex items-center">
-                        {product.icon}
-                        <div className="ml-3">
-                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                            {product.name}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {product.itemNumber}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                        {product.price}
-                      </p>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-105 hover:border-blue-500">
@@ -900,6 +874,40 @@ const Ecommerce = () => {
                 )}
               </div>
 
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
+                <h2 className="flex items-center mb-4 text-xl font-bold ">
+                  <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
+                  Event Timeline
+                </h2>
+                {/* Custom Event Timeline */}
+                <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      March 12, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 fas fa-briefcase"></i> Company Annual
+                      Meeting: A comprehensive overview of the past year's
+                      achievements and the roadmap for the next year was
+                      discussed.
+                    </p>
+                  </div>
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      April 5, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
+                      Product Launch: The new product line was launched,
+                      featuring innovative designs and cutting-edge technology.
+                    </p>
+                  </div>
+                  {/* Add more timeline events as needed */}
+                </div>
+              </div>
+
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-4 text-lg font-semibold">Stock Levels</h2>
                 <Doughnut data={stockData} options={stockOptions} />
@@ -987,37 +995,66 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="flex items-center mb-4 text-xl font-bold ">
-                  <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
-                  Event Timeline
-                </h2>
-                {/* Custom Event Timeline */}
-                <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
-                  <div className="mb-8 group">
-                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
-                    <p className="text-sm font-semibold transition-colors">
-                      March 12, 2024
-                    </p>
-                    <p className="text-base leading-snug transition-colors">
-                      <i className="mr-2 fas fa-briefcase"></i> Company Annual
-                      Meeting: A comprehensive overview of the past year's
-                      achievements and the roadmap for the next year was
-                      discussed.
-                    </p>
-                  </div>
-                  <div className="mb-8 group">
-                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
-                    <p className="text-sm font-semibold transition-colors">
-                      April 5, 2024
-                    </p>
-                    <p className="text-base leading-snug transition-colors">
-                      <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
-                      Product Launch: The new product line was launched,
-                      featuring innovative designs and cutting-edge technology.
-                    </p>
-                  </div>
-                  {/* Add more timeline events as needed */}
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500 ">
+                <div className="flex items-center justify-between mb-2">
+                  <h2
+                    className={` font-bold ${
+                      darkMode ? "text-gray-200" : "text-gray-900"
+                    }`}
+                  >
+                    Popular Products
+                  </h2>
+                  <button className="text-gray-500 dark:text-gray-400">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 7a2 2 0 110-4 2 2 0 010 4zM12 14a2 2 0 110-4 2 2 0 010 4zM12 21a2 2 0 110-4 2 2 0 010 4z" />
+                    </svg>
+                  </button>
+                </div>
+                <p
+                  c
+                  className={` text-sm ${
+                    darkMode ? "text-gray-200" : "text-gray-900"
+                  }`}
+                >
+                  Total 10.4k Visitors
+                </p>
+
+                {/* Reduced padding and margins for an even more compact layout */}
+                <div className="mt-2 space-y-1">
+                  {products.map((product) => (
+                    <div
+                      key={product.id}
+                      className="flex items-center justify-between p-2 transition-colors duration-300 rounded-lg "
+                    >
+                      <div className="flex items-center">
+                        {/* Reduced icon size */}
+                        <div
+                          className={`w-6 h-6 ${
+                            darkMode
+                              ? darkModeColors[product.id]
+                              : lightModeColors[product.id]
+                          } sm:w-8 sm:h-8`}
+                        >
+                          {React.cloneElement(product.icon, {
+                            className: `w-full h-full ${
+                              darkMode
+                                ? darkModeColors[product.id]
+                                : lightModeColors[product.id]
+                            }`,
+                          })}
+                        </div>
+                        <div className="ml-2">
+                          <p className="text-sm font-medium ">{product.name}</p>
+                          <p className="text-xs ">{product.itemNumber}</p>
+                        </div>
+                      </div>
+                      <p className="text-sm font-semibold ">{product.price}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
