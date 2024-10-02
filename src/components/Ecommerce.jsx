@@ -769,26 +769,44 @@ const Ecommerce = () => {
 
             <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-4 text-lg font-semibold">Sales Overview</h2>
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
+                  Sales Overview
+                </h2>
                 <Line data={salesData} options={salesOptions} />
               </div>
 
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-4 text-lg font-semibold">
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   Customer Feedback
                 </h2>
                 <Radar data={feedbackData} options={feedbackOptions} />
               </div>
 
               <div className="col-span-2 p-4 transition-transform duration-300 ease-in-out border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   Product Categories
                 </h2>
                 <Pie data={categoryData} options={categoryOptions} />
               </div>
 
               <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-6 text-2xl font-semibold">
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   Product Data Table
                 </h2>
 
@@ -875,7 +893,11 @@ const Ecommerce = () => {
               </div>
 
               <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="flex items-center mb-4 text-xl font-bold ">
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
                   Event Timeline
                 </h2>
@@ -909,12 +931,22 @@ const Ecommerce = () => {
               </div>
 
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="mb-4 text-lg font-semibold">Stock Levels</h2>
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
+                  Stock Levels
+                </h2>
                 <Doughnut data={stockData} options={stockOptions} />
               </div>
 
               <div className="col-span-2 p-6 transition-transform transform border rounded-lg h-h-75 lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="flex items-center mb-6 text-2xl font-semibold">
+                <h2
+                  className={`mb-4 text-xl font-semibold ${
+                    darkMode ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   <i className="mr-3 text-blue-500 fas fa-chart-line dark:text-blue-300"></i>{" "}
                   Sales Progress
                 </h2>
@@ -998,8 +1030,8 @@ const Ecommerce = () => {
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500 ">
                 <div className="flex items-center justify-between mb-2">
                   <h2
-                    className={` font-bold ${
-                      darkMode ? "text-gray-200" : "text-gray-900"
+                    className={`mb-4 text-xl font-semibold ${
+                      darkMode ? "text-white" : "text-gray-800"
                     }`}
                   >
                     Popular Products
