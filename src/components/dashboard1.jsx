@@ -67,6 +67,18 @@ const Dashboard1 = () => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [darkMode, setDarkMode] = useState(false); // Add dark mode state
 
+  useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+    setDarkMode(savedDarkMode);
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
+  };
+
+  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };

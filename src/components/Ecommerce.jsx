@@ -29,6 +29,17 @@ import { Table } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Timeline } from "react-twitter-widgets";
 import { FaThumbsUp } from "react-icons/fa";
+import {
+  FaMobileAlt,
+  FaShoePrints,
+  FaHeadphonesAlt,
+  FaApple,
+  FaDotCircle,
+  FaShoppingBag,
+  FaHeadphones,
+  FaWatchmanMonitoring,
+  FaAmazon,
+} from "react-icons/fa";
 
 ChartJS.register(
   CategoryScale,
@@ -250,6 +261,44 @@ const Ecommerce = () => {
       },
     ],
   };
+
+  const products = [
+    {
+      id: 1,
+      name: "Apple iPhone 13",
+      icon: <FaApple className="w-6 h-6 text-red-500" />,
+      itemNumber: "#FXZ-4567",
+      price: "$999.29",
+    },
+    {
+      id: 2,
+      name: "Nike Air Jordan",
+      icon: <FaShoppingBag className="w-6 h-6 text-blue-500" />,
+      itemNumber: "#FXZ-3456",
+      price: "$72.40",
+    },
+    {
+      id: 3,
+      name: "Beats Studio 2",
+      icon: <FaHeadphones className="w-6 h-6 text-gray-600" />,
+      itemNumber: "#FXZ-9485",
+      price: "$99",
+    },
+    {
+      id: 4,
+      name: "Apple Watch",
+      icon: <FaWatchmanMonitoring className="w-6 h-6 text-black" />,
+      itemNumber: "#FXZ-2345",
+      price: "$249.99",
+    },
+    {
+      id: 5,
+      name: "Amazon Echo Dot",
+      icon: <FaAmazon className="w-6 h-6 text-gray-900" />,
+      itemNumber: "#FXZ-8959",
+      price: "$79.40",
+    },
+  ];
 
   const stockOptions = {
     responsive: true,
@@ -721,6 +770,49 @@ const Ecommerce = () => {
                 <Pie data={categoryData} options={categoryOptions} />
               </div>
 
+              <div className="w-full max-w-xs p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800 md:max-w-sm lg:max-w-md">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Popular Products
+                  </h2>
+                  <button className="text-gray-500 dark:text-gray-400">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 7a2 2 0 110-4 2 2 0 010 4zM12 14a2 2 0 110-4 2 2 0 010 4zM12 21a2 2 0 110-4 2 2 0 010 4z" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Total 10.4k Visitors
+                </p>
+                <div className="mt-4 space-y-4">
+                  {products.map((product) => (
+                    <div
+                      key={product.id}
+                      className="flex items-center justify-between p-2 transition-colors duration-300 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      <div className="flex items-center">
+                        {product.icon}
+                        <div className="ml-3">
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            {product.name}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {product.itemNumber}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        {product.price}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-105 hover:border-blue-500">
                 <h2 className="mb-6 text-2xl font-semibold">
                   Product Data Table
@@ -806,40 +898,6 @@ const Ecommerce = () => {
                     </div>
                   </div>
                 )}
-              </div>
-
-              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                <h2 className="flex items-center mb-4 text-xl font-bold ">
-                  <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
-                  Event Timeline
-                </h2>
-                {/* Custom Event Timeline */}
-                <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
-                  <div className="mb-8 group">
-                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
-                    <p className="text-sm font-semibold transition-colors">
-                      March 12, 2024
-                    </p>
-                    <p className="text-base leading-snug transition-colors">
-                      <i className="mr-2 fas fa-briefcase"></i> Company Annual
-                      Meeting: A comprehensive overview of the past year's
-                      achievements and the roadmap for the next year was
-                      discussed.
-                    </p>
-                  </div>
-                  <div className="mb-8 group">
-                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
-                    <p className="text-sm font-semibold transition-colors">
-                      April 5, 2024
-                    </p>
-                    <p className="text-base leading-snug transition-colors">
-                      <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
-                      Product Launch: The new product line was launched,
-                      featuring innovative designs and cutting-edge technology.
-                    </p>
-                  </div>
-                  {/* Add more timeline events as needed */}
-                </div>
               </div>
 
               <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
@@ -929,41 +987,37 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-              <div className="p-6 transition-transform duration-300 transform border border-gray-200 rounded-lg shadow-lg chover:scale-105 hover:border-blue-500ol-span-2 h-75 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
-                {/* Title Section */}
-                <h2 className="mb-4 text-xl font-semibold text-center ">
-                  Visit US
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
+                <h2 className="flex items-center mb-4 text-xl font-bold ">
+                  <i className="mr-2 text-indigo-500 fas fa-calendar-alt"></i>{" "}
+                  Event Timeline
                 </h2>
-
-                {/* Map Container */}
-                <div className="relative overflow-hidden border border-gray-300 rounded-lg h-52 dark:border-gray-600">
-                  <MapContainer
-                    center={[19.076, 72.8777]} // Coordinates for Mumbai
-                    zoom={13} // Zoom level for a closer view of Mumbai
-                    style={{ height: "500px" }}
-                    className="rounded-lg"
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Marker position={[19.076, 72.8777]} icon={customIcon}>
-                      <Popup>
-                        <strong>Mumbai</strong>
-                        <br />
-                        {/* This is a marker centered on Mumbai. */}
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
-
-                  {/* Footer with map data attribution */}
-                  <div className="absolute bottom-0 left-0 w-full p-4">
-                    Map data &copy;{" "}
-                    <a
-                      href="https://www.openstreetmap.org/copyright"
-                      className="text-indigo-500 hover:underline"
-                    ></a>
+                {/* Custom Event Timeline */}
+                <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      March 12, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 fas fa-briefcase"></i> Company Annual
+                      Meeting: A comprehensive overview of the past year's
+                      achievements and the roadmap for the next year was
+                      discussed.
+                    </p>
                   </div>
+                  <div className="mb-8 group">
+                    <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
+                    <p className="text-sm font-semibold transition-colors">
+                      April 5, 2024
+                    </p>
+                    <p className="text-base leading-snug transition-colors">
+                      <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
+                      Product Launch: The new product line was launched,
+                      featuring innovative designs and cutting-edge technology.
+                    </p>
+                  </div>
+                  {/* Add more timeline events as needed */}
                 </div>
               </div>
             </div>
