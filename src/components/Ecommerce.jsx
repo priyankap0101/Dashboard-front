@@ -463,22 +463,18 @@ const Ecommerce = () => {
                 <ClipLoader color={darkMode ? "#fff" : "#000"} />
               </div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 ">
+              <div className="grid gap-2 mb-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                 <motion.div
-                  className={`flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl shadow-lg transition-transform duration-300 ease-in-out transform ${
+                  className={`flex flex-col items-center justify-center p-4 sm:p-8 md:p-10 rounded-xl transition-transform duration-300 ease-in-out transform ${
                     darkMode
-                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
-                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-200 hover:via-gray-100 hover:to-white"
+                      ? "bg-gray-800 border border-blue-500" // Dark mode styles
+                      : "bg-white border border-gray-500" // Light mode styles
                   }`}
                   whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
+                    borderColor: "rgba(0, 0, 255, 0.5)", // Border color on hover
                   }}
                   whileTap={{ scale: 0.98 }}
-                  style={{
-                    width: "100%", // Full width to adapt to screen sizes
-                    // maxWidth: "90%", // Uncomment this line if you need a responsive maximum width
-                  }}
+                  style={{ width: "100%", maxWidth: "500px", margin: "auto" }} // Responsive width
                 >
                   {/* Image */}
                   <div className="flex justify-center mb-4">
@@ -486,28 +482,28 @@ const Ecommerce = () => {
                       src="https://img.freepik.com/free-photo/view-3d-man-holding-coffee-cup-showing-thumbs-up_23-2150709926.jpg?t=st=1725036525~exp=1725040125~hmac=aa76cfb4e7ddf29b404545e6527b3b9e6e8f73f06593160a63fdaac6c2805740&w=740"
                       alt="Boy Showing Thumbs Up"
                       className="rounded-full shadow-md"
-                      style={{ width: "60px", height: "60px" }} // Adjusted for better scaling
+                      style={{ width: "80px", height: "80px" }} // Adjusted size
                     />
                   </div>
 
                   {/* Text Content */}
-                  <div className="px-4 mb-4 text-center">
+                  <div className="px-4 mb-2 text-center">
                     <h2
-                      className={`text-lg sm:text-xl md:text-2xl font-extrabold mb-2 ${
+                      className={`text-xl sm:text-2xl md:text-3xl font-extrabold mb-2 ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
                     >
                       Congratulations, John! 🎉
                     </h2>
                     <p
-                      className={`text-xs sm:text-sm md:text-base ${
+                      className={`text-sm sm:text-base md:text-lg ${
                         darkMode ? "text-gray-400" : "text-gray-600"
                       } mb-1`}
                     >
                       Best seller of the month!
                     </p>
                     <p
-                      className={`text-base sm:text-lg md:text-xl font-semibold mt-1 ${
+                      className={`text-lg sm:text-xl md:text-2xl font-semibold mt-1 ${
                         darkMode ? "text-yellow-400" : "text-yellow-500"
                       }`}
                     >
@@ -517,14 +513,14 @@ const Ecommerce = () => {
 
                   {/* Button */}
                   <motion.button
-                    className={`mt-4 py-2 px-6 rounded-full font-medium transition-transform duration-300 ease-in-out ${
+                    className={`mt-4 py-2 px-8 sm:px-10 rounded-full font-medium transition-transform duration-300 ease-in-out ${
                       darkMode
-                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-indigo-600 hover:to-purple-600"
+                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-indigo-700 hover:to-purple-700"
                         : "bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-500 hover:to-blue-500"
-                    } shadow-md hover:shadow-lg`}
-                    whileHover={{ scale: 1.1, y: -2 }}
+                    } shadow-lg hover:shadow-xl`}
+                    whileHover={{ scale: 1.08, y: -3 }}
                     whileTap={{ scale: 0.95, y: 0 }}
-                    onClick={() => alert("Button Clicked!")}
+                    // onClick={() => alert("")}
                   >
                     View Details
                   </motion.button>
@@ -725,14 +721,14 @@ const Ecommerce = () => {
                 {data.map((item, index) => (
                   <motion.div
                     key={index}
-                    className={`md:grid-cols-3 w-full  gap-4  p-6 border rounded-lg shadow-md transition-all duration-300 ${
+                    className={`md:grid-cols-3 w-full  gap-4  p-6 border rounded-lg shadow-md transition-all duration-300 mt-4  ${
                       darkMode ? "bg-gray-800" : "bg-white"
                     }`}
                     whileHover={{
-                      scale: 1.04,
+                      // scale: 1.00,
                       boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
                     }}
-                    whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.9 }}
                   >
                     <h2
                       className={`text-xl font-semibold ${
@@ -767,8 +763,8 @@ const Ecommerce = () => {
               </div>
             )}
 
-            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
+            <div className="grid gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 ">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -779,7 +775,7 @@ const Ecommerce = () => {
                 <Line data={salesData} options={salesOptions} />
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -790,7 +786,7 @@ const Ecommerce = () => {
                 <Radar data={feedbackData} options={feedbackOptions} />
               </div>
 
-              <div className="col-span-2 p-4 transition-transform duration-300 ease-in-out border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
+              <div className="col-span-2 p-4 transition-transform duration-300 ease-in-out border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -801,7 +797,7 @@ const Ecommerce = () => {
                 <Pie data={categoryData} options={categoryOptions} />
               </div>
 
-              <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-105 hover:border-blue-500">
+              <div className="col-span-2 p-6 border border-gray-200 rounded-lg shadow-lg lg:col-span-2 xl:col-span-3 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -847,7 +843,7 @@ const Ecommerce = () => {
                           return (
                             <tr
                               key={index}
-                              className="transition-all duration-300 transform dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 hover:scale-105"
+                              className="transition-all duration-300 transform dark:hover:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500 hover:scale-100"
                               role="row"
                               aria-labelledby={`row-${index}`}
                               tabIndex={0}
@@ -892,7 +888,7 @@ const Ecommerce = () => {
                 )}
               </div>
 
-              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg h-84 dark:border-gray-700 lg:col-span-1 hover:scale-105 hover:border-blue-500">
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -903,34 +899,34 @@ const Ecommerce = () => {
                 </h2>
                 {/* Custom Event Timeline */}
                 <div className="relative pl-4 ml-4 border-l-4 border-indigo-500 dark:border-indigo-400">
-                  <div className="mb-8 group">
+                  <div className="mb-4 group">
                     <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800 transition-transform transform group-hover:scale-110"></div>
-                    <p className="text-sm font-semibold transition-colors">
+                    <p className="font-semibold transition-colors ">
                       March 12, 2024
                     </p>
-                    <p className="text-base leading-snug transition-colors">
+                    <p className="text-sm leading-snug transition-colors">
                       <i className="mr-2 fas fa-briefcase"></i> Company Annual
                       Meeting: A comprehensive overview of the past year's
                       achievements and the roadmap for the next year was
                       discussed.
                     </p>
                   </div>
-                  <div className="mb-8 group">
+                  <div className="mb-4 group">
                     <div className="absolute w-5 h-5 bg-indigo-500 rounded-full mt-1.5 -left-3 border-2 border-white dark:border-gray-800  transition-transform transform group-hover:scale-110"></div>
                     <p className="text-sm font-semibold transition-colors">
                       April 5, 2024
                     </p>
-                    <p className="text-base leading-snug transition-colors">
+                    <p className="text-sm leading-snug transition-colors">
                       <i className="mr-2 text-indigo-500 fas fa-rocket"></i>{" "}
                       Product Launch: The new product line was launched,
                       featuring innovative designs and cutting-edge technology.
                     </p>
                   </div>
-                  {/* Add more timeline events as needed */}
+                  {/* more timeline events as needed */}
                 </div>
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -941,7 +937,7 @@ const Ecommerce = () => {
                 <Doughnut data={stockData} options={stockOptions} />
               </div>
 
-              <div className="col-span-2 p-6 transition-transform transform border rounded-lg h-h-75 lg:col-span-1 hover:scale-105 hover:border-blue-500">
+              <div className="p-6 transition-transform transform border rounded-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -951,10 +947,10 @@ const Ecommerce = () => {
                   Sales Progress
                 </h2>
 
-                <div className="space-y-6 ">
+                <div className="mt-10 space-y-8">
                   <div className="relative group">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-semibold ">Achieved</span>
+                      <span className="text-2xl font-semibold ">Achieved</span>
                       <span className="text-sm font-semibold text-green-600">
                         60%
                       </span>
@@ -970,7 +966,7 @@ const Ecommerce = () => {
                       </div>
                     </div>
                     {/* Tooltip on Hover */}
-                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
                       Reached 60% of the target
                     </div>
                   </div>
@@ -978,7 +974,7 @@ const Ecommerce = () => {
                   {/* In Progress Progress Bar */}
                   <div className="relative group">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-semibold ">
+                      <span className="text-2xl font-semibold ">
                         In Progress
                       </span>
                       <span className="text-sm font-semibold text-blue-600">
@@ -996,7 +992,7 @@ const Ecommerce = () => {
                       </div>
                     </div>
                     {/* Tooltip on Hover */}
-                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
                       Currently at 30% progress
                     </div>
                   </div>
@@ -1004,7 +1000,7 @@ const Ecommerce = () => {
                   {/* Pending Progress Bar */}
                   <div className="relative group">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-semibold ">Pending</span>
+                      <span className="text-2xl font-semibold ">Pending</span>
                       <span className="text-sm font-semibold text-red-600">
                         10%
                       </span>
@@ -1020,14 +1016,14 @@ const Ecommerce = () => {
                       </div>
                     </div>
                     {/* Tooltip on Hover */}
-                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white transition-all transition-opacity duration-300 duration-500 ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
+                    <div className="absolute px-2 py-1 ml-32 -mt-12 text-xs font-medium text-white ease-in-out transform -translate-x-1/2 bg-gray-900 rounded-md shadow-lg opacity-0 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900 group-hover:translate-y-2">
                       Only 10% completed
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-105 hover:border-blue-500 ">
+              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500 lg:w-full ">
                 <div className="flex items-center justify-between mb-2">
                   <h2
                     className={`mb-4 text-xl font-semibold ${
@@ -1049,7 +1045,7 @@ const Ecommerce = () => {
                 <p
                   c
                   className={` text-sm ${
-                    darkMode ? "text-gray-200" : "text-gray-900"
+                    darkMode ? "text-gray-400" : "text-gray-900"
                   }`}
                 >
                   Total 10.4k Visitors
@@ -1065,14 +1061,14 @@ const Ecommerce = () => {
                       <div className="flex items-center">
                         {/* Reduced icon size */}
                         <div
-                          className={`w-6 h-6 ${
+                          className={`w-6 h-6   lg:text-lg${
                             darkMode
                               ? darkModeColors[product.id]
                               : lightModeColors[product.id]
                           } sm:w-8 sm:h-8`}
                         >
                           {React.cloneElement(product.icon, {
-                            className: `w-full h-full ${
+                            className: `w-full h-full  ${
                               darkMode
                                 ? darkModeColors[product.id]
                                 : lightModeColors[product.id]
@@ -1080,8 +1076,12 @@ const Ecommerce = () => {
                           })}
                         </div>
                         <div className="ml-2">
-                          <p className="text-sm font-medium ">{product.name}</p>
-                          <p className="text-xs ">{product.itemNumber}</p>
+                          <p className="text-sm font-medium lg:text-lg">
+                            {product.name}
+                          </p>
+                          <p className="text-xs lg:text-[10px]">
+                            {product.itemNumber}
+                          </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold ">{product.price}</p>
