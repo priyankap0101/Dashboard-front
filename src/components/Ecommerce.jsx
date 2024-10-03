@@ -465,16 +465,16 @@ const Ecommerce = () => {
             ) : (
               <div className="grid gap-2 mb-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                 <motion.div
-                  className={`flex flex-col items-center justify-center p-4 sm:p-8 md:p-10 rounded-xl transition-transform duration-300 ease-in-out transform ${
+                  className={`flex flex-col items-center p-8 rounded-xl transition-transform duration-300 ease-in-out transform ${
                     darkMode
-                      ? "bg-gray-800 border border-blue-500" // Dark mode styles
+                      ? "bg-gray-800 border border-blue-100" // Dark mode styles
                       : "bg-white border border-gray-500" // Light mode styles
-                  }`}
+                  } w-full max-w-md sm:ml-10`} // Added margin-left on small screens
                   whileHover={{
                     borderColor: "rgba(0, 0, 255, 0.5)", // Border color on hover
                   }}
                   whileTap={{ scale: 0.98 }}
-                  style={{ width: "100%", maxWidth: "500px", margin: "auto" }} // Responsive width
+                  style={{ margin: "auto" }} // Centered horizontally on larger screens
                 >
                   {/* Image */}
                   <div className="flex justify-center mb-4">
@@ -520,7 +520,6 @@ const Ecommerce = () => {
                     } shadow-lg hover:shadow-xl`}
                     whileHover={{ scale: 1.08, y: -3 }}
                     whileTap={{ scale: 0.95, y: 0 }}
-                    // onClick={() => alert("")}
                   >
                     View Details
                   </motion.button>
@@ -530,8 +529,8 @@ const Ecommerce = () => {
                 <div
                   className={`flex flex-col p-4 rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
                     darkMode
-                      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600"
-                      : "bg-gradient-to-br from-white via-gray-100 to-gray-50 hover:from-gray-50 hover:via-gray-100 hover:to-white"
+                      ? "bg-gray-800 " // Dark mode styles
+                      : "bg-white " // Light mode styles
                   }`}
                   style={{
                     gridColumn: "span 2",
@@ -541,7 +540,7 @@ const Ecommerce = () => {
                   }}
                 >
                   <div className="flex flex-col items-center w-full">
-                    <h2 className="mb-4 text-lg font-semibold text-center">
+                    <h2 className="mb-8 text-3xl font-semibold text-center">
                       Monthly Statistics
                     </h2>
                     <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -926,7 +925,7 @@ const Ecommerce = () => {
                 </div>
               </div>
 
-              <div className="col-span-2 p-4 border rounded-lg shadow-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -934,10 +933,14 @@ const Ecommerce = () => {
                 >
                   Stock Levels
                 </h2>
-                <Doughnut data={stockData} options={stockOptions} />
+                <Doughnut
+                  data={stockData}
+                  options={stockOptions}
+                  className=""
+                />
               </div>
 
-              <div className="p-6 transition-transform transform border rounded-lg lg:col-span-1 hover:scale-100 hover:border-blue-500">
+              <div className="col-span-2 p-6 transition-all duration-300 transform border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 lg:col-span-1 hover:scale-100 hover:border-blue-500">
                 <h2
                   className={`mb-4 text-xl font-semibold ${
                     darkMode ? "text-white" : "text-gray-800"
@@ -1076,7 +1079,7 @@ const Ecommerce = () => {
                           })}
                         </div>
                         <div className="ml-2">
-                          <p className="text-sm font-medium lg:text-lg">
+                          <p className="text-sm font-medium lg:text-sm">
                             {product.name}
                           </p>
                           <p className="text-xs lg:text-[10px]">
