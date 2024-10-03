@@ -19,7 +19,7 @@ import {
   FaFlag,
 } from "react-icons/fa";
 import ReactCountryFlag from "react-country-flag";
-import "leaflet/dist/leaflet.css";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -78,7 +78,6 @@ const Dashboard1 = () => {
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
-  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };

@@ -7,9 +7,6 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Modal from "./Modal";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-
 import { CSVLink } from "react-csv";
 import {
   Chart as ChartJS,
@@ -75,17 +72,6 @@ const buttonVariants = {
     transition: { duration: 0.3 },
   },
 };
-
-const customIcon = new L.Icon({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png", // Example icon URL
-  iconSize: [25, 41], // Size of the icon
-  iconAnchor: [12, 41], // Anchor point of the icon
-  popupAnchor: [1, -34], // Anchor point of the popup
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png", // Example shadow URL
-  shadowSize: [41, 41], // Size of the shadow
-});
 
 const Ecommerce = () => {
   const [data, setData] = useState([]);
