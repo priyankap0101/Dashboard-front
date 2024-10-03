@@ -638,10 +638,10 @@ const Analytics = () => {
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  style={{ height: "auto" }} // fallback height
                 >
-                  <div className="w-full">
-                    <div className="relative ">
-                      {" "}
+                  <div className="w-full h-full sm:h-80 lg:h-96">
+                    <div className="relative h-full">
                       <Pie
                         options={chartOptions()}
                         data={departmentExpenseData}
