@@ -549,7 +549,7 @@ const Analytics = () => {
                         Sales Overview
                       </h4>
                       <p
-                        className={`text-2xl font-bold ${
+                        className={`text-lg font-bold ${
                           darkMode ? "text-gray-200" : "text-gray-900"
                         }`}
                       >
@@ -653,16 +653,33 @@ const Analytics = () => {
 
                 {/* Line Chart for Expenses */}
                 <div
-                  className={`  w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
+                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-lg border p-4 transition-transform duration-300 ease-in-out hover:scale-105 ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  }`}
                 >
-                  <div className="w-full mt-10 ">
-                    <div className="relative ">
+                  <h2
+                    className={`text-xl font-bold mb-4 ${
+                      darkMode ? "text-gray-200" : "text-gray-800"
+                    }`}
+                  >
+                    Expense Overview
+                  </h2>
+                  {/* Chart Container */}
+                  <div className="flex flex-col items-center w-full mt-8">
+                    <div className="relative w-full overflow-hidden rounded-lg shadow-inner h-72">
                       {" "}
+                      {/* Increased height */}
                       <Line options={LinechartOptions()} data={expenseData} />
+                      {/* Optional Overlay for Hover Effect */}
+                      <div
+                        className={`absolute inset-0 transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-50 pointer-events-none ${
+                          darkMode
+                            ? "bg-gray-900 bg-opacity-25"
+                            : "bg-white bg-opacity-25"
+                        }`}
+                      ></div>
                     </div>
                   </div>
                 </div>
