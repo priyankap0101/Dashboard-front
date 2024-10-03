@@ -371,19 +371,20 @@ const Analytics = () => {
     ],
   };
   const conversionRate = 7.5; // Example conversion rate data
+
   const projectTimelineData = {
     labels: ["Phase 1", "Phase 2", "Phase 3", "Phase 4"],
     datasets: [
       {
         label: "Project Timeline (days)",
-        data: [30, 45, 60, 75],
-        backgroundColor: colors.chartBackground,
-        borderColor: colors.line,
+        data: [30, 75, 80, 95],
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 2,
+        stepped: true, // Use stepped line
       },
     ],
   };
-
   const exportToPDF = () => {
     if (chartsRef.current) {
       html2canvas(chartsRef.current).then((canvas) => {
@@ -668,7 +669,7 @@ const Analytics = () => {
 
                 {/* Bar Chart for Project Timeline */}
                 <div
-                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl    relative p-4   mx-auto rounded-lg shadow-lg border ${
+                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl relative p-4 mx-auto rounded-lg shadow-lg border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
@@ -677,7 +678,7 @@ const Analytics = () => {
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
                     <h2
-                      className={`text-lg  font-black ${
+                      className={`text-lg font-black ${
                         darkMode ? "text-gray-200" : "text-gray-800"
                       }`}
                     >
@@ -709,21 +710,18 @@ const Analytics = () => {
                   </div>
 
                   {/* Chart */}
-                  <div className="relative overflow-hidden shadow-inner h-42 rounded-2xl">
-                    <Bar options={chartOptions()} data={projectTimelineData} />
-                    <div
-                      className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-100 pointer-events-none ${
-                        darkMode
-                          ? "bg-gray-900 bg-opacity-25"
-                          : "bg-white bg-opacity-25"
-                      }`}
-                    ></div>
+                  <div className="relative h-40 overflow-hidden shadow-inner sm:h-48 md:h-56 lg:h-72 rounded-2xl">
+                    <Line
+                      options={chartOptions()}
+                      data={projectTimelineData}
+                      height={300} // Increase the height of the chart to 400 pixels
+                    />
                   </div>
 
                   {/* Button */}
                   <div className="flex justify-start mt-6">
                     <button
-                      className={` px-4 py-2  rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
+                      className={`px-4 py-2 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
                         darkMode
                           ? "bg-gray-600 text-gray-100 hover:bg-gray-500"
                           : "bg-blue-600 text-white hover:bg-blue-500"
