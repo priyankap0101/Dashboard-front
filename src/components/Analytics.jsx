@@ -349,11 +349,11 @@ const Analytics = () => {
       answer:
         "User behavior can be tracked using various analytics tools like Google Analytics or custom tracking scripts.",
     },
-    // {
-    //   question: "What are key performance indicators (KPIs)?",
-    //   answer:
-    //     "KPIs are measurable values that demonstrate how effectively a company is achieving its objectives.",
-    // },
+    {
+      question: "What are key performance indicators (KPIs)?",
+      answer:
+        "KPIs are measurable values that demonstrate how effectively a company is achieving its objectives.",
+    },
     // { question: 'How does data visualization help?', answer: 'Data visualization helps make complex data more accessible and understandable through graphical representation.' },
     // { question: 'What is real-time analytics?', answer: 'Real-time analytics provides insights and data analysis as events happen, allowing for immediate decision-making.' }
   ];
@@ -756,7 +756,7 @@ const Analytics = () => {
                         ? "bg-gray-900 text-gray-200 border-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-900"
                         : "bg-white text-gray-900 border-gray-300 placeholder-gray-600 focus:ring-2 focus:ring-blue-500"
                     }`}
-                    rows="4"
+                    rows="11"
                   />
                   <button
                     onClick={handleFeedbackSubmit}
@@ -798,7 +798,7 @@ const Analytics = () => {
                           darkMode ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
-                        {item.answer.length > 100
+                        {item.answer.length > 120
                           ? `${item.answer.slice(0, 100)}...`
                           : item.answer}
                         {item.answer.length > 100 && (
@@ -806,7 +806,7 @@ const Analytics = () => {
                             className={`cursor-pointer text-blue-500 ml-2`}
                             onClick={() => handleViewMore(index)}
                           >
-                            View More
+                            {/* View More */}
                           </span>
                         )}
                       </p>
