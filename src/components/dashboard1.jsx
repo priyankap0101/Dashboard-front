@@ -465,14 +465,17 @@ const Dashboard1 = () => {
 
                   {/* Chart 2: Sales by Countries */}
                   <div
-                    className={`p-4 border rounded-lg shadow hover:scale-100 transition-transform hover:border-blue-500 ${
+                    className={`p-6 border rounded-lg shadow hover:scale-100 transition-transform hover:border-blue-500 ${
                       darkMode ? "bg-gray-900" : "bg-white"
                     }`}
                   >
                     <h3
-                      className={`mb-6 text-xl font-semibold ${
+                      className={`mb-4 font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
+                      style={{
+                        fontSize: window.innerWidth < 768 ? "12px" : "16px",
+                      }} // Change font size based on screen width
                     >
                       Sales by Countries
                     </h3>
@@ -480,41 +483,64 @@ const Dashboard1 = () => {
                       {salesByCountry.map((item, index) => (
                         <li
                           key={index}
-                          className="flex items-center justify-between py-2" // Removed the border-b class
+                          className="flex items-center justify-between py-1" // Reduced padding
                         >
-                          <span className="flex items-center mt-2 text-sm ">
+                          <span
+                            className={`flex items-center mt-2 ${
+                              darkMode ? "text-gray-100" : "text-gray-800"
+                            }`}
+                            style={{
+                              fontSize:
+                                window.innerWidth < 668 ? "3px" : "12px",
+                            }} // Change font size based on screen width
+                          >
                             <ReactCountryFlag
                               countryCode={item.countryCode}
                               svg
                               style={{
-                                width: "2em",
-                                height: "2em",
-                                marginRight: "0.5em",
+                                width: "2.5em", // Reduced flag size
+                                height: "2.5em",
+                                marginRight: "0.25em", // Reduced margin
                               }}
                               title={item.country}
                             />
                             {item.country}
                           </span>
                           <span
-                            className={` text-sm font-semibold ${
+                            className={`font-semibold ${
                               darkMode ? "text-gray-100" : "text-gray-700"
                             }`}
+                            style={{
+                              fontSize:
+                                window.innerWidth < 768 ? "8px" : "12px",
+                            }} // Change font size based on screen width
                           >
                             {item.sales}
                           </span>
                           <span
-                            className={`flex items-center px-2 py-1 rounded-full text-xs font-bold ${
+                            className={`flex items-center px-1 py-1 rounded-full font-bold ${
                               item.trend === "up"
                                 ? "bg-green-300 text-green-800"
                                 : "bg-red-300 text-red-800"
                             }`}
+                            style={{
+                              fontSize:
+                                window.innerWidth < 768 ? "5px" : "12px",
+                            }} // Change font size based on screen width
                           >
                             {item.trend === "up" ? (
-                              <FaArrowUp className="mr-1" />
+                              <FaArrowUp className="mr-0.5" /> // Reduced margin
                             ) : (
-                              <FaArrowDown className="mr-1" />
+                              <FaArrowDown className="mr-0.5" />
                             )}
-                            {item.percent}%
+                            <span
+                              style={{
+                                fontSize:
+                                  window.innerWidth < 768 ? "5px" : "12px",
+                              }}
+                            >
+                              {item.percent}%
+                            </span>
                           </span>
                         </li>
                       ))}
