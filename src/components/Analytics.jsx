@@ -641,7 +641,9 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                   style={{ height: "auto" }} // fallback height
                 >
-                  <div className="w-full h-full sm:h-80 lg:h-96">
+                  <div className="w-full h-full sm:h-96 lg:h-[25rem]">
+                    {" "}
+                    {/* Increased height for small screens */}
                     <div className="relative h-full">
                       <Pie
                         options={chartOptions()}
