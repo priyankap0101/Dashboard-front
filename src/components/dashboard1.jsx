@@ -821,17 +821,17 @@ const Dashboard1 = () => {
 
                         {/* Centered content */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <p
+                          {/* <p
                             className={`mt-14 mb-1  font-semibold tracking-widest ${
                               darkMode ? "text-white" : "text-gray-800"
-                            } sm:text-sm md:text-base lg:text-lg`} // Responsive text size for "Completed Task"
+                            } sm:text-sm md:text-sm lg:text-lg`} // Responsive text size for "Completed Task"
                           >
-                            Completed Task
-                          </p>
+                            
+                          </p> */}
                           <p
-                            className={`text-3xl font-extrabold transition-all duration-200 ease-in-out transform ${
+                            className={`mt-14 font-extrabold transition-all duration-200 ease-in-out transform ${
                               darkMode ? "text-white" : "text-gray-800"
-                            } sm:text-4xl md:text-4xl lg:text-4xl`} // Responsive text size for percentage
+                            }  md:text-lg lg:text-4xl`} // Responsive text size for percentage
                           >
                             85%
                           </p>
