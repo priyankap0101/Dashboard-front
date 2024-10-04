@@ -619,8 +619,15 @@ const Analytics = () => {
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
+                  <h2
+                    className={`text-center text-2xl font-semibold mb-6 ${
+                      darkMode ? "text-white" : "text-gray-800"
+                    }`}
+                  >
+                    Skill Proficiency
+                  </h2>
                   <div className="w-full">
-                    <div className="relative pb-[95%]">
+                    <div className="relative pb-[99%]">
                       {" "}
                       {/* Responsive aspect ratio */}
                       <Radar
@@ -641,16 +648,15 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                   style={{ height: "auto" }} // fallback height
                 >
-                  {/* Chart Title */}
-                  <h2
-                    className={`text-xl font-bold ${
-                      darkMode ? "text-gray-200" : "text-gray-800"
-                    } tracking-tight leading-tight transition-colors duration-300 ease-in-out hover:text-blue-500`}
-                  >
-                    Department Expense
-                  </h2>
-
                   <div className="w-full h-full sm:h-96 lg:mt-6">
+                    {/* Chart Title */}
+                    <h2
+                      className={`text-center text-2xl font-semibold mb-6 ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Department Expense
+                    </h2>
                     <div className="relative h-full">
                       <Pie
                         options={chartOptions()}
@@ -668,17 +674,16 @@ const Analytics = () => {
                       : "bg-white border-gray-300"
                   }`}
                 >
-                  <h2
-                    className={`text-xl font-bold mb-4 ${
-                      darkMode ? "text-gray-200" : "text-gray-800"
-                    }`}
-                  >
-                    Expense Overview
-                  </h2>
                   {/* Chart Container */}
-                  <div className="flex flex-col items-center w-full mt-5">
+                  <div className="flex flex-col items-center w-full ">
                     <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-inner">
-                      {" "}
+                      <h2
+                        className={`text-center text-2xl font-semibold mb-6 ${
+                          darkMode ? "text-white" : "text-gray-800"
+                        }`}
+                      >
+                        Expense Overview
+                      </h2>{" "}
                       {/* Increased height */}
                       <Line options={LinechartOptions()} data={expenseData} />
                       {/* Optional Overlay for Hover Effect */}
