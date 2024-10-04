@@ -637,9 +637,12 @@ const Dashboard1 = () => {
                     }`}
                   >
                     <h3
-                      className={`mb-6 text-xl font-semibold ${
+                      className={`mb-6 font-semibold ${
                         darkMode ? "text-white" : "text-gray-800"
                       }`}
+                      style={{
+                        fontSize: window.innerWidth < 768 ? "12px" : "20px",
+                      }} // Adjusted title font size
                     >
                       Monthly Campaign
                     </h3>
@@ -669,10 +672,26 @@ const Dashboard1 = () => {
                               <FaBan className="text-xl text-red-500" />
                             )}
 
-                            <span className="font-medium">{item.label}</span>
+                            <span
+                              className={`font-medium`}
+                              style={{
+                                fontSize:
+                                  window.innerWidth < 768 ? "8px" : "14px",
+                              }} // Adjusted label font size
+                            >
+                              {item.label}
+                            </span>
                           </div>
 
-                          <span className='font-semibold ${darkMode ? "text-gray-100" : "text-gray-700"}'>
+                          <span
+                            className={`font-semibold ${
+                              darkMode ? "text-gray-100" : "text-gray-700"
+                            }`}
+                            style={{
+                              fontSize:
+                                window.innerWidth < 768 ? "8px" : "14px",
+                            }} // Adjusted value font size
+                          >
                             {item.value}
                           </span>
 
@@ -682,6 +701,10 @@ const Dashboard1 = () => {
                             }-500 bg-${
                               item.percent >= 0 ? "green" : "red"
                             }-100 px-2 py-1 rounded-md`}
+                            style={{
+                              fontSize:
+                                window.innerWidth < 768 ? "9px" : "14px",
+                            }} // Adjusted percentage font size
                           >
                             {item.percent}%
                           </span>
