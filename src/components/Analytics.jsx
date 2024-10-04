@@ -129,10 +129,10 @@ const Analytics = () => {
     line: "rgba(75, 192, 192, 1)",
     bar: "rgba(75, 192, 192, 0.2)",
     pie: [
-      "rgba(255, 99, 132, 0.2)",
-      "rgba(54, 162, 235, 0.2)",
-      "rgba(255, 206, 86, 0.2)",
-      "rgba(75, 192, 192, 0.2)",
+      "rgba(200, 60, 60, 0.8)", // Medium-dark red
+      "rgba(60, 120, 220, 0.8)", // Medium-dark blue
+      "rgba(220, 180, 50, 0.8)", // Medium-dark golden
+      "rgba(60, 180, 160, 0.8)", // Medium-dark teal
     ],
     radar: "rgba(255, 99, 132, 0.2)",
     chartBackground: "rgba(255, 255, 255, 1)",
@@ -641,9 +641,16 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                   style={{ height: "auto" }} // fallback height
                 >
-                  <div className="w-full h-full sm:h-96 lg:h-[25rem]">
-                    {" "}
-                    {/* Increased height for small screens */}
+                  {/* Chart Title */}
+                  <h2
+                    className={`text-xl font-bold ${
+                      darkMode ? "text-gray-200" : "text-gray-800"
+                    } tracking-tight leading-tight transition-colors duration-300 ease-in-out hover:text-blue-500`}
+                  >
+                    Department Expense
+                  </h2>
+
+                  <div className="w-full h-full sm:h-96 lg:mt-6">
                     <div className="relative h-full">
                       <Pie
                         options={chartOptions()}
@@ -669,8 +676,8 @@ const Analytics = () => {
                     Expense Overview
                   </h2>
                   {/* Chart Container */}
-                  <div className="flex flex-col items-center w-full mt-8">
-                    <div className="relative w-full overflow-hidden rounded-lg shadow-inner h-72">
+                  <div className="flex flex-col items-center w-full mt-5">
+                    <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-inner">
                       {" "}
                       {/* Increased height */}
                       <Line options={LinechartOptions()} data={expenseData} />
