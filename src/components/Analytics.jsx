@@ -279,54 +279,67 @@ const Analytics = () => {
       },
     ],
   };
-
-  const LinechartOptions = (darkMode) => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    // Remove height here and control it through CSS or parent container
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 100, // Add ticks every 10,000 on Y-axis
-          callback: function (value) {
-            return "$" + value.toLocaleString(); // Format Y-axis labels as $ amounts
+  const LinechartOptions = (darkMode) => {
+    const isSmallScreen = window.innerWidth < 768; // Define small screen size
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      elements: {
+        line: {
+          tension: 0.4, // Optional: control line smoothness
+        },
+      },
+      layout: {
+        padding: {
+          bottom: 20, // Add padding to avoid cutting off the chart
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 100,
+            callback: function (value) {
+              return "$" + value.toLocaleString();
+            },
+          },
+          grid: {
+            display: false,
+            color: darkMode ? "#4A5568" : "#E2E8F0",
+            lineWidth: 1,
           },
         },
-        grid: {
-          display: false,
-          color: darkMode ? "#4A5568" : "#E2E8F0", // Grid color for dark and light modes
-          lineWidth: 1, // Optional: Adjust grid line width
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10,
+          },
+          grid: {
+            display: false,
+          },
         },
       },
-      x: {
-        ticks: {
-          autoSkip: true, // Automatically skip ticks to avoid overlap
-          maxTicksLimit: 10, // Limit the number of ticks on the X-axis
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+          labels: {
+            color: darkMode ? "#2D3748" : "#FFFFFF",
+            boxWidth: 15,
+          },
         },
-        grid: {
-          display: false, // Optional: Hide X-axis gridlines
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: "top", // Optional: Position the legend at the top
-        labels: {
-          color: darkMode ? "#2D3748" : "#FFFFFF", // Label color based on dark mode
-          boxWidth: 15, // Adjust legend box width
+        tooltip: {
+          backgroundColor: darkMode ? "#2D3748" : "#FFFFFF",
+          titleColor: darkMode ? "white" : "black",
+          bodyColor: darkMode ? "white" : "black",
+          borderColor: darkMode ? "#4A5568" : "#E2E8F0",
+          borderWidth: 1,
         },
       },
-      tooltip: {
-        backgroundColor: darkMode ? "#2D3748" : "#FFFFFF", // Tooltip background color
-        titleColor: darkMode ? "white" : "black", // Tooltip title color
-        bodyColor: darkMode ? "white" : "black", // Tooltip body color
-        borderColor: darkMode ? "#4A5568" : "#E2E8F0", // Tooltip border color
-        borderWidth: 1, // Tooltip border width
-      },
-    },
-  });
+      // Set a more reasonable height for small screens
+      height: isSmallScreen ? 300 : 400, // Set height to 300px on small screens, 400px otherwise
+    };
+  };
 
   const earnings = 468; // Example earnings data
   const percentageChange = 4.2; // Example percentage change data
@@ -675,17 +688,18 @@ const Analytics = () => {
                   }`}
                 >
                   {/* Chart Container */}
-                  <div className="flex flex-col items-center w-full ">
-                    <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-inner">
-                      <h2
-                        className={`text-center text-2xl font-semibold mb-6 ${
-                          darkMode ? "text-white" : "text-gray-800"
-                        }`}
-                      >
-                        Expense Overview
-                      </h2>{" "}
-                      {/* Increased height */}
+                  <div className="flex flex-col items-center w-full">
+                    <h2
+                      className={`text-center text-2xl font-semibold ${
+                        darkMode ? "text-white" : "text-gray-800"
+                      }`}
+                    >
+                      Expense Overview
+                    </h2>
+                    <div className="relative flex items-center justify-center w-full h-64 mt-10 overflow-hidden rounded-lg shadow-inner">
+                      {/* Chart centered */}
                       <Line options={LinechartOptions()} data={expenseData} />
+
                       {/* Optional Overlay for Hover Effect */}
                       <div
                         className={`absolute inset-0 transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-50 pointer-events-none ${
