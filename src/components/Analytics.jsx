@@ -193,6 +193,87 @@ const Analytics = () => {
     },
   });
 
+  const linechartOptions = (isRadar = false) => ({
+    responsive: true,
+    maintainAspectRatio: false, // Ensures the chart will use the container's height
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          color: colors.border,
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12, // Adjust font size for mobile
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.dataset.label}: ${context.raw}`,
+        },
+      },
+    },
+    elements: {
+      line: {
+        borderColor: colors.line,
+      },
+      bar: {
+        backgroundColor: colors.bar,
+      },
+      radar: {
+        backgroundColor: colors.radar,
+        borderColor: colors.border,
+        borderWidth: 2, // Increases border width for visibility
+      },
+    },
+    scales: {
+      r: {
+        // Used for radar charts
+        angleLines: {
+          color: colors.border,
+        },
+        grid: {
+          color: colors.border,
+        },
+        pointLabels: {
+          color: colors.border,
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12, // Adjust for mobile screens
+          },
+        },
+        ticks: {
+          display: isRadar,
+          backdropColor: "transparent",
+          color: colors.border,
+          font: {
+            size: window.innerWidth < 640 ? 8 : 10, // Adjust tick size
+          },
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: colors.border,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: colors.border,
+        },
+      },
+    },
+    layout: {
+      padding: {
+        top: 20,
+        bottom: window.innerWidth < 640 ? 30 : 50, // Extra padding on mobile for readability
+      },
+    },
+  });
+
   const salesOverviewData = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
@@ -626,7 +707,7 @@ const Analytics = () => {
 
                 {/* Radar Chart for Skill Analysis */}
                 <div
-                  className={`p-4 sm:p-6 lg:p-8 w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
+                  className={`p-4 w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
@@ -640,11 +721,10 @@ const Analytics = () => {
                     Skill Proficiency
                   </h2>
                   <div className="w-full">
-                    <div className="relative pb-[99%]">
-                      {" "}
-                      {/* Responsive aspect ratio */}
+                    <div className="relative h-[350px] sm:h-[500px] lg:h-[300px]">
+                      {/* Adjusted height values for better visibility on small screens */}
                       <Radar
-                        options={chartOptions(true)}
+                        options={linechartOptions(true)}
                         data={skillData}
                         className="absolute inset-0"
                       />
