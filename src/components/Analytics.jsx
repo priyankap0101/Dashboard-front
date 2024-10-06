@@ -734,7 +734,7 @@ const Analytics = () => {
 
                 {/* Pie Chart */}
                 <div
-                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
+                  className={` p-2 w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
