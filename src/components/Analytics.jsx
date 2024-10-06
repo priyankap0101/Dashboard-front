@@ -714,8 +714,8 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <h2
-                    className={`text-center text-2xl font-semibold mb-6 ${
-                      darkMode ? "text-white" : "text-gray-800"
+                    className={`text-lg font-semibold ${
+                      darkMode ? "text-gray-300" : "text-gray-800"
                     }`}
                   >
                     Skill Proficiency
@@ -734,23 +734,23 @@ const Analytics = () => {
 
                 {/* Pie Chart */}
                 <div
-                  className={` p-2 w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
+                  className={`  w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                   style={{ height: "auto" }} // fallback height
                 >
-                  <div className="w-full h-full sm:h-96 lg:mt-6">
+                  <div className="w-full h-full sm:h-96 lg:mt-3">
                     {/* Chart Title */}
                     <h2
-                      className={`text-center text-2xl font-semibold mb-6 ${
-                        darkMode ? "text-white" : "text-gray-800"
+                      className={`ml-4 text-lg font-semibold ${
+                        darkMode ? "text-gray-300" : "text-gray-800"
                       }`}
                     >
                       Department Expense
                     </h2>
-                    <div className="relative h-full">
+                    <div className="relative h-full p-2">
                       <Pie
                         options={chartOptions()}
                         data={departmentExpenseData}
@@ -770,8 +770,8 @@ const Analytics = () => {
                   {/* Chart Container */}
                   <div className="flex flex-col items-center w-full">
                     <h2
-                      className={`text-center text-2xl font-semibold ${
-                        darkMode ? "text-white" : "text-gray-800"
+                      className={`text-lg font-semibold ${
+                        darkMode ? "text-gray-300" : "text-gray-800"
                       }`}
                     >
                       Expense Overview
@@ -803,8 +803,8 @@ const Analytics = () => {
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
                     <h2
-                      className={`text-lg font-black ${
-                        darkMode ? "text-gray-200" : "text-gray-800"
+                      className={`text-lg font-semibold ${
+                        darkMode ? "text-gray-300" : "text-gray-800"
                       }`}
                     >
                       Project Timeline
@@ -866,8 +866,8 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <h2
-                    className={`text-2xl font-semibold mb-4 ${
-                      darkMode ? "text-gray-100" : "text-gray-800"
+                    className={`text-lg font-semibold ${
+                      darkMode ? "text-gray-300" : "text-gray-800"
                     }`}
                   >
                     Feedback
@@ -903,8 +903,8 @@ const Analytics = () => {
                   } transition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <h2
-                    className={`text-2xl font-semibold mb-4 ${
-                      darkMode ? "text-gray-100" : "text-gray-800"
+                    className={`text-lg font-semibold ${
+                      darkMode ? "text-gray-300" : "text-gray-800"
                     }`}
                   >
                     FAQ
@@ -912,7 +912,7 @@ const Analytics = () => {
                   {faqData.slice(0, 3).map((item, index) => (
                     <div key={index} className="mb-4">
                       <h4
-                        className={`text-lg font-semibold ${
+                        className={` font-semibold ${
                           darkMode ? "text-gray-300" : "text-gray-800"
                         }`}
                       >
@@ -937,7 +937,7 @@ const Analytics = () => {
                       </p>
                       {expandedIndex === index && (
                         <p
-                          className={`mt-2 ${
+                          className={`mt-2  text-sm ${
                             darkMode ? "text-gray-400" : "text-gray-600"
                           }`}
                         >
