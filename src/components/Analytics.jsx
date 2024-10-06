@@ -844,7 +844,7 @@ const Analytics = () => {
                   </div>
 
                   {/* Button */}
-                  <div className="flex justify-start mt-6">
+                  {/* <div className="flex justify-start mt-6">
                     <button
                       className={`px-4 py-2 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
                         darkMode
@@ -854,7 +854,7 @@ const Analytics = () => {
                     >
                       View Full Report
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Feedback Section */}
@@ -883,16 +883,23 @@ const Analytics = () => {
                     }`}
                     rows={window.innerWidth < 640 ? 6 : 11}
                   />
-                  <button
-                    onClick={handleFeedbackSubmit}
-                    className={` px-4 py-2 mt-4 rounded-lg font-semibold transition-colors duration-300 ease-in-out ${
-                      darkMode
-                        ? "bg-gray-600 text-gray-100 hover:bg-gray-500"
-                        : "bg-blue-600 text-white hover:bg-blue-500"
-                    }`}
+                  <motion.button
+                    className={` mt-2   relative px-6 py-2 font-semibold rounded-lg shadow-lg transition-all duration-300  focus:outline-none 
+                           ${
+                             darkMode
+                               ? "bg-gray-700 text-white hover:bg-gray-800 hover:shadow-sm"
+                               : "bg-blue-500 text-white hover:bg-blue-600 hover:shadow-sm"
+                           }`}
+                    whileHover={{
+                      // scale: 1,
+                      boxShadow: darkMode
+                        ? "2px 2px 4px 0px rgba(30, 144, 255, 0.7)" // Light blue shadow in dark mode
+                        : "2px 2px 4px 0px rgba(0, 0, 139, 0.7)", // Dark blue shadow in light mode
+                    }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    Submit Feedback
-                  </button>
+                    Submit
+                  </motion.button>
                 </div>
 
                 <div
@@ -900,7 +907,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } trnsition-transform duration-300 ease-in-out hover:scale-105`}
                 >
                   <h2
                     className={`text-lg font-semibold ${
