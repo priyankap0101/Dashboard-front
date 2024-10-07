@@ -1,4 +1,4 @@
-import React, { useState,useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
@@ -77,17 +77,24 @@ const Register = () => {
     setDarkMode(savedDarkMode);
   }, []);
 
-  
   // Toggle dark mode function
-  const toggleDarkMode = () => setDarkMode(prevMode => !prevMode);
+  const toggleDarkMode = () => setDarkMode((prevMode) => !prevMode);
 
   return (
-    <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+    <div
+      className={`flex flex-col min-h-screen ${
+        darkMode ? "bg-gray-900" : "bg-gray-100"
+      }`}
+    >
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex flex-1">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <main className="flex items-center justify-center flex-1 p-6 sm:p-8">
-          <div className={`w-full max-w-4xl ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-800'} shadow-lg rounded-2xl overflow-hidden`}>
+          <div
+            className={`w-full max-w-4xl ${
+              darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-800"
+            } shadow-lg rounded-2xl overflow-hidden`}
+          >
             <div className="p-8">
               <h2 className="mb-6 text-3xl font-semibold">Register</h2>
               {message && (
@@ -101,7 +108,10 @@ const Register = () => {
                   {message}
                 </div>
               )}
-              <form onSubmit={handleRegister} className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <form
+                onSubmit={handleRegister}
+                className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+              >
                 {[
                   { label: "First Name", name: "firstName", type: "text" },
                   { label: "Last Name", name: "lastName", type: "text" },
@@ -116,7 +126,9 @@ const Register = () => {
                   <div key={name} className="flex flex-col">
                     <label
                       htmlFor={name}
-                      className={`mb-2 text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                      className={`mb-2 text-sm font-medium ${
+                        darkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
                     >
                       {label}
                     </label>
@@ -128,7 +140,11 @@ const Register = () => {
                       onChange={handleChange}
                       required
                       className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                        errors[name] ? "border-red-600" : (darkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300")
+                        errors[name]
+                          ? "border-red-600"
+                          : darkMode
+                          ? "border-gray-600 bg-gray-700 text-white"
+                          : "border-gray-300"
                       }`}
                     />
                     {errors[name] && (
@@ -138,7 +154,7 @@ const Register = () => {
                     )}
                   </div>
                 ))}
-                <div className="flex justify-center col-span-2">
+                <div className="flex justify-center col-span-1 md:col-span-2">
                   <button
                     type="submit"
                     className={`relative px-8 py-3 font-semibold rounded-lg shadow-lg transition-transform duration-300 transform ${
@@ -148,7 +164,7 @@ const Register = () => {
                     } focus:outline-none focus:ring-2 ring-opacity-50 ${
                       loading ? "cursor-wait" : "cursor-pointer"
                     }`}
-                    style={{ maxWidth: '250px' }} // Control the width of the button
+                    style={{ maxWidth: "250px" }} // Control the width of the button
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">
@@ -175,7 +191,7 @@ const Register = () => {
                       </div>
                     ) : (
                       <span className="flex items-center">
-                        <svg
+                        {/* <svg
                           className="w-5 h-5 mr-2"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -188,7 +204,7 @@ const Register = () => {
                             strokeWidth="2"
                             d="M5 13l4 4L19 7"
                           />
-                        </svg>
+                        </svg> */}
                         Register
                       </span>
                     )}
