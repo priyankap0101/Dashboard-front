@@ -169,8 +169,8 @@ const ResourceAllocation = () => {
         label: "High Budget ",
         data: [
           // { x: 120000, y: 5, r: 20 },
-          { x: 150000, y: 7, r: 25 },
-          { x: 730000, y: 6, r: 22 },
+          { x: 450000, y: 18, r: 25 },
+          { x: 730000, y: 19, r: 22 },
         ],
         backgroundColor: "rgba(255,99,132,0.6)",
         borderColor: "rgba(255,99,132,1)",
@@ -180,8 +180,8 @@ const ResourceAllocation = () => {
         label: "Medium Budget ",
         data: [
           // { x: 70000, y: 10, r: 18 },
-          { x: 985000, y: 12, r: 20 },
-          { x: 43000, y: 11, r: 17 },
+          { x: 985000, y: 22, r: 20 },
+          { x: 43000, y: 16, r: 17 },
         ],
         backgroundColor: "rgba(54,162,235,0.6)",
         borderColor: "rgba(54,162,235,1)",
@@ -422,9 +422,9 @@ const ResourceAllocation = () => {
         align: "center", // Center-align the legend
         labels: {
           boxWidth: 20, // Width of the color box in the legend
-          padding: 10, // Padding between legend items
+          padding: 15, // Padding between legend items
           font: {
-            size: 12, // Font size of the legend text
+            size: 10, // Font size of the legend text
             weight: "bold", // Font weight of the legend text
           },
           color: darkMode ? "#e0e0e0" : "#333333", // Text color based on dark mode
@@ -652,12 +652,35 @@ const ResourceAllocation = () => {
                 </div>
               </motion.div>
 
+              {/* Donut Chart */}
+              <motion.div
+                className={`relative p-4   md:p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+                }`}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.h2
+                  className="text-2xl font-semibold"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  Resource Status
+                </motion.h2>
+                <div className="flex items-center justify-center h-72">
+                  <Doughnut data={donutData} options={donutOptions} />
+                </div>
+              </motion.div>
               <motion.div
                 className={`p-7 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
                 style={{
-                  height: window.innerWidth < 768 ? "400px" : "500px", // Increase height based on screen size
+                  height: window.innerWidth < 768 ? "400px" : "400px", // Increase height based on screen size
                   maxWidth: "100%", // Responsive width
                 }}
                 whileHover={{
@@ -695,7 +718,7 @@ const ResourceAllocation = () => {
                 </motion.h2>
 
                 <motion.div
-                  className="h-64 overflow-hidden shadow-inner md:h-72 rounded-xl"
+                  className="h-64 overflow-hidden md:h-72 rounded-xl"
                   variants={chartVariants}
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 120, damping: 15 }}
@@ -759,35 +782,11 @@ const ResourceAllocation = () => {
                     className="w-full h-full"
                     style={{
                       maxHeight: "400px", // Set a maximum height here for larger screens
-                      height: window.innerWidth < 768 ? "200px" : "400px", // Responsive height control
+                      height: window.innerWidth < 768 ? "200px" : "300px", // Responsive height control
                     }}
                   >
                     <Radar data={radarData} options={radarOptions} />
                   </div>
-                </div>
-              </motion.div>
-
-              {/* Donut Chart */}
-              <motion.div
-                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
-                  darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-                }`}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.h2
-                  className="mb-5 text-2xl font-semibold"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                  Resource Status
-                </motion.h2>
-                <div className="flex items-center justify-center h-72">
-                  <Doughnut data={donutData} options={donutOptions} />
                 </div>
               </motion.div>
 
@@ -803,7 +802,7 @@ const ResourceAllocation = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <h2
-                  className="mb-5 text-2xl font-semibold"
+                  className="text-2xl font-semibold "
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
