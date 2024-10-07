@@ -372,7 +372,8 @@ const Analytics = () => {
       },
       layout: {
         padding: {
-          bottom: 20, // Add padding to avoid cutting off the chart
+          top: 30, // Add padding above the chart
+          bottom: 50, // Add more padding below the chart for label spacing
         },
       },
       scales: {
@@ -405,8 +406,8 @@ const Analytics = () => {
           display: true,
           position: "top",
           labels: {
-            color: darkMode ? "#2D3748" : "#FFFFFF",
-            boxWidth: 15,
+            color: darkMode ? "#E2E8F0" : "#4A5568",
+            padding: 20,
           },
         },
         tooltip: {
@@ -418,7 +419,7 @@ const Analytics = () => {
         },
       },
       // Set a more reasonable height for small screens
-      height: isSmallScreen ? 300 : 400, // Set height to 300px on small screens, 400px otherwise
+      height: isSmallScreen ? 300 : 900, // Set height to 300px on small screens, 400px otherwise
     };
   };
 
@@ -776,17 +777,13 @@ const Analytics = () => {
                   </h2>
                   {/* Chart Container */}
                   <div className="flex flex-col items-center w-full">
-                    <div className="relative flex items-center justify-center w-full h-64 mt-10 overflow-hidden rounded-lg shadow-inner">
+                    <div className="relative flex items-center justify-center w-full h-64 overflow-hidden ">
                       {/* Chart centered */}
                       <Line options={LinechartOptions()} data={expenseData} />
 
                       {/* Optional Overlay for Hover Effect */}
                       <div
-                        className={`absolute inset-0 transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-50 pointer-events-none ${
-                          darkMode
-                            ? "bg-gray-900 bg-opacity-25"
-                            : "bg-white bg-opacity-25"
-                        }`}
+                        className={`absolute inset-0 transition-opacity duration-300 ease-in-out opacity-0 hover:opacity-50 pointer-events-none `}
                       ></div>
                     </div>
                   </div>

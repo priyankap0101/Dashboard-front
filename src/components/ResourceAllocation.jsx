@@ -168,9 +168,9 @@ const ResourceAllocation = () => {
       {
         label: "High Budget ",
         data: [
-          { x: 120000, y: 5, r: 20 },
+          // { x: 120000, y: 5, r: 20 },
           { x: 150000, y: 7, r: 25 },
-          { x: 130000, y: 6, r: 22 },
+          { x: 730000, y: 6, r: 22 },
         ],
         backgroundColor: "rgba(255,99,132,0.6)",
         borderColor: "rgba(255,99,132,1)",
@@ -179,9 +179,9 @@ const ResourceAllocation = () => {
       {
         label: "Medium Budget ",
         data: [
-          { x: 70000, y: 10, r: 18 },
-          { x: 85000, y: 12, r: 20 },
-          { x: 90000, y: 11, r: 17 },
+          // { x: 70000, y: 10, r: 18 },
+          { x: 985000, y: 12, r: 20 },
+          { x: 43000, y: 11, r: 17 },
         ],
         backgroundColor: "rgba(54,162,235,0.6)",
         borderColor: "rgba(54,162,235,1)",
@@ -190,9 +190,9 @@ const ResourceAllocation = () => {
       {
         label: "Low Budget ",
         data: [
-          { x: 30000, y: 20, r: 15 },
-          { x: 25000, y: 25, r: 12 },
-          { x: 20000, y: 30, r: 10 },
+          // { x: 30000, y: 20, r: 15 },
+          { x: 650000, y: 25, r: 12 },
+          { x: 400000, y: 20, r: 10 },
         ],
         backgroundColor: "rgba(75,192,192,0.6)",
         borderColor: "rgba(75,192,192,1)",
@@ -202,27 +202,27 @@ const ResourceAllocation = () => {
   };
 
   const bubbleOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
         position: "top",
         labels: {
-          // color: "#333",
           color: darkMode ? "#ffffff" : "#000000",
           font: {
-            size: 10, // Slightly larger font for better readability
-            family: "Arial, sans-serif", // Consistent font family
-            // weight: 'bold'  // Bold text for better emphasis
+            size: window.innerWidth < 768 ? 10 : 12,
           },
-          padding: 20, // Add padding around legend labels
-          boxWidth: 14, // Width of the colored box for each legend item
-          usePointStyle: true, // Use point style instead of box for items
-        },
-        padding: {
-          top: -20, // Padding above the chart (creates gap between legend and chart)
+          padding: window.innerWidth < 768 ? 10 : 20,
+          boxWidth: 12,
         },
       },
       tooltip: {
+        backgroundColor: darkMode ? "#2D3748" : "#FFFFFF",
+        titleColor: darkMode ? "#FFFFFF" : "#000000",
+        bodyColor: darkMode ? "#FFFFFF" : "#000000",
+        borderColor: darkMode ? "#4A5568" : "#E2E8F0",
+        borderWidth: 1,
         callbacks: {
           label: (tooltipItem) => {
             const dataPoint = tooltipItem.raw;
@@ -231,20 +231,30 @@ const ResourceAllocation = () => {
         },
       },
     },
+    layout: {
+      padding: {
+        top: 15,
+        bottom: 50, // Increase bottom padding
+      },
+    },
     scales: {
       x: {
         title: {
           display: true,
           text: "Project Budget ($)",
-          // color: "#333",
           color: darkMode ? "#ffffff" : "#000000",
           font: {
-            size: 19,
+            size: 14,
           },
+          padding: 15,
         },
         grid: {
           display: false,
-          color: "#ddd",
+        },
+        ticks: {
+          font: {
+            size: window.innerWidth < 768 ? 10 : 12,
+          },
         },
       },
       y: {
@@ -255,10 +265,15 @@ const ResourceAllocation = () => {
           font: {
             size: 14,
           },
+          padding: 15,
         },
         grid: {
           display: false,
-          color: "#ddd",
+        },
+        ticks: {
+          font: {
+            size: window.innerWidth < 768 ? 10 : 12,
+          },
         },
       },
     },
@@ -454,8 +469,8 @@ const ResourceAllocation = () => {
     plugins: {
       legend: {
         display: true,
-        position: 'top', // Legend at the top
-        align: 'center', // Center-aligns the legend
+        position: "top", // Legend at the top
+        align: "center", // Center-aligns the legend
         labels: {
           color: darkMode ? "#e0e0e0" : "#333333", // Adjusted color for better contrast
           font: {
@@ -482,22 +497,22 @@ const ResourceAllocation = () => {
         displayColors: false, // Hides the color box in the tooltip
         titleFont: {
           size: 16, // Larger font size for title
-          weight: '700', // Bold font weight for the title
+          weight: "700", // Bold font weight for the title
         },
         bodyFont: {
           size: 10, // Larger font size for body text
-          weight: '700', // Regular weight for body text
+          weight: "700", // Regular weight for body text
         },
       },
     },
-   
+
     elements: {
       arc: {
         borderWidth: 3, // Adds border width to arcs for better separation
       },
     },
   };
-  
+
   return (
     <motion.div
       className={`min-h-screen ${
@@ -634,20 +649,22 @@ const ResourceAllocation = () => {
               </motion.div>
 
               <motion.div
-                className={` p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                className={`p-7 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
+                style={{
+                  height: window.innerWidth < 768 ? "400px" : "500px", // Increase height based on screen size
+                  maxWidth: "100%", // Responsive width
+                }}
                 whileHover={{
                   scale: 1.02,
                   boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <h2 className="mb-5 text-2xl font-semibold">
-                  Project Allocation
-                </h2>
-                <div className="flex items-center justify-center w-full ">
-                  <div className="w-full h-full ">
+                <h2 className="text-2xl font-semibold ">Project Allocation</h2>
+                <div className="flex items-center justify-center w-full h-full">
+                  <div className="w-full h-full">
                     <Bubble data={bubbleData} options={bubbleOptions} />
                   </div>
                 </div>
