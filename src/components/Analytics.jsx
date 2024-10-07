@@ -814,10 +814,11 @@ const Analytics = () => {
                         darkMode ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      <span className="text-sm md:text-base">
+                      <h6 className="text-[8px] sm:text-xs md:text-sm lg:text-base">
                         Updated 2 days ago
-                      </span>
-                      <svg
+                      </h6>
+
+                      {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="transition-opacity duration-200 h-7 w-7 opacity-70 hover:opacity-100"
                         fill="none"
@@ -830,7 +831,7 @@ const Analytics = () => {
                           strokeLinejoin="round"
                           d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4v2m0 2v2m6 0H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2z"
                         />
-                      </svg>
+                      </svg> */}
                     </div>
                   </div>
 
@@ -893,8 +894,8 @@ const Analytics = () => {
                     whileHover={{
                       // scale: 1,
                       boxShadow: darkMode
-                        ? "2px 2px 4px 0px rgba(30, 144, 255, 0.7)" // Light blue shadow in dark mode
-                        : "2px 2px 4px 0px rgba(0, 0, 139, 0.7)", // Dark blue shadow in light mode
+                        ? "1px 2px 4px 0px rgba(30, 144, 255, 0.7)" // Light blue shadow in dark mode
+                        : "1px 1px 1px 1px rgba(0, 0, 139, 0.7)", // Dark blue shadow in light mode
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
