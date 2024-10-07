@@ -552,7 +552,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 border-gray-600"
                       : "bg-gradient-to-br from-white via-gray-100 to-gray-300 border-gray-200"
-                  } h-96 flex flex-col justify-center   transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } h-96 flex flex-col justify-center   transition-transform duration-300 ease-in-out  hover:border-blue-500`}
                 >
                   {/* Title and Sales Value */}
                   <div className="flex flex-col items-center justify-center mb-6">
@@ -629,7 +629,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } transition-transform duration-300 ease-in-out hover:border-blue-500`}
                 >
                   {/* Sales Overview Section */}
                   <div className="flex flex-col ">
@@ -697,7 +697,7 @@ const Analytics = () => {
 
                 {/* Earning Reports (Takes 2 columns on larger screens) */}
                 <div
-                  className={`p-3 m-1  col-span-1 md:col-span-2 lg:col-span-2 `}
+                  className={`p-3 m-1  col-span-1 md:col-span-2 lg:col-span-2   `}
                 >
                   <EarningsReport
                     earnings={earnings}
@@ -711,7 +711,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } transition-transform duration-300 ease-in-out  hover:border-blue-500`}
                 >
                   <h2
                     className={`text-lg font-semibold ${
@@ -738,7 +738,7 @@ const Analytics = () => {
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } transition-transform duration-300 ease-in-out  hover:border-blue-500`}
                   style={{ height: "auto" }} // fallback height
                 >
                   <div className="w-full h-full sm:h-96 lg:mt-3">
@@ -761,21 +761,21 @@ const Analytics = () => {
 
                 {/* Line Chart for Expenses */}
                 <div
-                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-lg border p-4 transition-transform duration-300 ease-in-out hover:scale-105 ${
+                  className={` hover:border-blue-500 lg:w-full   w-full max-w-full sm:max-w-md lg:max-w-2xl mx-auto rounded-lg shadow-lg border p-2 transition-transform duration-300 ease-in-out  ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
                   }`}
                 >
+                  <h2
+                    className={`text-lg font-semibold ${
+                      darkMode ? "text-gray-300" : "text-gray-800"
+                    }`}
+                  >
+                    Expense Overview
+                  </h2>
                   {/* Chart Container */}
                   <div className="flex flex-col items-center w-full">
-                    <h2
-                      className={`text-lg font-semibold ${
-                        darkMode ? "text-gray-300" : "text-gray-800"
-                      }`}
-                    >
-                      Expense Overview
-                    </h2>
                     <div className="relative flex items-center justify-center w-full h-64 mt-10 overflow-hidden rounded-lg shadow-inner">
                       {/* Chart centered */}
                       <Line options={LinechartOptions()} data={expenseData} />
@@ -794,11 +794,11 @@ const Analytics = () => {
 
                 {/* Bar Chart for Project Timeline */}
                 <div
-                  className={`w-full max-w-full sm:max-w-md lg:max-w-2xl relative p-4 mx-auto rounded-lg shadow-lg border ${
+                  className={`hover:border-blue-500   w-full max-w-full sm:max-w-md lg:max-w-2xl relative p-4 mx-auto rounded-lg shadow-lg border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out transform hover:scale-[1.05] hover:shadow-2xl`}
+                  } transition-transform duration-300 ease-in-out transform  hover:shadow-2xl`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
@@ -860,11 +860,11 @@ const Analytics = () => {
 
                 {/* Feedback Section */}
                 <div
-                  className={`p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`hover:border-blue-500   p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } transition-transform duration-300 ease-in-out hover:scale-105`}
+                  } transition-transform duration-300 ease-in-out `}
                 >
                   <h2
                     className={`text-lg font-semibold ${
@@ -905,11 +905,11 @@ const Analytics = () => {
                 </div>
 
                 <div
-                  className={`p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border  hover:border-blue-500 ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
-                  } trnsition-transform duration-300 ease-in-out hover:scale-105`}
+                  } trnsition-transform duration-300 ease-in-out`}
                 >
                   <h2
                     className={`text-lg font-semibold ${
