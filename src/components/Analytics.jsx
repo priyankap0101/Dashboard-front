@@ -877,13 +877,14 @@ const Analytics = () => {
                     value={feedback}
                     onChange={handleFeedbackChange}
                     placeholder="Share your feedback here..."
-                    className={` mt-2  w-full p-4 rounded-lg border focus:outline-none transition-colors duration-300 ease-in-out ${
+                    className={`mt-2 w-full p-4 rounded-lg border focus:outline-none transition-colors duration-300 ease-in-out placeholder:text-xs ${
                       darkMode
                         ? "bg-gray-900 text-gray-200 border-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-900"
                         : "bg-white text-gray-900 border-gray-300 placeholder-gray-600 focus:ring-2 focus:ring-blue-500"
                     }`}
                     rows={window.innerWidth < 640 ? 6 : 11}
                   />
+
                   <motion.button
                     className={` mt-2   relative px-6 py-2 font-semibold rounded-lg shadow-lg transition-all duration-300  focus:outline-none 
                            ${
