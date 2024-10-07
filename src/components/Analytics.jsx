@@ -860,7 +860,7 @@ const Analytics = () => {
 
                 {/* Feedback Section */}
                 <div
-                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
@@ -877,16 +877,16 @@ const Analytics = () => {
                     value={feedback}
                     onChange={handleFeedbackChange}
                     placeholder="Share your feedback here..."
-                    className={`mt-2 w-full p-4 rounded-lg border focus:outline-none transition-colors duration-300 ease-in-out placeholder:text-xs ${
+                    className={`mt-4 w-full p-4 rounded-lg border focus:outline-none transition-colors duration-300 ease-in-out placeholder:text-xs ${
                       darkMode
                         ? "bg-gray-900 text-gray-200 border-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-900"
                         : "bg-white text-gray-900 border-gray-300 placeholder-gray-600 focus:ring-2 focus:ring-blue-500"
                     }`}
-                    rows={window.innerWidth < 640 ? 6 : 11}
+                    rows={window.innerWidth < 640 ? 6 : 9}
                   />
 
                   <motion.button
-                    className={` mt-2   relative px-6 py-2 font-semibold rounded-lg shadow-lg transition-all duration-300  focus:outline-none 
+                    className={` mt-5   relative px-6 py-2 font-semibold rounded-lg shadow-lg transition-all duration-300  focus:outline-none 
                            ${
                              darkMode
                                ? "bg-gray-700 text-white hover:bg-gray-800 hover:shadow-sm"
@@ -905,7 +905,7 @@ const Analytics = () => {
                 </div>
 
                 <div
-                  className={`p-4 md:p-6 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
+                  className={`p-4 md:p-3 max-w-full md:max-w-lg mx-auto rounded-lg shadow-md border ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
                       : "bg-white border-gray-300"
@@ -919,16 +919,16 @@ const Analytics = () => {
                     FAQ
                   </h2>
                   {faqData.slice(0, 3).map((item, index) => (
-                    <div key={index} className="mb-4">
+                    <div key={index} className="mt-4 mb-4">
                       <h4
-                        className={` font-semibold ${
+                        className={` text-lg font-semibold ${
                           darkMode ? "text-gray-300" : "text-gray-800"
                         }`}
                       >
                         {item.question}
                       </h4>
                       <p
-                        className={`mt-2 ${
+                        className={`mt-4 ${
                           darkMode ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
@@ -937,7 +937,7 @@ const Analytics = () => {
                           : item.answer}
                         {item.answer.length > 100 && (
                           <span
-                            className={`cursor-pointer text-blue-500 ml-2`}
+                            className={`text-xs  cursor-pointer text-blue-500 ml-2`}
                             onClick={() => handleViewMore(index)}
                           >
                             {/* View More */}
@@ -946,7 +946,7 @@ const Analytics = () => {
                       </p>
                       {expandedIndex === index && (
                         <p
-                          className={`mt-2  text-sm ${
+                          className={`mt-2  text-xs ${
                             darkMode ? "text-gray-400" : "text-gray-600"
                           }`}
                         >
