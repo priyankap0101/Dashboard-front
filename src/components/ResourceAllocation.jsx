@@ -348,22 +348,23 @@ const ResourceAllocation = () => {
 
   const radarOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
         position: "top",
         labels: {
-          color: darkMode ? "#e0e0e0" : "#333333", // Slightly lighter color for better readability
+          color: darkMode ? "#e0e0e0" : "#333333",
           font: {
-            size: 14, // Adjust font size for better readability
-            weight: "600", // Bolder font weight for emphasis
+            size: window.innerWidth < 768 ? 8 : 14, // Responsive font size
+            weight: "600",
           },
         },
       },
       tooltip: {
-        backgroundColor: darkMode ? "#333333" : "#ffffff", // Better visibility with a contrasting background
-        titleColor: darkMode ? "#ffffff" : "#000000", // Title color in tooltip
-        bodyColor: darkMode ? "#ffffff" : "#000000", // Body text color in tooltip
+        backgroundColor: darkMode ? "#333333" : "#ffffff",
+        titleColor: darkMode ? "#ffffff" : "#000000",
+        bodyColor: darkMode ? "#ffffff" : "#000000",
         callbacks: {
           label: (context) => `${context.label}: ${context.raw}%`,
         },
@@ -372,17 +373,20 @@ const ResourceAllocation = () => {
     scales: {
       r: {
         angleLines: {
-          color: darkMode ? "#666666" : "#cccccc", // Adjusted color for better contrast
-          lineWidth: 1, // Thin lines for a cleaner look
+          color: darkMode ? "#666666" : "#cccccc",
+          lineWidth: 1,
         },
         grid: {
-          color: darkMode ? "#444444" : "#cccccc", // Slightly lighter color for grid lines
-          lineWidth: 1, // Thin grid lines for a modern look
+          color: darkMode ? "#444444" : "#cccccc",
+          lineWidth: 1,
         },
         ticks: {
-          color: darkMode ? "#e0e0e0" : "#333333", // Lighter color for ticks for better readability
-          backdropColor: darkMode ? "#444444" : "#ffffff", // Background color for tick labels for improved contrast
-          backdropPadding: 4, // Padding around the tick labels for better visibility
+          color: darkMode ? "#e0e0e0" : "#333333",
+          backdropColor: darkMode ? "#444444" : "#ffffff",
+          backdropPadding: 4,
+          font: {
+            size: window.innerWidth < 768 ? 4 : 12, // Smaller ticks on mobile
+          },
         },
       },
     },
@@ -733,7 +737,7 @@ const ResourceAllocation = () => {
 
               {/* Radar Chart */}
               <motion.div
-                className={`relative p-8 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
+                className={`relative p-6 rounded-xl border border-gray-200 transition-all duration-300 ease-out ${
                   darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
                 }`}
                 whileHover={{
@@ -743,15 +747,23 @@ const ResourceAllocation = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <h2
-                  className="mb-5 text-2xl font-semibold"
+                  className="text-2xl font-semibold "
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
                   Skill Distribution
                 </h2>
-                <div className="flex items-center justify-center ">
-                  <Radar data={radarData} options={radarOptions} />
+                <div className="flex items-center justify-center w-full h-full">
+                  <div
+                    className="w-full h-full"
+                    style={{
+                      maxHeight: "400px", // Set a maximum height here for larger screens
+                      height: window.innerWidth < 768 ? "200px" : "400px", // Responsive height control
+                    }}
+                  >
+                    <Radar data={radarData} options={radarOptions} />
+                  </div>
                 </div>
               </motion.div>
 
