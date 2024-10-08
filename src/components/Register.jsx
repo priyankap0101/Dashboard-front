@@ -161,19 +161,51 @@ const Register = () => {
               )}
               <form
                 onSubmit={handleRegister}
-                className="grid grid-cols-1 gap-6 md:grid-cols-2"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
               >
-                {formFields.map((field) => (
-                  <InputField
-                    key={field.name}
-                    {...field}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                    error={errors[field.name]}
-                    darkMode={darkMode}
-                  />
+                {[
+                  { label: "First Name", name: "firstName", type: "text" },
+                  { label: "Last Name", name: "lastName", type: "text" },
+                  { label: "Email", name: "email", type: "email" },
+                  { label: "Phone", name: "phone", type: "tel" },
+                  { label: "Address", name: "address", type: "text" },
+                  { label: "City", name: "city", type: "text" },
+                  { label: "State", name: "state", type: "text" },
+                  { label: "Zip Code", name: "zip", type: "text" },
+                  { label: "Password", name: "password", type: "password" },
+                ].map(({ label, name, type }) => (
+                  <div key={name} className="flex flex-col">
+                    <label
+                      htmlFor={name}
+                      className={`mb-2 text-sm font-medium ${
+                        darkMode ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
+                      {label}
+                    </label>
+                    <input
+                      id={name}
+                      name={name}
+                      type={type}
+                      value={formData[name]}
+                      onChange={handleChange}
+                      required
+                      className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                        errors[name]
+                          ? "border-red-600"
+                          : darkMode
+                          ? "border-gray-600 bg-gray-700 text-white"
+                          : "border-gray-300"
+                      }`}
+                    />
+                    {errors[name] && (
+                      <p className="mt-1 text-sm font-semibold text-red-600">
+                        {errors[name]}
+                      </p>
+                    )}
+                  </div>
                 ))}
-                <div className="flex justify-center col-span-2">
+                <div className="flex justify-center col-span-1 md:col-span-2">
                   <button
                     type="submit"
                     className={`relative px-8 py-3 font-semibold rounded-lg shadow-lg transition-transform duration-300 transform ${
@@ -183,7 +215,7 @@ const Register = () => {
                     } focus:outline-none focus:ring-2 ring-opacity-50 ${
                       loading ? "cursor-wait" : "cursor-pointer"
                     }`}
-                    style={{ maxWidth: "250px" }}
+                    style={{ maxWidth: "250px" }} // Control the width of the button
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">

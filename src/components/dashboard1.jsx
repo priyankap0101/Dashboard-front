@@ -362,10 +362,10 @@ const Dashboard1 = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
                       {/* Earnings Block */}
                       <div
-                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                        className={`p-4 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
                           darkMode
                             ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
                             : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
@@ -377,7 +377,7 @@ const Dashboard1 = () => {
                         }}
                       >
                         <p
-                          className={`text-sm transition-colors duration-300 ${
+                          className={`text-xs transition-colors duration-300 ${
                             darkMode
                               ? "text-gray-400 hover:text-gray-200"
                               : "text-gray-600 hover:text-blue-800"
@@ -398,7 +398,7 @@ const Dashboard1 = () => {
 
                       {/* Profit Block */}
                       <div
-                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                        className={`p-4 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
                           darkMode
                             ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
                             : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
@@ -410,7 +410,7 @@ const Dashboard1 = () => {
                         }}
                       >
                         <p
-                          className={`text-sm transition-colors duration-300 ${
+                          className={`text-xs transition-colors duration-300 ${
                             darkMode
                               ? "text-gray-400 hover:text-gray-200"
                               : "text-gray-600 hover:text-blue-800"
@@ -431,7 +431,7 @@ const Dashboard1 = () => {
 
                       {/* Expense Block */}
                       <div
-                        className={`p-2 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
+                        className={`p-4 border rounded-xl text-center overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-100 ${
                           darkMode
                             ? "border-gray-700 hover:border-emerald-800" // Dark Mode Hover Colors
                             : "border-gray-300 bg-white hover:border-blue-500" // Light Mode Hover Colors
@@ -443,7 +443,7 @@ const Dashboard1 = () => {
                         }}
                       >
                         <p
-                          className={`text-sm transition-colors duration-300 ${
+                          className={`text-xs transition-colors duration-300 ${
                             darkMode
                               ? "text-gray-400 hover:text-gray-200"
                               : "text-gray-600 hover:text-blue-800"
@@ -846,11 +846,9 @@ const Dashboard1 = () => {
           </div>
           <Footer />
         </motion.main>
-       
       </div>
-      
+
       <ToastContainer />
-      
     </motion.div>
   );
 };
