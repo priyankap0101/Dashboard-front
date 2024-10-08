@@ -2,6 +2,49 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Footer from "./Footer";
+
+// Reusable InputField Component
+const InputField = ({
+  label,
+  name,
+  type,
+  value,
+  onChange,
+  error,
+  darkMode,
+}) => {
+  return (
+    <div className="flex flex-col">
+      <label
+        htmlFor={name}
+        className={`mb-2 text-sm font-medium ${
+          darkMode ? "text-gray-300" : "text-gray-700"
+        }`}
+      >
+        {label}
+      </label>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required
+        className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+          error
+            ? "border-red-600"
+            : darkMode
+            ? "border-gray-600 bg-gray-700 text-white"
+            : "border-gray-300"
+        }`}
+      />
+      {error && (
+        <p className="mt-1 text-sm font-semibold text-red-600">{error}</p>
+      )}
+    </div>
+  );
+};
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,14 +65,13 @@ const Register = () => {
   const [darkMode, setDarkMode] = useState(false); // State for dark mode
   const [loading, setLoading] = useState(false); // State for loading
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,9 +80,7 @@ const Register = () => {
         "http://localhost:8080/api/profile/register",
         formData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
@@ -59,44 +99,55 @@ const Register = () => {
       });
       setErrors({});
     } catch (error) {
-      if (error.response && error.response.data) {
+      if (error.response?.data) {
         setErrors(error.response.data.data || {});
         setMessage("Error registering. Please check the fields.");
-        setMessageType("error");
       } else {
         setMessage("Error registering. Please try again.");
-        setMessageType("error");
       }
+      setMessageType("error");
     } finally {
       setLoading(false);
     }
   };
 
+  // Persist dark mode state
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
     setDarkMode(savedDarkMode);
   }, []);
 
-  // Toggle dark mode function
-  const toggleDarkMode = () => setDarkMode((prevMode) => !prevMode);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
+  const formFields = [
+    { label: "First Name", name: "firstName", type: "text" },
+    { label: "Last Name", name: "lastName", type: "text" },
+    { label: "Email", name: "email", type: "email" },
+    { label: "Phone", name: "phone", type: "tel" },
+    { label: "Address", name: "address", type: "text" },
+    { label: "City", name: "city", type: "text" },
+    { label: "State", name: "state", type: "text" },
+    { label: "Zip Code", name: "zip", type: "text" },
+    { label: "Password", name: "password", type: "password" },
+  ];
 
   return (
     <div
-      className={`flex flex-col min-h-screen ${
+      className={`min-h-screen flex flex-col ${
         darkMode ? "bg-gray-900" : "bg-gray-100"
       }`}
     >
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex flex-1">
         <Sidebar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex items-center justify-center flex-1 p-6 sm:p-8">
+        <main className="flex flex-col flex-1 p-6 sm:p-8">
           <div
-            className={`w-full max-w-4xl ${
+            className={`w-full max-w-4xl mx-auto ${
               darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-800"
-            } shadow-lg rounded-2xl overflow-hidden`}
+            } shadow-lg rounded-2xl overflow-hidden flex-1`}
           >
             <div className="p-8">
-              <h2 className="mb-6 text-3xl font-semibold">Register</h2>
+              <h2 className="mb-6 text-lg font-semibold">Register</h2>
               {message && (
                 <div
                   className={`p-4 mb-6 rounded-md ${
@@ -110,51 +161,19 @@ const Register = () => {
               )}
               <form
                 onSubmit={handleRegister}
-                className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+                className="grid grid-cols-1 gap-6 md:grid-cols-2"
               >
-                {[
-                  { label: "First Name", name: "firstName", type: "text" },
-                  { label: "Last Name", name: "lastName", type: "text" },
-                  { label: "Email", name: "email", type: "email" },
-                  { label: "Phone", name: "phone", type: "tel" },
-                  { label: "Address", name: "address", type: "text" },
-                  { label: "City", name: "city", type: "text" },
-                  { label: "State", name: "state", type: "text" },
-                  { label: "Zip Code", name: "zip", type: "text" },
-                  { label: "Password", name: "password", type: "password" },
-                ].map(({ label, name, type }) => (
-                  <div key={name} className="flex flex-col">
-                    <label
-                      htmlFor={name}
-                      className={`mb-2 text-sm font-medium ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      {label}
-                    </label>
-                    <input
-                      id={name}
-                      name={name}
-                      type={type}
-                      value={formData[name]}
-                      onChange={handleChange}
-                      required
-                      className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                        errors[name]
-                          ? "border-red-600"
-                          : darkMode
-                          ? "border-gray-600 bg-gray-700 text-white"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors[name] && (
-                      <p className="mt-1 text-sm font-semibold text-red-600">
-                        {errors[name]}
-                      </p>
-                    )}
-                  </div>
+                {formFields.map((field) => (
+                  <InputField
+                    key={field.name}
+                    {...field}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    error={errors[field.name]}
+                    darkMode={darkMode}
+                  />
                 ))}
-                <div className="flex justify-center col-span-1 md:col-span-2">
+                <div className="flex justify-center col-span-2">
                   <button
                     type="submit"
                     className={`relative px-8 py-3 font-semibold rounded-lg shadow-lg transition-transform duration-300 transform ${
@@ -164,7 +183,7 @@ const Register = () => {
                     } focus:outline-none focus:ring-2 ring-opacity-50 ${
                       loading ? "cursor-wait" : "cursor-pointer"
                     }`}
-                    style={{ maxWidth: "250px" }} // Control the width of the button
+                    style={{ maxWidth: "250px" }}
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">
@@ -190,29 +209,14 @@ const Register = () => {
                         </svg>
                       </div>
                     ) : (
-                      <span className="flex items-center">
-                        {/* <svg
-                          className="w-5 h-5 mr-2"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg> */}
-                        Register
-                      </span>
+                      <span className="flex items-center">Register</span>
                     )}
                   </button>
                 </div>
               </form>
             </div>
           </div>
+          <Footer />
         </main>
       </div>
     </div>

@@ -18,6 +18,7 @@ import {
   CategoryScale,
   LinearScale,
 } from "chart.js";
+import Footer from "./Footer";
 
 ChartJS.register(
   Title,
@@ -812,11 +813,16 @@ const ResourceAllocation = () => {
                 <div className="flex items-center justify-center h-72">
                   <Pie data={pieData} options={pieOptions} />
                 </div>
+             
               </motion.div>
+             
             </motion.div>
           )}
+            <Footer />
         </div>
+       
       </div>
+     
     </motion.div>
   );
 };

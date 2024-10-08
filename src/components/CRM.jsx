@@ -23,6 +23,7 @@ import {
 } from "chart.js";
 import { Line, Pie, Radar, Bar, Doughnut } from "react-chartjs-2";
 import AnimatedIcon from "./AnimatedIcon";
+import Footer from "./Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -415,6 +416,7 @@ const CRM = () => {
               </div>
             )}
           </motion.div>
+          <Footer />
         </motion.main>
       </div>
       {showModal && (

@@ -22,6 +22,7 @@ import {
   BarElement,
 } from "chart.js";
 import { Line, Pie, Radar, Bar, Doughnut, Bubble } from "react-chartjs-2";
+import Footer from "./Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -662,9 +663,14 @@ const Logistics = () => {
               </CSVLink>
             </div>
           </Modal>
+          <Footer />
         </div>
+      
       </div>
+      
+     
     </motion.div>
+    
   );
 };
 

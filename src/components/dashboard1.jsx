@@ -35,6 +35,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import Footer from "./Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -843,9 +844,13 @@ const Dashboard1 = () => {
               </div>
             )}
           </div>
+          <Footer />
         </motion.main>
+       
       </div>
+      
       <ToastContainer />
+      
     </motion.div>
   );
 };

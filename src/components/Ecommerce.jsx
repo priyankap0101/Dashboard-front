@@ -33,6 +33,7 @@ import {
   FaLaptop,
   FaVolumeUp,
 } from "react-icons/fa";
+import Footer from "./Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -1080,6 +1081,7 @@ const Ecommerce = () => {
               </div>
             </div>
           </div>
+          <Footer />
         </motion.main>
       </div>
       <ToastContainer />
