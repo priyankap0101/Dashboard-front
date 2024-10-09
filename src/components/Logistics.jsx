@@ -186,24 +186,75 @@ const Logistics = () => {
     ],
   };
 
+  const getFontSize = () => {
+    if (window.innerWidth < 640) {
+      // Small screens
+      return {
+        title: 8,
+        body: 6,
+        legend: 4,
+      };
+    } else if (window.innerWidth < 768) {
+      // Medium screens
+      return {
+        title: 14,
+        body: 12,
+        legend: 12,
+      };
+    } else {
+      // Large screens
+      return {
+        title: 14,
+        body: 14,
+        legend: 14,
+      };
+    }
+  };
+
   const deliveryOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      tension: {
+        duration: 1000,
+        easing: "easeOutBounce",
+        from: 1,
+        to: 0,
+        loop: true,
+      },
+    },
     plugins: {
       legend: {
+        display: true,
+        position: "top",
         labels: {
           font: {
-            size: 14,
+            size: getFontSize().legend,
+            family: "'Arial', sans-serif",
           },
-          color: "rgba(0, 0, 0, 0.7)", // Make legend labels a bit subtler
+          color: "#4a4a4a",
+          padding: 10,
+          boxWidth: 20,
+          boxHeight: 10,
+          borderColor: "#4a4a4a",
+          borderWidth: 1,
+          borderRadius: 5,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
         },
       },
       tooltip: {
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Darker tooltip background
-        titleColor: "#fff",
-        bodyColor: "#fff",
-        borderColor: "rgba(255, 255, 255, 0.2)",
-        borderWidth: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        bodyFont: {
+          size: getFontSize().body,
+        },
+        titleFont: {
+          size: getFontSize().title,
+          weight: "bold",
+        },
+        padding: 10,
+        cornerRadius: 5,
         callbacks: {
           label: (context) => `Deliveries: ${context.raw}`,
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
@@ -213,39 +264,61 @@ const Logistics = () => {
     scales: {
       y: {
         beginAtZero: true,
+        title: {
+          display: true,
+          text: "Number of Deliveries",
+          color: "#4a4a4a",
+          font: {
+            size: getFontSize().title,
+            weight: "bold",
+          },
+          padding: { top: 10 },
+        },
         ticks: {
-          stepSize: 50, // Adjusts the step size for better granularity
+          stepSize: 80,
+          color: "#6b7280",
           font: {
             size: 12,
           },
-          color: "rgba(0, 0, 0, 0.7)", // Y-axis tick color
         },
         grid: {
-          color: "rgba(0, 0, 0, 0.1)", // Lighter grid lines
-          borderDash: [5, 5], // Dashed grid lines for a modern look
+          color: "rgba(200, 200, 200, 0.4)",
+          drawBorder: false,
         },
-        suggestedMin: 0,
-        suggestedMax: 800, // Allows room for growth in delivery data
       },
       x: {
+        title: {
+          display: true,
+          text: "Months",
+          color: "#4a4a4a",
+          font: {
+            size: getFontSize().title,
+            weight: "bold",
+          },
+          padding: { top: 10, bottom: 10 },
+        },
         ticks: {
+          color: "#6b7280",
           font: {
             size: 12,
           },
-          color: "rgba(0, 0, 0, 0.7)", // X-axis tick color
         },
         grid: {
-          display: false, // Removes vertical grid lines for a cleaner look
+          display: false,
         },
       },
     },
     elements: {
       line: {
-        borderWidth: 3,
+        borderWidth: 2,
+        tension: 0.4,
+        borderColor: "rgba(54, 162, 235, 1)",
       },
       point: {
-        radius: 4, // Larger points for better visibility
-        hoverRadius: 6, // Increase size on hover
+        radius: 6,
+        hoverRadius: 8,
+        backgroundColor: "rgba(54, 162, 235, 1)",
+        hoverBackgroundColor: "rgba(54, 162, 235, 0.8)",
       },
     },
   };
@@ -648,7 +721,7 @@ const Logistics = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Existing ChartCards */}
             <ChartCard title="Deliveries Over Time">
-              <div className="w-full sm:h-[100px] lg:h-[300px] p-4">
+              <div className="w-full sm:h-[400px] lg:h-[300px] p-4">
                 <Line data={deliveryData} options={deliveryOptions} />
               </div>
             </ChartCard>
