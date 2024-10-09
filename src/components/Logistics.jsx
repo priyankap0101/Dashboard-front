@@ -75,7 +75,7 @@ const buttonVariants = {
 
 const ChartCard = ({ title, children }) => (
   <motion.div
-    className="p-4 border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:shadow-lg"
+    className="p-2 border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:shadow-lg"
     variants={itemVariants}
   >
     <h2 className="mb-4 text-xl font-semibold dark:text-gray-200">{title}</h2>
@@ -334,6 +334,39 @@ const Logistics = () => {
     },
   };
 
+  const getTransportFontSize = () => {
+    if (window.innerWidth < 300) {
+      // Very small screens (hide labels and titles)
+      return {
+        title: 0, // Title font size
+        body: 0, // Body font size
+        legend: 0, // Legend font size
+        showLabels: false, // Do not show labels
+      };
+    } else if (window.innerWidth < 640) {
+      // Small screens
+      return {
+        title: 8,
+        body: 6,
+        legend: 4,
+      };
+    } else if (window.innerWidth < 768) {
+      // Medium screens
+      return {
+        title: 14,
+        body: 12,
+        legend: 12,
+      };
+    } else {
+      // Large screens
+      return {
+        title: 14,
+        body: 14,
+        legend: 14,
+      };
+    }
+  };
+
   const transportCostData = {
     labels: ["Q1", "Q2", "Q3", "Q4"],
     datasets: [
@@ -349,15 +382,105 @@ const Logistics = () => {
 
   const transportCostOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      tension: {
+        duration: 1000,
+        easing: "easeOutBounce",
+        from: 1,
+        to: 0,
+        loop: true,
+      },
+    },
     plugins: {
       legend: {
+        display: true,
         position: "top",
+        labels: {
+          font: {
+            size: getTransportFontSize().legend,
+            family: "'Arial', sans-serif",
+          },
+          color: "#4a4a4a",
+          padding: 10,
+          boxWidth: 20,
+          boxHeight: 10,
+          borderColor: "#4a4a4a",
+          borderWidth: 1,
+          borderRadius: 5,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+        },
       },
       tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        bodyFont: {
+          size: getTransportFontSize().body,
+        },
+        titleFont: {
+          size: getTransportFontSize().title,
+          weight: "bold",
+        },
+        padding: 10,
+        cornerRadius: 5,
         callbacks: {
           label: (context) => `Costs: $${context.raw}`,
           title: (tooltipItems) => `Quarter: ${tooltipItems[0].label}`,
         },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Transport Costs ($)",
+          color: "#4a4a4a",
+          font: {
+            size: getTransportFontSize().title,
+            weight: "bold",
+          },
+          padding: { top: 10 },
+        },
+        ticks: {
+          stepSize: 2000, // Adjust step size for better readability
+          color: "#6b7280",
+          font: {
+            size: 12,
+          },
+        },
+        grid: {
+          color: "rgba(200, 200, 200, 0.4)", // Subtle grid color
+          drawBorder: false,
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Quarters",
+          color: "#4a4a4a",
+          font: {
+            size: getTransportFontSize().title,
+            weight: "bold",
+          },
+          padding: { top: 10, bottom: 10 },
+        },
+        ticks: {
+          color: "#6b7280",
+          font: {
+            size: 12,
+          },
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
+    elements: {
+      bar: {
+        borderWidth: 2,
+        backgroundColor: "rgba(255, 206, 86, 0.8)", // More visible bar color
       },
     },
   };
@@ -738,7 +861,9 @@ const Logistics = () => {
             </ChartCard>
 
             <ChartCard title="Transport Costs">
-              <Bar data={transportCostData} options={transportCostOptions} />
+              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
+                <Bar data={transportCostData} options={transportCostOptions} />
+              </div>
             </ChartCard>
             <ChartCard title="Average Delivery Time">
               <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
