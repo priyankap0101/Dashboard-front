@@ -173,34 +173,79 @@ const Logistics = () => {
     datasets: [
       {
         label: "Deliveries",
-        data: [150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700],
+        data: [150, 225, 270, 320, 380, 410, 475, 530, 590, 640, 680, 750],
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 2,
+        fill: true, // Fills the area under the line for better visual impact
+        pointBackgroundColor: "rgba(54, 162, 235, 1)", // Point color
+        pointBorderColor: "#fff",
+        pointBorderWidth: 1,
+        tension: 0.3, // Smooths out the line for a more aesthetic look
       },
     ],
   };
 
   const deliveryOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
           font: {
             size: 14,
           },
+          color: "rgba(0, 0, 0, 0.7)", // Make legend labels a bit subtler
         },
       },
       tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Darker tooltip background
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
         callbacks: {
           label: (context) => `Deliveries: ${context.raw}`,
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
         },
       },
     },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 50, // Adjusts the step size for better granularity
+          font: {
+            size: 12,
+          },
+          color: "rgba(0, 0, 0, 0.7)", // Y-axis tick color
+        },
+        grid: {
+          color: "rgba(0, 0, 0, 0.1)", // Lighter grid lines
+          borderDash: [5, 5], // Dashed grid lines for a modern look
+        },
+        suggestedMin: 0,
+        suggestedMax: 800, // Allows room for growth in delivery data
+      },
+      x: {
+        ticks: {
+          font: {
+            size: 12,
+          },
+          color: "rgba(0, 0, 0, 0.7)", // X-axis tick color
+        },
+        grid: {
+          display: false, // Removes vertical grid lines for a cleaner look
+        },
+      },
+    },
     elements: {
       line: {
         borderWidth: 3,
+      },
+      point: {
+        radius: 4, // Larger points for better visibility
+        hoverRadius: 6, // Increase size on hover
       },
     },
   };
@@ -476,7 +521,7 @@ const Logistics = () => {
       labels: {
         font: {
           size: 14,
-          weight: 'bold', // Makes the font more prominent
+          weight: "bold", // Makes the font more prominent
         },
         padding: 20, // Adds space between legend items
       },
@@ -603,8 +648,11 @@ const Logistics = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Existing ChartCards */}
             <ChartCard title="Deliveries Over Time">
-              <Line data={deliveryData} options={deliveryOptions} />
+              <div className="w-full sm:h-[100px] lg:h-[300px] p-4">
+                <Line data={deliveryData} options={deliveryOptions} />
+              </div>
             </ChartCard>
+
             <ChartCard title="Transport Costs">
               <Bar data={transportCostData} options={transportCostOptions} />
             </ChartCard>
@@ -665,12 +713,8 @@ const Logistics = () => {
           </Modal>
           <Footer />
         </div>
-      
       </div>
-      
-     
     </motion.div>
-    
   );
 };
 
