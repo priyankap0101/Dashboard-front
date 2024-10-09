@@ -56,7 +56,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
 
   return (
     <header
-      className={`flex items-center justify-between px-4 py-3 border-b ${
+      className={`flex items-center justify-between  p-4 border-b ${
         darkMode
           ? "bg-gray-800 border-gray-700 text-white"
           : "bg-white border-gray-200 text-gray-900"
@@ -64,20 +64,16 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
     >
       <div className="flex items-center flex-1">
         <h1 className="text-xl font-bold md:text-2xl">Dashboard</h1>
-        <button
+        {/* <button
           className="ml-4 text-2xl md:hidden hover:text-blue-500"
           onClick={() => setShowSearchBar((prev) => !prev)}
           aria-label="Toggle Search Bar"
         >
           <FaSearch />
-        </button>
+        </button> */}
       </div>
 
-      <div
-        className={`relative flex-1 ${
-          showSearchBar || window.innerWidth >= 768 ? "block" : "hidden"
-        }`}
-      >
+      <div className={`relative flex-1 hidden md:flex`}>
         <label htmlFor="search-input" className="sr-only">
           Search
         </label>
@@ -87,17 +83,10 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search..."
-          className={`w-full  h-8 px-4 py-2 rounded-full focus:outline-none transition-all duration-300 ${
+          className={`w-full h-8 px-4 py-2 rounded-full focus:outline-none transition-all duration-300 ${
             darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-900"
           }`}
         />
-        {showSearchBar && (
-          <FaSearch
-            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-lg ${
-              darkMode ? "text-gray-400" : "text-gray-600"
-            }`}
-          />
-        )}
       </div>
 
       <div className="flex items-center ml-4 space-x-4">

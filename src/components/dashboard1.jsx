@@ -492,14 +492,14 @@ const Dashboard1 = () => {
                             }`}
                             style={{
                               fontSize:
-                                window.innerWidth < 668 ? "3px" : "12px",
+                                window.innerWidth < 668 ? "10px" : "12px",
                             }} // Change font size based on screen width
                           >
                             <ReactCountryFlag
                               countryCode={item.countryCode}
                               svg
                               style={{
-                                width: "2.5em", // Reduced flag size
+                                width: "3.5em", // Reduced flag size
                                 height: "2.5em",
                                 marginRight: "0.25em", // Reduced margin
                               }}
@@ -513,7 +513,7 @@ const Dashboard1 = () => {
                             }`}
                             style={{
                               fontSize:
-                                window.innerWidth < 768 ? "8px" : "12px",
+                                window.innerWidth < 768 ? "9px" : "12px",
                             }} // Change font size based on screen width
                           >
                             {item.sales}
