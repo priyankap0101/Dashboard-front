@@ -187,12 +187,21 @@ const Logistics = () => {
   };
 
   const getFontSize = () => {
-    if (window.innerWidth < 640) {
+    if (window.innerWidth < 300) {
+      // Very small screens (hide labels and titles)
+      return {
+        title: 0, // Title font size
+        body: 0, // Body font size
+        legend: 0, // Legend font size
+        showLabels: false, // Do not show labels
+      };
+    } else if (window.innerWidth < 640) {
       // Small screens
       return {
         title: 8,
         body: 6,
         legend: 4,
+        showLabels: true,
       };
     } else if (window.innerWidth < 768) {
       // Medium screens
@@ -200,6 +209,7 @@ const Logistics = () => {
         title: 14,
         body: 12,
         legend: 12,
+        showLabels: true,
       };
     } else {
       // Large screens
@@ -207,6 +217,7 @@ const Logistics = () => {
         title: 14,
         body: 14,
         legend: 14,
+        showLabels: true,
       };
     }
   };
@@ -265,7 +276,7 @@ const Logistics = () => {
       y: {
         beginAtZero: true,
         title: {
-          display: true,
+          display: getFontSize().showLabels, // Conditionally show title
           text: "Number of Deliveries",
           color: "#4a4a4a",
           font: {
@@ -288,7 +299,7 @@ const Logistics = () => {
       },
       x: {
         title: {
-          display: true,
+          display: getFontSize().showLabels, // Conditionally show title
           text: "Months",
           color: "#4a4a4a",
           font: {
@@ -721,7 +732,7 @@ const Logistics = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Existing ChartCards */}
             <ChartCard title="Deliveries Over Time">
-              <div className="w-full sm:h-[400px] lg:h-[300px] p-4">
+              <div className="w-full sm:h-[400px] lg:h-[300px] p-2">
                 <Line data={deliveryData} options={deliveryOptions} />
               </div>
             </ChartCard>
