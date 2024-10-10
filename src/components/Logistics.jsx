@@ -485,31 +485,128 @@ const Logistics = () => {
     },
   };
 
+  const getDeliveryTimeFontSize = () => {
+    if (window.innerWidth < 640) {
+      return {
+        title: 10,
+        body: 8,
+        legend: 6,
+      };
+    } else if (window.innerWidth < 768) {
+      return {
+        title: 14,
+        body: 12,
+        legend: 10,
+      };
+    } else {
+      return {
+        title: 16,
+        body: 14,
+        legend: 12,
+      };
+    }
+  };
+
+  const isDarkMode = true; // Update this based on your actual dark mode state
+
   const deliveryTimeData = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
         label: "Average Delivery Time (days)",
         data: [5, 4, 4.5, 4, 3.5, 3],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: isDarkMode
+          ? "rgba(102, 187, 106, 1)"
+          : "rgba(54, 162, 235, 1)",
+        backgroundColor: isDarkMode
+          ? "rgba(102, 187, 106, 0.2)"
+          : "rgba(54, 162, 235, 0.2)",
         fill: true,
         tension: 0.3,
+        pointRadius: 5,
+        pointHoverRadius: 8,
       },
     ],
   };
 
   const deliveryTimeOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: getDeliveryTimeFontSize().legend,
+            family: "'Arial', sans-serif",
+          },
+          color: isDarkMode ? "#a5d6a7" : "#4a4a4a",
+          padding: 10,
+        },
       },
       tooltip: {
+        backgroundColor: isDarkMode
+          ? "rgba(48, 63, 159, 0.9)"
+          : "rgba(0, 0, 0, 0.85)",
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        titleFont: {
+          size: getDeliveryTimeFontSize().title,
+          weight: "bold",
+        },
+        bodyFont: {
+          size: getDeliveryTimeFontSize().body,
+        },
+        cornerRadius: 5,
+        padding: 10,
         callbacks: {
           label: (context) => `Time: ${context.raw} days`,
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
         },
+      },
+    },
+    scales: {
+      r: {
+        angleLines: {
+          color: isDarkMode
+            ? "rgba(255, 165, 0, 0.8)"
+            : "rgba(50, 50, 50, 0.9)", // Orange lines in dark mode
+        },
+        grid: {
+          color: isDarkMode
+            ? "rgba(255, 165, 0, 0.5)"
+            : "rgba(50, 50, 50, 0.9)", // Orange grid in dark mode
+        },
+        pointLabels: {
+          color: isDarkMode ? "#b0bec5" : "#4a4a4a", // Text color for point labels
+          font: {
+            size: getDeliveryTimeFontSize().body,
+          },
+        },
+        ticks: {
+          backdropColor: isDarkMode
+            ? "rgba(0, 0, 0, 0.5)"
+            : "rgba(255, 255, 255, 0.5)",
+          color: isDarkMode ? "#f5f5f5" : "#4a4a4a",
+        },
+      },
+    },
+    elements: {
+      line: {
+        borderWidth: 3,
+        borderColor: isDarkMode
+          ? "rgba(102, 187, 106, 1)"
+          : "rgba(54, 162, 235, 1)",
+      },
+      point: {
+        radius: 6,
+        hoverRadius: 8,
+        backgroundColor: isDarkMode
+          ? "rgba(102, 187, 106, 1)"
+          : "rgba(54, 162, 235, 1)",
+        hoverBackgroundColor: isDarkMode
+          ? "rgba(102, 187, 106, 0.8)"
+          : "rgba(54, 162, 235, 0.8)",
       },
     },
   };
@@ -865,8 +962,11 @@ const Logistics = () => {
                 <Bar data={transportCostData} options={transportCostOptions} />
               </div>
             </ChartCard>
+
             <ChartCard title="Average Delivery Time">
-              <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
+              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
+                <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
+              </div>
             </ChartCard>
             <ChartCard title="Regional Expenses">
               <Pie data={regionExpensesData} options={regionExpensesOptions} />
