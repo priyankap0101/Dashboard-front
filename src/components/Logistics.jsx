@@ -636,18 +636,46 @@ const Logistics = () => {
 
   const regionExpensesOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: 14,
+            family: "'Arial', sans-serif",
+          },
+          color: isDarkMode ? "#e0e0e0" : "#4a4a4a", // Adapted for better readability
+          padding: 15,
+        },
       },
       tooltip: {
+        backgroundColor: isDarkMode ? "rgba(48, 63, 159, 0.9)" : "rgba(0, 0, 0, 0.85)", // Consistent tooltip background
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        titleFont: {
+          size: 14,
+          weight: "bold",
+        },
+        bodyFont: {
+          size: 12,
+        },
+        padding: 10,
+        cornerRadius: 5,
         callbacks: {
           label: (context) => `Expenses: $${context.raw}`,
           title: (tooltipItems) => `Region: ${tooltipItems[0].label}`,
         },
       },
     },
+    elements: {
+      arc: {
+        borderWidth: 3,
+        hoverBorderColor: isDarkMode ? "rgba(255, 152, 0, 0.9)" : "rgba(255, 152, 0, 1)", // Orange border on hover for better contrast in dark mode
+      },
+    },
   };
+  
 
   const fleetEfficiencyData = {
     labels: ["Truck", "Van", "Bike", "Drone"],
@@ -964,12 +992,18 @@ const Logistics = () => {
             </ChartCard>
 
             <ChartCard title="Average Delivery Time">
-              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
+              <div className="w-full sm:h-[200px] lg:h-[300px] p-2">
                 <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
               </div>
             </ChartCard>
+            
             <ChartCard title="Regional Expenses">
-              <Pie data={regionExpensesData} options={regionExpensesOptions} />
+            <div className="w-full sm:h-[300px] lg:h-[240px] p-2">
+            <Pie data={regionExpensesData} options={regionExpensesOptions} />
+              </div>
+
+              
+              
             </ChartCard>
             <ChartCard title="Fleet Efficiency">
               <Bar
