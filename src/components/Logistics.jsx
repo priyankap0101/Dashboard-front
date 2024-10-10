@@ -650,7 +650,9 @@ const Logistics = () => {
         },
       },
       tooltip: {
-        backgroundColor: isDarkMode ? "rgba(48, 63, 159, 0.9)" : "rgba(0, 0, 0, 0.85)", // Consistent tooltip background
+        backgroundColor: isDarkMode
+          ? "rgba(48, 63, 159, 0.9)"
+          : "rgba(0, 0, 0, 0.85)", // Consistent tooltip background
         titleColor: "#ffffff",
         bodyColor: "#ffffff",
         titleFont: {
@@ -671,11 +673,12 @@ const Logistics = () => {
     elements: {
       arc: {
         borderWidth: 3,
-        hoverBorderColor: isDarkMode ? "rgba(255, 152, 0, 0.9)" : "rgba(255, 152, 0, 1)", // Orange border on hover for better contrast in dark mode
+        hoverBorderColor: isDarkMode
+          ? "rgba(255, 152, 0, 0.9)"
+          : "rgba(255, 152, 0, 1)", // Orange border on hover for better contrast in dark mode
       },
     },
   };
-  
 
   const fleetEfficiencyData = {
     labels: ["Truck", "Van", "Bike", "Drone"],
@@ -683,23 +686,99 @@ const Logistics = () => {
       {
         label: "Fleet Efficiency (%)",
         data: [85, 90, 70, 75],
-        backgroundColor: "rgba(153, 102, 255, 0.2)",
-        borderColor: "rgba(153, 102, 255, 1)",
+        backgroundColor: "rgba(153, 102, 255, 0.2)", // Light purple
+        borderColor: "rgba(153, 102, 255, 1)", // Dark purple
         borderWidth: 2,
+        pointBackgroundColor: "rgba(153, 102, 255, 1)", // Points color
+        pointBorderColor: "#fff", // White border for points
+        pointBorderWidth: 2, // Thickness of point borders
+        pointRadius: 6, // Size of points
+        fill: true, // Fill area under the line
+      },
+      {
+        label: "Average Efficiency (%)", // Additional dataset for comparison
+        data: [80, 85, 65, 70],
+        backgroundColor: "rgba(75, 192, 192, 0.2)", // Light teal
+        borderColor: "rgba(75, 192, 192, 1)", // Dark teal
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(75, 192, 192, 1)", // Points color
+        pointBorderColor: "#fff", // White border for points
+        pointBorderWidth: 2, // Thickness of point borders
+        pointRadius: 6, // Size of points
+        fill: true, // Fill area under the line
       },
     ],
   };
 
   const fleetEfficiencyOptions = {
     responsive: true,
+    maintainAspectRatio: false, // Allow the chart to fill its container
+    layout: {
+      padding: {
+        top: 3, // Reduce top padding around the chart
+        bottom: 30, // Maintain or adjust as necessary
+      },
+    },
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: "11rem", // Responsive font size
+            family: "'Helvetica Neue', 'Arial', sans-serif",
+            weight: "bold",
+          },
+          padding: 5, // Reduced padding for the legend
+        },
       },
       tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Dark background for tooltips
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        padding: 10,
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
         callbacks: {
           label: (context) => `Efficiency: ${context.raw}%`,
           title: (tooltipItems) => `Vehicle: ${tooltipItems[0].label}`,
+        },
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.4, // Smooth line
+      },
+      point: {
+        radius: 5,
+        hoverRadius: 8, // Larger radius on hover
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)", // Light grid lines
+        },
+        title: {
+          display: true,
+          text: "Efficiency (%)",
+          color: "#ffffff", // Axis title color
+          font: {
+            size: "1.2rem", // Responsive font size
+          },
+        },
+      },
+      x: {
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)", // Light grid lines
+        },
+        title: {
+          display: true,
+          text: "Vehicles",
+          color: "#ffffff", // Axis title color
+          font: {
+            size: "1.2rem", // Responsive font size
+          },
         },
       },
     },
@@ -996,20 +1075,23 @@ const Logistics = () => {
                 <Radar data={deliveryTimeData} options={deliveryTimeOptions} />
               </div>
             </ChartCard>
-            
-            <ChartCard title="Regional Expenses">
-            <div className="w-full sm:h-[300px] lg:h-[240px] p-2">
-            <Pie data={regionExpensesData} options={regionExpensesOptions} />
-              </div>
 
-              
-              
+            <ChartCard title="Regional Expenses">
+              <div className="w-full sm:h-[300px] lg:h-[240px] p-2">
+                <Pie
+                  data={regionExpensesData}
+                  options={regionExpensesOptions}
+                />
+              </div>
             </ChartCard>
+
             <ChartCard title="Fleet Efficiency">
-              <Bar
-                data={fleetEfficiencyData}
-                options={fleetEfficiencyOptions}
-              />
+              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
+                <Bar
+                  data={fleetEfficiencyData}
+                  options={fleetEfficiencyOptions}
+                />
+              </div>
             </ChartCard>
             <ChartCard title="Monthly Expenses">
               <Bar
