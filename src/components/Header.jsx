@@ -63,7 +63,10 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
       }`}
     >
       <div className="flex items-center flex-1">
-        <h1 className="text-xl font-bold md:text-2xl">Dashboard</h1>
+        <h1 className="font-extrabold leading-tight tracking-tight text-transparent transition-transform duration-300 ease-in-out md:text-2xl bg-gradient-to-r from-blue-500 to-green-400 dark:from-indigo-600 dark:to-blue-300 bg-clip-text hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-400 dark:hover:from-pink-600 dark:hover:to-red-400 hover:scale-105 hover:animate-pulse">
+          Dashboard
+        </h1>
+
         {/* <button
           className="ml-4 text-2xl md:hidden hover:text-blue-500"
           onClick={() => setShowSearchBar((prev) => !prev)}

@@ -106,7 +106,7 @@ const App = () => {
                   >
                     <FiArrowUpCircle
                       size={32}
-                      className="text-blue-800 hover:text-gray-400 dark:text-gray-800 dark:hover:text-gray-200"
+                      className="text-blue-400 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-800"
                     />
                   </motion.div>
                 )}
