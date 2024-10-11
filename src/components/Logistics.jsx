@@ -645,7 +645,7 @@ const Logistics = () => {
             size: 14,
             family: "'Arial', sans-serif",
           },
-          color: isDarkMode ? "#e0e0e0" : "#4a4a4a", // Adapted for better readability
+          color: "#555555",
           padding: 15,
         },
       },
@@ -724,7 +724,7 @@ const Logistics = () => {
         position: "top",
         labels: {
           font: {
-            size: "11rem", // Responsive font size
+            size: "14rem", // Responsive font size
             family: "'Helvetica Neue', 'Arial', sans-serif",
             weight: "bold",
           },
@@ -762,8 +762,9 @@ const Logistics = () => {
         title: {
           display: true,
           text: "Efficiency (%)",
-          color: "#ffffff", // Axis title color
+          color: "#555555",
           font: {
+            weight: "bold",
             size: "11.2rem", // Responsive font size
           },
         },
@@ -775,8 +776,9 @@ const Logistics = () => {
         title: {
           display: true,
           text: "Vehicles",
-          color: "#ffffff", // Axis title color
+          color: "#555555",
           font: {
+            weight: "bold",
             size: "11.2rem", // Responsive font size
           },
         },
@@ -852,7 +854,7 @@ const Logistics = () => {
       };
     } else if (window.innerWidth < 640) {
       return {
-        title: 10,
+        title: 8,
         body: 8,
         legend: 6,
         showLabels: true,
@@ -987,15 +989,68 @@ const Logistics = () => {
     ],
   };
 
+  const getDeliveryStatusFontSize = () => {
+    if (window.innerWidth < 300) {
+      return {
+        title: 0, // Hide labels and titles for very small screens
+        body: 0,
+        legend: 0,
+        showLabels: false,
+      };
+    } else if (window.innerWidth < 640) {
+      return {
+        title: 10,
+        body: 8,
+        legend: 6,
+      };
+    } else if (window.innerWidth < 768) {
+      return {
+        title: 14,
+        body: 12,
+        legend: 10,
+      };
+    } else {
+      return {
+        title: 16,
+        body: 14,
+        legend: 12,
+      };
+    }
+  };
+
   const deliveryStatusOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: getDeliveryStatusFontSize().legend,
+            family: "'Helvetica Neue', 'Arial', sans-serif",
+            weight: "bold",
+          },
+          padding: 10, // Increase padding for better spacing
+          color: "#555555", // Custom color for text
+          boxWidth: 15, // Adjust box size for legend items
+        },
       },
       tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark background for contrast
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        padding: 10,
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        displayColors: false, // Hides color box in tooltip for cleaner look
+        titleFont: {
+          size: getDeliveryStatusFontSize().title,
+        },
+        bodyFont: {
+          size: getDeliveryStatusFontSize().body,
+        },
         callbacks: {
-          label: (context) => `Status: ${context.raw}`,
+          label: (context) => `Status: ${context.raw}%`,
           title: (tooltipItems) => `Delivery Status: ${tooltipItems[0].label}`,
         },
       },
@@ -1240,7 +1295,12 @@ const Logistics = () => {
               </div>
             </ChartCard>
             <ChartCard title="Delivery Status">
-              <Pie data={deliveryStatusData} options={deliveryStatusOptions} />
+              <div className="w-full sm:h-[300px] lg:h-[250px] p-2">
+                <Pie
+                  data={deliveryStatusData}
+                  options={deliveryStatusOptions}
+                />
+              </div>
             </ChartCard>
             <ChartCard title="Fleet Utilization">
               <Bar
