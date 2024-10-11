@@ -91,7 +91,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
 
       <div className="flex items-center ml-4 space-x-4">
         <button
-          className="text-sm hover:text-blue-500"
+          className="text-xl hover:text-blue-500"
           aria-label="Notifications"
         >
           <FaBell />
@@ -109,7 +109,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
                 "https://img.freepik.com/free-photo/3d-cartoon-character_23-2151021986.jpg"
               }
               alt={userName || "User Profile"}
-              className="w-5 h-5 rounded-full"
+              className="w-8 h-8 rounded-full"
             />
             <FaChevronDown className="text-xs" />
           </button>
@@ -163,7 +163,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
             className="text-xs hover:text-blue-500"
             aria-label="Change Language"
           >
-            <FaGlobe className="text-sm" />
+            <FaGlobe className="text-lg" />
           </button>
           {showLanguageMenu && (
             <div
@@ -192,7 +192,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
 
         <button
           onClick={toggleDarkMode}
-          className="text-sm hover:text-blue-500"
+          className="text-lg hover:text-blue-500"
           aria-label="Toggle Dark Mode"
         >
           {darkMode ? <FaSun /> : <FaMoon />}

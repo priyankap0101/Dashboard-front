@@ -176,7 +176,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           </ul>
         </nav>
 
-        <div
+        {/* <div
           className={`flex items-center mt-8 ${
             isSidebarCollapsed ? "justify-center" : ""
           }`}
@@ -202,7 +202,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
               </>
             )}
           </button>
-        </div>
+        </div> */}
       </aside>
 
       <div className="flex-grow">
