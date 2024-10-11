@@ -1058,16 +1058,78 @@ const Logistics = () => {
   };
 
   const fleetUtilizationData = {
-    labels: ["Utilized", "Idle"],
+    labels: [
+      "Utilized",
+      "Idle",
+      "Under Maintenance",
+      "In Transit",
+      "Waiting for Repair",
+    ],
     datasets: [
       {
         label: "Fleet Utilization (%)",
-        data: [80, 20],
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
+        data: [60, 20, 10, 5, 5], // Added more points to increase height
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.2)", // Light blue for 'Utilized'
+          "rgba(255, 99, 132, 0.2)", // Light red for 'Idle'
+          "rgba(255, 206, 86, 0.2)", // Light yellow for 'Under Maintenance'
+          "rgba(75, 192, 192, 0.2)", // Light teal for 'In Transit'
+          "rgba(153, 102, 255, 0.2)", // Light purple for 'Waiting for Repair'
+        ],
+        borderColor: [
+          "rgba(54, 162, 235, 1)", // Darker blue for 'Utilized'
+          "rgba(255, 99, 132, 1)", // Darker red for 'Idle'
+          "rgba(255, 206, 86, 1)", // Darker yellow for 'Under Maintenance'
+          "rgba(75, 192, 192, 1)", // Darker teal for 'In Transit'
+          "rgba(153, 102, 255, 1)", // Darker purple for 'Waiting for Repair'
+        ],
         borderWidth: 2,
+        hoverBackgroundColor: [
+          "rgba(54, 162, 235, 0.4)", // Darker blue on hover for 'Utilized'
+          "rgba(255, 99, 132, 0.4)", // Darker red on hover for 'Idle'
+          "rgba(255, 206, 86, 0.4)", // Darker yellow on hover for 'Under Maintenance'
+          "rgba(75, 192, 192, 0.4)", // Darker teal on hover for 'In Transit'
+          "rgba(153, 102, 255, 0.4)", // Darker purple on hover for 'Waiting for Repair'
+        ],
+        hoverBorderColor: [
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderRadius: 5, // Adds slight rounding to the edges of the bars or doughnut slices
       },
     ],
+  };
+
+  const getFleetUtilizationFontSize = () => {
+    if (window.innerWidth < 300) {
+      return {
+        title: 0, // Hide labels and titles for very small screens
+        body: 0,
+        legend: 0,
+        showLabels: false,
+      };
+    } else if (window.innerWidth < 640) {
+      return {
+        title: 10,
+        body: 8,
+        legend: 6,
+      };
+    } else if (window.innerWidth < 768) {
+      return {
+        title: 14,
+        body: 12,
+        legend: 10,
+      };
+    } else {
+      return {
+        title: 16,
+        body: 14,
+        legend: 12,
+      };
+    }
   };
 
   const fleetUtilizationOptions = {
@@ -1075,11 +1137,53 @@ const Logistics = () => {
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: getFontSize().legend, // Use your getFontSize function here
+          },
+        },
       },
       tooltip: {
         callbacks: {
           label: (context) => `Utilization: ${context.raw}%`,
           title: (tooltipItems) => `Fleet Status: ${tooltipItems[0].label}`,
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Weeks",
+          color: "#333333",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+        ticks: {
+          color: "#666666",
+          font: {
+            size: getFontSize().body, // Use your getFontSize function here
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Utilization (%)",
+          color: "#333333",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+        ticks: {
+          color: "#666666",
+          font: {
+            size: getFontSize().body, // Use your getFontSize function here
+          },
+          beginAtZero: true,
         },
       },
     },
@@ -1303,10 +1407,12 @@ const Logistics = () => {
               </div>
             </ChartCard>
             <ChartCard title="Fleet Utilization">
-              <Bar
-                data={fleetUtilizationData}
-                options={fleetUtilizationOptions}
-              />
+              <div className="w-full sm:h-[300px] lg:h-[350px] p-2">
+                <Bar
+                  data={fleetUtilizationData}
+                  options={fleetUtilizationOptions}
+                />
+              </div>
             </ChartCard>
             {/* New Bubble Chart */}
             <ChartCard title="Sales Data">
