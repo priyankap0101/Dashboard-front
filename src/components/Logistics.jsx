@@ -840,6 +840,42 @@ const Logistics = () => {
       },
     ],
   };
+
+  const getmonthlyExpensesOptionsSize = () => {
+    if (window.innerWidth < 300) {
+      // Very small screens (hide labels and titles)
+      return {
+        title: 0, // Title font size
+        body: 0, // Body font size
+        legend: 0, // Legend font size
+        showLabels: false, // Do not show labels
+      };
+    } else if (window.innerWidth < 640) {
+      return {
+        title: 10,
+        body: 8,
+        legend: 6,
+        showLabels: true,
+      };
+    } else if (window.innerWidth < 768) {
+      return {
+        title: 14,
+        body: 12,
+        legend: 10,
+        showLabels: true,
+      };
+    } else {
+      return {
+        title: 16,
+        body: 14,
+        legend: 12,
+        showLabels: true,
+      };
+    }
+  };
+
+  const { title, body, legend, showLabels } = getmonthlyExpensesOptionsSize();
+
   const monthlyExpensesOptions = {
     responsive: true,
     maintainAspectRatio: false, // Allows the chart to fill its container
@@ -848,10 +884,11 @@ const Logistics = () => {
     },
     plugins: {
       legend: {
+        display: showLabels,
         position: "top",
         labels: {
           font: {
-            size: 14,
+            size: legend,
             family: "'Helvetica Neue', 'Arial', sans-serif",
             weight: "bold",
           },
@@ -868,6 +905,12 @@ const Logistics = () => {
         borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         displayColors: false, // Hides color box in tooltip for cleaner look
+        titleFont: {
+          size: title,
+        },
+        bodyFont: {
+          size: body,
+        },
         callbacks: {
           label: (context) => `Expenses: $${context.raw.toLocaleString()}`, // Format number with commas
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
@@ -884,13 +927,13 @@ const Logistics = () => {
         ticks: {
           color: "#666666", // Tick color for improved contrast
           font: {
-            size: 12,
+            size: showLabels ? 12 : 0,
             family: "'Helvetica Neue', 'Arial', sans-serif",
           },
           callback: (value) => `$${value.toLocaleString()}`, // Format tick labels
         },
         title: {
-          display: true,
+          display: showLabels,
           text: "Expenses ($)",
           color: "#333333",
           font: {
@@ -906,12 +949,12 @@ const Logistics = () => {
         ticks: {
           color: "#666666",
           font: {
-            size: 12,
+            size: showLabels ? 12 : 0,
             family: "'Helvetica Neue', 'Arial', sans-serif",
           },
         },
         title: {
-          display: true,
+          display: showLabels,
           text: "Months",
           color: "#333333",
           font: {
@@ -1189,7 +1232,7 @@ const Logistics = () => {
               </div>
             </ChartCard>
             <ChartCard title="Monthly Expenses">
-              <div className="w-full sm:h-[200px] lg:h-[300px] p-2">
+              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
                 <Bar
                   data={monthlyExpensesData}
                   options={monthlyExpensesOptions}
