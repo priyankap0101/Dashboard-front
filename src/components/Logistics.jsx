@@ -764,7 +764,7 @@ const Logistics = () => {
           text: "Efficiency (%)",
           color: "#ffffff", // Axis title color
           font: {
-            size: "1.2rem", // Responsive font size
+            size: "11.2rem", // Responsive font size
           },
         },
       },
@@ -777,7 +777,7 @@ const Logistics = () => {
           text: "Vehicles",
           color: "#ffffff", // Axis title color
           font: {
-            size: "1.2rem", // Responsive font size
+            size: "11.2rem", // Responsive font size
           },
         },
       },
@@ -806,23 +806,118 @@ const Logistics = () => {
           1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200,
           2300,
         ],
-        backgroundColor: "rgba(255, 159, 64, 0.2)",
-        borderColor: "rgba(255, 159, 64, 1)",
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(255, 205, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(201, 203, 207, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 205, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(201, 203, 207, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
         borderWidth: 2,
+        borderRadius: 5, // Rounded corners for bar chart
+        barPercentage: 0.8, // Adjust bar width
       },
     ],
   };
-
   const monthlyExpensesOptions = {
     responsive: true,
+    maintainAspectRatio: false, // Allows the chart to fill its container
+    layout: {
+      padding: {},
+    },
     plugins: {
       legend: {
         position: "top",
+        labels: {
+          font: {
+            size: 14,
+            family: "'Helvetica Neue', 'Arial', sans-serif",
+            weight: "bold",
+          },
+          padding: 15, // Increase padding for better spacing
+          color: "#555555", // Custom color for text
+          boxWidth: 15, // Adjust box size for legend items
+        },
       },
       tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark background for contrast
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+        padding: 10,
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        displayColors: false, // Hides color box in tooltip for cleaner look
         callbacks: {
-          label: (context) => `Expenses: $${context.raw}`,
+          label: (context) => `Expenses: $${context.raw.toLocaleString()}`, // Format number with commas
           title: (tooltipItems) => `Month: ${tooltipItems[0].label}`,
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(200, 200, 200, 0.3)", // Light grid lines for better readability
+          drawBorder: false,
+        },
+        ticks: {
+          color: "#666666", // Tick color for improved contrast
+          font: {
+            size: 12,
+            family: "'Helvetica Neue', 'Arial', sans-serif",
+          },
+          callback: (value) => `$${value.toLocaleString()}`, // Format tick labels
+        },
+        title: {
+          display: true,
+          text: "Expenses ($)",
+          color: "#333333",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+      },
+      x: {
+        grid: {
+          display: false, // Hides grid lines for cleaner look
+        },
+        ticks: {
+          color: "#666666",
+          font: {
+            size: 12,
+            family: "'Helvetica Neue', 'Arial', sans-serif",
+          },
+        },
+        title: {
+          display: true,
+          text: "Months",
+          color: "#333333",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
         },
       },
     },
@@ -1094,10 +1189,12 @@ const Logistics = () => {
               </div>
             </ChartCard>
             <ChartCard title="Monthly Expenses">
-              <Bar
-                data={monthlyExpensesData}
-                options={monthlyExpensesOptions}
-              />
+              <div className="w-full sm:h-[200px] lg:h-[300px] p-2">
+                <Bar
+                  data={monthlyExpensesData}
+                  options={monthlyExpensesOptions}
+                />
+              </div>
             </ChartCard>
             <ChartCard title="Delivery Status">
               <Pie data={deliveryStatusData} options={deliveryStatusOptions} />
