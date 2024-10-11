@@ -12,6 +12,7 @@ import {
   FaBars,
   FaTimes,
   FaUserCircle,
+  FaUser,
 } from "react-icons/fa";
 
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
@@ -169,7 +170,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
                 }
                 aria-label="Register"
               >
-                <FaSchool size={20} />
+                <FaUser size={20} />
                 {!isSidebarCollapsed && <span>Register</span>}
               </NavLink>
             </li>
@@ -205,9 +206,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         </div> */}
       </aside>
 
-      <div className="flex-grow">
-        {/* Main content goes here */}
-      </div>
+      <div className="flex-grow">{/* Main content goes here */}</div>
     </div>
   );
 };
