@@ -63,9 +63,15 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
       }`}
     >
       <div className="flex items-center flex-1">
-        <h1 className="font-extrabold leading-tight tracking-tight text-transparent transition-transform duration-300 ease-in-out md:text-2xl bg-gradient-to-r from-blue-500 to-green-400 dark:from-indigo-600 dark:to-blue-300 bg-clip-text hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-400 dark:hover:from-pink-600 dark:hover:to-red-400 hover:scale-105 hover:animate-pulse">
+        <h1 className="font-extrabold leading-tight tracking-tight text-transparent transition-all duration-1000 ease-in-out md:text-2xl bg-gradient-to-r from-blue-500 to-green-400 dark:from-indigo-600 dark:to-blue-100 bg-clip-text hover:bg-gradient-to-tl hover:from-teal-500 hover:via-indigo-500 hover:to-red-600 hover:scale-90 hover:drop-shadow-glow hover:opacity-100 hover:text-shadow-neon">
           Dashboard
         </h1>
+
+        <style jsx>{`
+          .hover\\:text-shadow-neon:hover {
+            animation: glowPulse 1.5s infinite alternate ease-in-out;
+          }
+        `}</style>
 
         {/* <button
           className="ml-4 text-2xl md:hidden hover:text-blue-500"

@@ -1337,7 +1337,7 @@ const Logistics = () => {
             </ChartCard>
 
             <ChartCard title="Fleet Efficiency">
-              <div className="w-full sm:h-[300px] lg:h-[300px] p-2">
+              <div className="w-full sm:h-[400px] lg:h-[300px] p-2">
                 <Bar
                   data={fleetEfficiencyData}
                   options={fleetEfficiencyOptions}
@@ -1353,7 +1353,7 @@ const Logistics = () => {
               </div>
             </ChartCard>
             <ChartCard title="Delivery Status">
-              <div className="w-full sm:h-[300px] lg:h-[250px] p-2">
+              <div className="w-full sm:h-[500px] lg:h-[250px] p-2">
                 <Pie
                   data={deliveryStatusData}
                   options={deliveryStatusOptions}
