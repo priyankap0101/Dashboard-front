@@ -63,7 +63,7 @@ const Header = ({ profilePicURL, userName, darkMode, toggleDarkMode }) => {
       }`}
     >
       <div className="flex items-center flex-1">
-        <h1 className="font-extrabold leading-tight tracking-tight text-transparent transition-all duration-1000 ease-in-out md:text-2xl bg-gradient-to-r from-blue-500 to-green-400 dark:from-indigo-600 dark:to-blue-100 bg-clip-text hover:bg-gradient-to-tl hover:from-teal-500 hover:via-indigo-500 hover:to-red-600 hover:scale-90 hover:drop-shadow-glow hover:opacity-100 hover:text-shadow-neon">
+        <h1 className="font-extrabold leading-tight tracking-tight text-transparent transition-all duration-1000 ease-in-out md:text-2xl bg-gradient-to-r from-cyan-500 to-purple-400 dark:from-purple-600 dark:to-blue-500 bg-clip-text hover:bg-gradient-to-tl hover:from-pink-500 hover:via-yellow-400 hover:to-lime-500 hover:scale-90 hover:drop-shadow-glow hover:opacity-100 hover:text-shadow-neon">
           Dashboard
         </h1>
 
