@@ -4,7 +4,6 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
 
-// Reusable InputField Component
 const InputField = ({
   label,
   name,
@@ -62,16 +61,14 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const [darkMode, setDarkMode] = useState(false); // State for dark mode
-  const [loading, setLoading] = useState(false); // State for loading
+  const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -111,11 +108,14 @@ const Register = () => {
     }
   };
 
-  // Persist dark mode state
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
     setDarkMode(savedDarkMode);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
@@ -134,7 +134,7 @@ const Register = () => {
   return (
     <div
       className={`min-h-screen flex flex-col ${
-        darkMode ? "bg-gray-900" : "bg-gray-100"
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
       }`}
     >
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -144,7 +144,7 @@ const Register = () => {
           <div
             className={`w-full max-w-4xl mx-auto ${
               darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-800"
-            } shadow-lg rounded-2xl overflow-hidden flex-1`}
+            } shadow-lg rounded-2xl overflow-hidden`}
           >
             <div className="p-8">
               <h2 className="mb-6 text-lg font-semibold">Register</h2>
@@ -161,96 +161,39 @@ const Register = () => {
               )}
               <form
                 onSubmit={handleRegister}
-                className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2"
               >
-                {[
-                  { label: "First Name", name: "firstName", type: "text" },
-                  { label: "Last Name", name: "lastName", type: "text" },
-                  { label: "Email", name: "email", type: "email" },
-                  { label: "Phone", name: "phone", type: "tel" },
-                  { label: "Address", name: "address", type: "text" },
-                  { label: "City", name: "city", type: "text" },
-                  { label: "State", name: "state", type: "text" },
-                  { label: "Zip Code", name: "zip", type: "text" },
-                  { label: "Password", name: "password", type: "password" },
-                ].map(({ label, name, type }) => (
-                  <div key={name} className="flex flex-col">
-                    <label
-                      htmlFor={name}
-                      className={`mb-2 text-sm font-medium ${
-                        darkMode ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      {label}
-                    </label>
-                    <input
-                      id={name}
-                      name={name}
-                      type={type}
-                      value={formData[name]}
-                      onChange={handleChange}
-                      required
-                      className={`w-full p-3 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                        errors[name]
-                          ? "border-red-600"
-                          : darkMode
-                          ? "border-gray-600 bg-gray-700 text-white"
-                          : "border-gray-300"
-                      }`}
-                    />
-                    {errors[name] && (
-                      <p className="mt-1 text-sm font-semibold text-red-600">
-                        {errors[name]}
-                      </p>
-                    )}
-                  </div>
+                {formFields.map(({ label, name, type }) => (
+                  <InputField
+                    key={name}
+                    label={label}
+                    name={name}
+                    type={type}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    error={errors[name]}
+                    darkMode={darkMode}
+                  />
                 ))}
-                <div className="flex justify-center col-span-1 md:col-span-2">
+                <div className="flex justify-center col-span-2">
                   <button
                     type="submit"
                     className={`relative px-8 py-3 font-semibold rounded-lg shadow-lg transition-transform duration-300 transform ${
                       darkMode
                         ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500"
                         : "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 focus:ring-2 focus:ring-blue-400"
-                    } focus:outline-none focus:ring-2 ring-opacity-50 ${
-                      loading ? "cursor-wait" : "cursor-pointer"
-                    }`}
-                    style={{ maxWidth: "250px" }} // Control the width of the button
+                    } ${loading ? "cursor-wait" : "cursor-pointer"}`}
+                    disabled={loading}
                   >
-                    {loading ? (
-                      <div className="flex items-center justify-center">
-                        <svg
-                          className="w-6 h-6 text-white animate-spin"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                          />
-                        </svg>
-                      </div>
-                    ) : (
-                      <span className="flex items-center">Register</span>
-                    )}
+                    {loading ? "Registering..." : "Register"}
                   </button>
                 </div>
               </form>
             </div>
           </div>
-          <Footer />
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -418,7 +418,9 @@ const CRM = () => {
           </motion.div>
           <Footer />
         </motion.main>
+      
       </div>
+      
       {showModal && (
         <Modal toggleModal={toggleModal}>
           <h2 className="text-xl font-semibold">Modal Title</h2>
